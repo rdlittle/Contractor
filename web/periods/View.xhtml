@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/layout.xhtml">
+        <ui:define name="windowTitle">
+            <title>
+                <h:outputText value="#{msgs.appName} #{msgs.PeriodsTitle}"></h:outputText>
+            </title>
+        </ui:define>
+        <ui:define name="content">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <p:panelGrid columns="2" columnClasses="leftCol,rightCol">
+                    <h:outputText value="#{msgs.id}"/>
+                    <h:outputText value="#{periodsController.selected.id}" title="#{msgs.id}" />
+                    <h:outputText value="#{msgs.startDate}"/>
+                    <h:outputText value="#{periodsController.selected.startDate}" title="#{msgs.startDate}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                    <h:outputText value="#{msgs.endDate}"/>
+                    <h:outputText value="#{periodsController.selected.endDate}" title="#{msgs.endDate}">
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </h:outputText>
+                </p:panelGrid>
+                <br />
+                <p:commandButton action="#{periodsController.prepareCreate}" value="#{msgs.New}" />                
+                &nbsp;&nbsp;
+                <p:commandButton action="#{periodsController.prepareEdit}" value="#{msgs.Edit}"/>
+                &nbsp;&nbsp;
+                <p:commandButton action="#{periodsController.destroyAndView}" value="#{msgs.Delete}"/>
+                &nbsp;&nbsp;
+                <p:commandButton action="#{periodsController.prepareList}" value="#{msgs.List}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

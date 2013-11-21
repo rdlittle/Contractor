@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/layout.xhtml">
+        <ui:define name="windowTitle">
+            <title>
+                <h:outputText value="#{msgs.appName} #{msgs.ReceiptsTitle}"></h:outputText>
+            </title>
+        </ui:define>
+        <ui:define name="content">
+            <h:form styleClass="jsfcrud_list_form" id="receiptsForm">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                <h:outputLabel for="clientSelector" value="Select Client: "/>
+                <h:selectOneMenu id="clientSelector" value="#{receiptsController.clientId}" 
+                                 onchange="submit()" 
+                                 valueChangeListener="#{receiptsController.prepareList()}">
+                    <f:selectItems id="clientList" var="client"
+                                   value="#{clientController.clientList}"
+                                   itemValue="#{client.id}"
+                                   itemLabel="#{client.name}"/>
+                </h:selectOneMenu>
+                <h:outputText escape="false" value="#{msgs.Empty}" rendered="#{receiptsController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{receiptsController.items.rowCount > 0}">
+                    <h:outputText value="#{receiptsController.pagination.pageFirstItem + 1}..#{receiptsController.pagination.pageLastItem + 1}/#{receiptsController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{receiptsController.previous}" value="#{msgs.Previous} #{receiptsController.pagination.pageSize}" rendered="#{receiptsController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{receiptsController.next}" value="#{msgs.Next} #{receiptsController.pagination.pageSize}" rendered="#{receiptsController.pagination.hasNextPage}"/>&nbsp;
+                    <p:dataTable value="#{receiptsController.items}" var="item" rowStyleClass="jsfcrud_odd_row,jsfcrud_even_row" style="border:solid 1px">
+                        <p:column style="width: 5%; text-align: left;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.id}" style="text-align: left;"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column style="width: 5%;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.recdDate}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.recdDate}">
+                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column style="width: 5%;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.checkNum}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.checkNum}"/>
+                        </p:column>
+                        <p:column style="width: 10%; text-align: right;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.amount}" />
+                            </f:facet>
+                            <h:outputText value="#{item.amount}">
+                                <f:convertNumber currencySymbol="$" 
+                                                 groupingUsed="true" maxFractionDigits="2" type="currency"/>
+                            </h:outputText>
+                        </p:column>
+                        <p:column style="width: 5%;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.payeeId}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.payeeId}"/>
+                        </p:column>
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{receiptsController.prepareView}" value="#{msgs.View}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{receiptsController.prepareEdit}" value="#{msgs.Edit}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{receiptsController.destroy}" value="#{msgs.Delete}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+                <br />
+                <p:commandButton action="#{receiptsController.prepareCreate}" value="#{msgs.New}" rendered="#{receiptsController.items.rowCount > 0}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

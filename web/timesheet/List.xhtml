@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/layout.xhtml">
+        <ui:define name="windowTitle">
+            <title>
+                <h:outputText value="#{msgs.appName} #{msgs.TimesheetTitle}"></h:outputText>
+            </title>
+        </ui:define>
+        <ui:define name="content">
+            <h:form id="timesheetForm">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                
+                <h:outputLabel for="clientSelector" value="Select Client: "/>
+                <h:selectOneMenu id="clientSelector" value="#{timesheetController.clientId}" 
+                                 onchange="submit()" 
+                                 valueChangeListener="#{timesheetController.prepareList()}">
+                    <f:selectItems id="clientList" var="client"
+                                   value="#{clientController.clientList}"
+                                   itemValue="#{client.id}"
+                                   itemLabel="#{client.name}"/>
+                </h:selectOneMenu>
+                <h:outputText escape="false" value="#{msgs.Empty}" rendered="#{timesheetController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{timesheetController.items.rowCount > 0}">
+                    <h:outputText value="#{timesheetController.pagination.pageFirstItem + 1}..#{timesheetController.pagination.pageLastItem + 1}/#{timesheetController.pagination.itemsCount}"/>&nbsp;
+                    <h:commandLink action="#{timesheetController.previous}" value="#{msgs.Previous} #{timesheetController.pagination.pageSize}" rendered="#{timesheetController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{timesheetController.next}" value="#{msgs.Next} #{timesheetController.pagination.pageSize}" rendered="#{timesheetController.pagination.hasNextPage}"/>&nbsp;
+                    <p:dataTable value="#{timesheetController.items}" var="item" rowStyleClass="jsfcrud_odd_row,jsfcrud_even_row">
+                        <p:column style="text-align: left; width: 3%; padding: .25em; margin: 0;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column style="text-align: left; width: 5%; padding: .25em; margin: 0;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.date}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.date}">
+                                <f:convertDateTime pattern="MM/dd/yy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column style="width: auto; padding: .25em;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.description}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.description}"/>
+                        </p:column>
+                        <p:column style="text-align: right; width: 5%; padding: .25em; margin: 0;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.hours}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.hours}"/>
+                        </p:column>
+                        <p:column style="text-align: right; width: 5%; padding: .25em; margin: 0;" rendered="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.clientID}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.clientID}"/>
+                        </p:column>
+                        <p:column style="text-align: right; width: 5%; padding: .25em; margin: 0;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.invoice}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.invNum}"/>
+                        </p:column>
+                        <p:column style="text-align: center; width: 3%; padding: .25em; margin: 0;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.posted}"/>
+                            </f:facet>
+                            <p:selectBooleanCheckbox id="posted" value="#{item.posted}" disabled="true"/>
+                        </p:column>                        
+                        <p:column style="width: 10em; padding: .25em; ">
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{timesheetController.prepareView}" value="#{msgs.View}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{timesheetController.prepareEdit}" value="#{msgs.Edit}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{timesheetController.destroy}" value="#{msgs.Delete}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+                <br />
+                <p:commandButton action="#{timesheetController.prepareCreate}" value="#{msgs.New}" rendered="#{timesheetController.items.rowCount > 0}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

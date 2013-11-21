@@ -1,0 +1,19 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition 
+    xmlns:ui="http://java.sun.com/jsf/facelets"
+    xmlns:h="http://java.sun.com/jsf/html">
+    <h:form>
+        <h:panelGrid bodyrows="6" columns="1">    
+            <h:outputText value="#{msgs.leftNavHeader}"/>
+            <h:commandLink action="/periods/List?faces-redirect=true" value="#{msgs.leftNavBillingPeriods}"/>
+            <h:commandLink action="/company/List?faces-redirect=true" value="#{msgs.leftNavCompany}"/>
+            <h:commandLink action="/client/List?faces-redirect=true" value="#{msgs.leftNavClient}"/>
+            <h:commandLink action="/invoices/List?faces-redirect=true" value="#{msgs.leftNavInvoices}"/>
+            <h:commandLink action="/receipts/List?faces-redirect=true" value="#{msgs.leftNavReceipts}"/>
+            <h:commandLink action="/reports/InvoiceForm?faces-redirect=true" value="#{msgs.leftNavReports}"/>
+            <h:commandLink action="/sequence/List?faces-redirect=true" value="#{msgs.leftNavSequence}" />
+            <h:commandLink action="/timesheet/List?faces-redirect=true" value="#{msgs.leftNavTimeSheet}"/>
+        </h:panelGrid>
+    </h:form>
+</ui:composition>

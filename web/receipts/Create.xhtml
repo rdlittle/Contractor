@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/layout.xhtml">
+        <ui:define name="windowTitle">
+            <title>
+                <h:outputText value="#{msgs.appName} #{msgs.ReceiptsTitle}"></h:outputText>
+            </title>
+        </ui:define>
+        <ui:define name="content">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <p:panelGrid columns="2" columnClasses="leftCol,rightCol">
+                    <h:outputLabel value="#{msgs.id}" for="id" rendered="false" />
+                    <h:inputText id="id" value="#{receiptsController.selected.id}" title="#{msgs.id}" rendered="false"/>
+                    <h:outputLabel value="#{msgs.recdDate}" for="recdDate" />
+                    <p:calendar id="recdDate" value="#{receiptsController.selected.recdDate}" title="#{msgs.recdDate}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    </p:calendar>
+                    <h:outputLabel value="#{msgs.checkNum}" for="checkNum" />
+                    <h:inputText id="checkNum" value="#{receiptsController.selected.checkNum}" title="#{msgs.checkNum}" />
+                    <h:outputLabel value="#{msgs.amount}" for="amount" />
+                    <h:inputText id="amount" value="#{receiptsController.selected.amount}" title="#{msgs.amount}" />
+                    <h:outputLabel value="#{msgs.payeeId}" for="payeeId" />
+                    <h:inputText id="payeeId" value="#{receiptsController.selected.payeeId}" title="#{msgs.payeeId}" required="true" requiredMessage="#{msgs.RequiredEntry}"/>
+                </p:panelGrid>
+                <br />
+                <p:commandButton action="#{receiptsController.create}" value="#{msgs.Save}" />
+                &nbsp;&nbsp;
+                <p:commandButton action="#{receiptsController.prepareList}" value="#{msgs.Cancel}" immediate="true"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html">
+
+    <ui:composition template="/layout.xhtml">
+        <ui:define name="windowTitle">
+            <h:outputText value="#{msgs.appName} #{msgs.CompanyTitle}"></h:outputText>
+        </ui:define>
+        <ui:define name="content">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <h:panelGrid columns="2" columnClasses="leftCol,rightCol">
+                    <h:outputText value="#{msgs.ID}"/>
+                    <h:outputText value="#{companyController.selected.companyID}" title="#{msgs.ID}"/>
+                    <h:outputText value="#{msgs.name}"/>
+                    <h:outputText value="#{companyController.selected.companyName}" title="#{msgs.name}"/>
+                    <h:outputText value="#{msgs.address1}"/>
+                    <h:outputText value="#{companyController.selected.address1}" title="#{msgs.address1}"/>
+                    <h:outputText value="#{msgs.address2}"/>
+                    <h:outputText value="#{companyController.selected.address2}" title="#{msgs.address2}"/>
+                    <h:outputText value="#{msgs.city}"/>
+                    <h:outputText value="#{companyController.selected.city}" title="#{msgs.city}"/>
+                    <h:outputText value="#{msgs.state}"/>
+                    <h:outputText value="#{companyController.selected.state}" title="#{msgs.state}"/>
+                    <h:outputText value="#{msgs.zip}"/>
+                    <h:outputText value="#{companyController.selected.zip}" title="#{msgs.zip}"/>
+                    <h:outputText value="#{msgs.phone1}"/>
+                    <h:outputText value="#{companyController.selected.phone1}" title="#{msgs.phone1}"/>
+                    <h:outputText value="#{msgs.phone2}"/>
+                    <h:outputText value="#{companyController.selected.phone2}" title="#{msgs.phone2}"/>
+                    <h:outputText value="#{msgs.attn}"/>
+                    <h:outputText value="#{companyController.selected.attn}" title="#{msgs.attn}"/>
+                    <h:outputText value="#{msgs.email}"/>
+                    <h:outputText value="#{companyController.selected.email}" title="#{msgs.email}"/>
+                </h:panelGrid>
+                <br />
+                <h:commandButton action="#{companyController.destroyAndView}" value="#{msgs.Delete}"/>
+                &nbsp;&nbsp;
+                <h:commandButton action="Edit" value="#{msgs.Edit}"/>
+                &nbsp;&nbsp;
+                <h:commandButton action="#{companyController.prepareCreate}" value="#{msgs.New}" />
+                &nbsp;&nbsp;
+                <h:commandButton action="#{companyController.prepareList}" value="#{msgs.Cancel}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

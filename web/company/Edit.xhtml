@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/layout.xhtml">
+        <ui:define name="windowTitle">
+            <title>
+                <h:outputText value="#{msgs.appName} #{msgs.CompanyTitle}"></h:outputText>
+            </title>
+        </ui:define>
+        <ui:define name="content">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <p:panelGrid columns="2" columnClasses="leftCol,rightCol">
+                    <h:outputLabel value="#{msgs.ID}" for="ID" />
+                    <h:inputText id="ID" value="#{companyController.selected.companyID}" title="#{msgs.ID}" required="true" requiredMessage="#{msgs.RequiredEntry}"/>
+                    <h:outputLabel value="#{msgs.name}" for="Name" />
+                    <h:inputText id="Name" value="#{companyController.selected.companyName}" title="#{msgs.name}" />
+                    <h:outputLabel value="#{msgs.address1}" for="address1" />
+                    <h:inputText id="address1" value="#{companyController.selected.address1}" title="#{msgs.address1}" />
+                    <h:outputLabel value="#{msgs.address2}" for="address2" />
+                    <h:inputText id="address2" value="#{companyController.selected.address2}" title="#{msgs.address2}" />
+                    <h:outputLabel value="#{msgs.city}" for="city" />
+                    <h:inputText id="city" value="#{companyController.selected.city}" title="#{msgs.city}" />
+                    <h:outputLabel value="#{msgs.state}" for="state" />
+                    <h:inputText id="state" value="#{companyController.selected.state}" title="#{msgs.state}" />
+                    <h:outputLabel value="#{msgs.zip}" for="zip" />
+                    <h:inputText id="zip" value="#{companyController.selected.zip}" title="#{msgs.zip}" />
+                    <h:outputLabel value="#{msgs.phone1}" for="phone1" />
+                    <h:inputText id="phone1" value="#{companyController.selected.phone1}" title="#{msgs.phone1}" />
+                    <h:outputLabel value="#{msgs.phone2}" for="phone2" />
+                    <h:inputText id="phone2" value="#{companyController.selected.phone2}" title="#{msgs.phone2}" />
+                    <h:outputLabel value="#{msgs.attn}" for="attn" />
+                    <h:inputText id="attn" value="#{companyController.selected.attn}" title="#{msgs.attn}" />
+                    <h:outputLabel value="#{msgs.email}" for="email" />
+                    <h:inputText id="email" value="#{companyController.selected.email}" title="#{msgs.email}" />
+                </p:panelGrid>
+                <h:commandButton action="#{companyController.update}" value="#{msgs.Save}"/>
+                &nbsp;&nbsp;
+                <h:commandButton action="View" value="#{msgs.View}" immediate="true"/>
+                &nbsp;&nbsp;
+                <h:commandButton action="#{companyController.prepareList}" value="#{msgs.Cancel}" immediate="true"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

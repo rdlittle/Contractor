@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/layout.xhtml">
+        <ui:define name="windowTitle">
+            <title>
+                <h:outputText value="#{msgs.appName} #{msgs.TimesheetTitle}"></h:outputText>
+            </title>
+        </ui:define>
+        <ui:define name="content">
+            <h:panelGroup id="messagePanel" layout="block">
+                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+            </h:panelGroup>
+            <h:form>
+                <p:panelGrid columns="2" columnClasses="leftCol,rightCol">
+                    <h:outputLabel value="#{msgs.id}" for="id" rendered="false"/>
+                    <h:inputText id="id" value="#{timesheetController.selected.id}" title="#{msgs.id}" required="false" requiredMessage="#{msgs.CreateTimesheetRequiredMessage_id}" rendered="false"/>
+                    <h:outputLabel value="#{msgs.date}" for="date" />
+                    <p:calendar id="date" value="#{timesheetController.selected.date}" mode="popup" showOn="button" title="#{msgs.date}" >
+                        <f:convertDateTime pattern="MM/dd/yy" />
+                    </p:calendar>
+                    <h:outputLabel value="#{msgs.description}" for="description" />
+                    <h:inputText id="description" value="#{timesheetController.selected.description}" title="#{msgs.description}" size="100"/>
+                    <h:outputLabel value="#{msgs.hours}" for="hours" />
+                    <h:inputText id="hours" value="#{timesheetController.selected.hours}" title="#{msgs.hours}" />
+                    <h:outputLabel value="#{msgs.clientID}" for="clientID" />
+                    <h:inputText id="clientID" value="#{timesheetController.selected.clientID}" title="#{msgs.clientID}" />
+                    <h:outputLabel value="#{msgs.posted}" for="posted" />
+                    <h:inputText id="posted" value="#{timesheetController.selected.posted}"/>
+                    <h:outputLabel for="invNum" value="#{msgs.invoice}"/>
+                    <h:inputText id="invNum" value="#{timesheetController.selected.invNum}"/>
+                </p:panelGrid>
+                <p:commandButton action="#{timesheetController.create}" value="#{msgs.Save}" />
+                &nbsp;&nbsp;
+                <p:commandButton action="#{timesheetController.prepareList}" value="#{msgs.Cancel}" immediate="true"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>

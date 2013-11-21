@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <ui:composition template="/layout.xhtml">
+        <ui:define name="windowTitle">
+            <title>
+                <h:outputText value="Invoice Print"></h:outputText>
+            </title>
+        </ui:define>
+        <ui:define name="content">
+            <f:view>
+                <h:form id="invoiceForm">
+                    <h:outputLabel value="Client"/>
+                    
+                    <h:selectOneMenu id="clientSelector" value="#{ReportBean.clientId}" onchange="submit()">
+                        <f:selectItems id="clientList" var="client"
+                                       value="#{clientController.clientList}"
+                                       itemValue="#{client.id}"
+                                       itemLabel="#{client.name}"/>
+                    </h:selectOneMenu>
+                    &nbsp;
+                    <h:outputLabel value="Invoice Date"/>
+                    <h:selectOneMenu id="invoiceSelector" value="#{ReportBean.invNum}">
+                        <f:selectItems id="invoiceList" var="inv" 
+                                       value="#{InvoiceController.invoiceList}" 
+                                       itemValue="#{inv.invoice}" 
+                                       itemLabel="#{inv.shortDate}"/>
+                    </h:selectOneMenu>
+                    
+                    <h:selectOneMenu id="exportOption" value="#{ReportBean.exportOption}">
+                        <f:selectItems value="#{ReportBean.exportOptions}"/>
+                    </h:selectOneMenu>
+                    
+                    <h:commandButton  action="#{ReportBean.execute}" value="Get Invoice" />
+                    <h:commandLink value="Preview" onclick='doPopup(this); return false;'/>
+                </h:form>
+                <h:form id="hidden">
+                    <h:inputHidden id="invNumber"/>
+                    <h:inputHidden id="expFormat"/>
+                    <h:inputHidden id="clientId"/>
+                </h:form>
+            </f:view>
+        </ui:define>
+    </ui:composition>
+
+</html>
