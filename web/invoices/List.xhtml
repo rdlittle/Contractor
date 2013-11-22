@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://java.sun.com/jsf/facelets"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <ui:composition template="/layout.xhtml">
+        <ui:define name="windowTitle">
+            <title>
+                <h:outputText value="#{msgs.InvoicesTitle}"></h:outputText>
+            </title>
+        </ui:define>
+        <ui:define name="content">
+            <h:form id="invoiceList">
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+                
+                <h:outputLabel for="clientSelector" value="Select Client: "/>
+                <h:selectOneMenu id="clientSelector" value="#{InvoiceController.clientId}" 
+                                 onchange="submit()" 
+                                 valueChangeListener="#{InvoiceController.prepareList()}">
+                    <f:selectItems id="clientList" var="client"
+                                   value="#{clientController.clientList}"
+                                   itemValue="#{client.id}"
+                                   itemLabel="#{client.name}"/>
+                </h:selectOneMenu>
+                &nbsp;
+                
+                <h:panelGroup rendered="#{InvoiceController.items.rowCount > 0}">
+                    <h:outputText value="#{InvoiceController.pagination.pageFirstItem + 1}..#{InvoiceController.pagination.pageLastItem + 1}/#{InvoiceController.pagination.itemsCount}" 
+                                  rendered="#{InvoiceController.pagination.itemsCount > 0}"/>&nbsp;
+                    <h:commandLink action="#{InvoiceController.previous}" value="#{msgs.Previous} #{InvoiceController.pagination.pageSize}" rendered="#{InvoiceController.pagination.hasPreviousPage}"/>&nbsp;
+                    <h:commandLink action="#{InvoiceController.next}" value="#{msgs.Next} #{InvoiceController.pagination.pageSize}" rendered="#{InvoiceController.pagination.hasNextPage}"/>&nbsp;
+                    <p:dataTable value="#{InvoiceController.items}" var="item" rowStyleClass="jsfcrud_odd_row,jsfcrud_even_row" style="border:solid 1px">
+                        <p:column rendered="false">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.id}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.id}"/>
+                        </p:column>
+                        <p:column style="text-align: left; width: 5%; padding: .25em .25em; margin: 0;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.date}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.invDate}">
+                                <f:convertDateTime pattern="MM/dd/yyyy" />
+                            </h:outputText>
+                        </p:column>
+                        <p:column style="text-align: center; width: 5%; padding: .25em .25em; margin: 0;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.invoice}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.invoice}"/>
+                        </p:column>
+                        <p:column style="text-align: center; width: 5%; padding: .25em .25em; margin: 0;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.client}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.client}"/>
+                        </p:column>
+                        <p:column style="text-align: center; width: 5%; padding: .25em .25em; margin: 0;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.posted}"/>
+                            </f:facet>
+                            <p:selectBooleanCheckbox value="#{item.posted}" disabled="true"/>
+                        </p:column>
+                        <p:column style="text-align: center; width: 5%; padding: .25em .25em; margin: 0;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.paid}"/>
+                            </f:facet>
+                            <p:selectBooleanCheckbox value="#{item.paid}"  disabled="true"/>
+                        </p:column>
+                        <p:column style="text-align: left; width: 4%; padding: .25em .25em; margin: 0;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.checkNum}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.checkNum}"/>
+                        </p:column>
+                        <p:column style="text-align: left; width: 5%; padding: .25em .25em; margin: 0;">
+                            <f:facet name="header">
+                                <h:outputText value="Period"/>
+                            </f:facet>
+                            <h:outputText value="#{item.periodNum}"/>
+                        </p:column>
+                        <p:column style="text-align: right; width: 10%; padding: .25em .25em; margin: 0;">
+                            <f:facet name="header">
+                                <h:outputText value="#{msgs.amount}"/>
+                            </f:facet>
+                            <h:outputText value="#{item.amount}">
+                                <f:convertNumber  pattern="#0.00" />
+                            </h:outputText>
+                        </p:column>                        
+                        <p:column>
+                            <f:facet name="header">
+                                <h:outputText value="&nbsp;"/>
+                            </f:facet>
+                            <h:commandLink action="#{InvoiceController.prepareView}" value="#{msgs.View}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{InvoiceController.prepareEdit}" value="#{msgs.Edit}"/>
+                            <h:outputText value=" "/>
+                            <h:commandLink action="#{InvoiceController.destroy}" value="#{msgs.Delete}"/>
+                        </p:column>
+                    </p:dataTable>
+                </h:panelGroup>
+                <br />
+                <p:commandButton action="#{InvoiceController.prepareCreate}" value="#{msgs.New}" rendered="#{InvoiceController.items.rowCount > 0}"/>
+            </h:form>
+        </ui:define>
+    </ui:composition>
+
+</html>
