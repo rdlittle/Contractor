@@ -19,13 +19,13 @@
                 </h:panelGroup>
                 
                 <h:outputLabel for="clientSelector" value="Select Client: "/>
-                <h:selectOneMenu id="clientSelector" value="#{timesheetController.clientId}" 
+                <h:selectOneMenu id="clientSelector" value="#{timesheetController.clientId}"
                                  onchange="submit()" 
                                  valueChangeListener="#{timesheetController.prepareList()}">
                     <f:selectItems id="clientList" var="client"
                                    value="#{clientController.clientList}"
                                    itemValue="#{client.id}"
-                                   itemLabel="#{client.name}"/>
+                                   itemLabel="#{client.name}" noSelectionValue="--"/>
                 </h:selectOneMenu>
                 <h:outputText escape="false" value="#{msgs.Empty}" rendered="#{timesheetController.items.rowCount == 0}"/>
                 <h:panelGroup rendered="#{timesheetController.items.rowCount > 0}">

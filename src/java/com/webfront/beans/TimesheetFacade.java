@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -31,9 +32,15 @@ public class TimesheetFacade extends AbstractFacade<Timesheet> {
 
     @Override
     public List<Timesheet> findRange(int[] range) {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext et = fc.getExternalContext();
         Map<String, String> map;
-        map = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        map = et.getRequestParameterMap();
         String value = map.get("timesheetForm:clientSelector");
+        if (value == null) {
+            value = map.get("clientId");
+        }
+       
         Integer clientId;
         String stmt = "SELECT t FROM Timesheet t WHERE t.clientID = ?1 ORDER BY t.id DESC";
 

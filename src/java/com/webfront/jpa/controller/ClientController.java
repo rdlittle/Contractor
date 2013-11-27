@@ -6,6 +6,7 @@ import com.webfront.jpa.controller.util.JsfUtil;
 import com.webfront.jpa.controller.util.PaginationHelper;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -33,6 +34,10 @@ public class ClientController implements Serializable {
     }
 
     public List<Client> getClientList() {
+        FacesContext fc=FacesContext.getCurrentInstance();
+        Map<String,String> map = fc.getExternalContext().getRequestParameterMap();
+        String key="timesheetForm:clientSelector";
+        String value=map.get(key);
         List<Client> list=getFacade().findAll();
         Client c=new Client();
         c.setId(0);

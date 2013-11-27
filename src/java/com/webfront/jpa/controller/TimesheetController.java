@@ -5,6 +5,7 @@ import com.webfront.entity.Timesheet;
 import com.webfront.jpa.controller.util.JsfUtil;
 import com.webfront.jpa.controller.util.PaginationHelper;
 import java.io.Serializable;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -47,7 +48,7 @@ public class TimesheetController implements Serializable {
     public PaginationHelper getPagination() {
         if (pagination == null) {
             pagination = new PaginationHelper(10) {
-                
+
                 @Override
                 public int getItemsCount() {
                     return getFacade().count();
@@ -55,17 +56,16 @@ public class TimesheetController implements Serializable {
 
                 @Override
                 public DataModel createPageDataModel() {
-                    String dir=getOrder();
+                    String dir = getOrder();
                     ListDataModel list;
-                    int[] range=new int[2];
-                    range[0]=getPageFirstItem();
-                    range[1]=getPageFirstItem() + getPageSize();
-                    list=new ListDataModel(getFacade().findRange(range));
+                    int[] range = new int[2];
+                    range[0] = getPageFirstItem();
+                    range[1] = getPageFirstItem() + getPageSize();
+                    list = new ListDataModel(getFacade().findRange(range));
                     return list;
                 }
             };
         }
-//        pagination.gotoLastPage();
         return pagination;
     }
 
@@ -82,7 +82,7 @@ public class TimesheetController implements Serializable {
 
     public String prepareCreate() {
         current = new Timesheet();
-        String inv=getFacade().getNextInv();
+        String inv = getFacade().getNextInv();
         current.setInvNum(inv);
         selectedItemIndex = -1;
         return "Create?faces-redirect=true";
@@ -92,8 +92,8 @@ public class TimesheetController implements Serializable {
         try {
             getFacade().create(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Messages").getString("Created"));
-            return "List?faces-redirect=true";
-            //return prepareList();
+            recreateModel();
+            return "List?faces-redirect=true&clientId=" + Integer.toString(current.getClientID());
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Messages").getString("PersistenceError"));
             return null;
@@ -110,7 +110,7 @@ public class TimesheetController implements Serializable {
         try {
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Messages").getString("Updated"));
-            return "View?faces-redirect=true";
+            return "List?faces-redirect=true";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Messages").getString("PersistenceError"));
             return null;

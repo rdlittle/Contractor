@@ -14,7 +14,6 @@ import javax.validation.constraints.Size;
  * @author rlittle
  */
 @Entity
-
 @Table(name = "timesheet")
 @NamedQueries({
     @NamedQuery(name = "Timesheet.findAll", query = "SELECT t FROM Timesheet t"),
