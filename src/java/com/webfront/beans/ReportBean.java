@@ -28,7 +28,7 @@ public class ReportBean extends AbstractReportBean {
   
   private DataSource dataSource;
   
-  @Resource(name="jdbc/contractor")
+  @Resource(lookup="jdbc/contractor")
   public void setDataSource(DataSource ds) {
       this.dataSource=ds;
   }

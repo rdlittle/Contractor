@@ -59,6 +59,7 @@ public class ReportConfigUtil {
     try {
         jasperPrint =  JasperFillManager.fillReport(reportFile.getPath(), parameters, dataSource.getConnection());
     } catch(Exception e) {
+        e.printStackTrace();
         return null;
     }
     
