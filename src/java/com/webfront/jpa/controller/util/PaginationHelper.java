@@ -4,7 +4,7 @@ import javax.faces.model.DataModel;
 
 public abstract class PaginationHelper {
 
-    private int pageSize;
+    private final int pageSize;
     private int page;
     private String order;
 

@@ -22,7 +22,7 @@
                     <h:inputText id="id" value="#{timesheetController.selected.id}" title="#{msgs.id}" required="true" requiredMessage="#{msgs.EditTimesheetRequiredMessage_id}"/>
                     <h:outputLabel value="#{msgs.date}" for="date" />
                     <h:inputText id="date" value="#{timesheetController.selected.date}" title="#{msgs.date}" >
-                        <f:convertDateTime pattern="MM/dd/yy" />
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
                     </h:inputText>
                     <h:outputLabel value="#{msgs.description}" for="description" />
                     <h:inputTextarea id="description" value="#{timesheetController.selected.description}" title="#{msgs.description}" cols="80" rows="3"/>

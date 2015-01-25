@@ -17,7 +17,7 @@
                 <h:panelGroup id="messagePanel" layout="block">
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
-                
+
                 <h:outputLabel for="clientSelector" value="Select Client: "/>
                 <h:selectOneMenu id="clientSelector" value="#{timesheetController.clientId}"
                                  onchange="submit()" 
@@ -32,7 +32,13 @@
                     <h:outputText value="#{timesheetController.pagination.pageFirstItem + 1}..#{timesheetController.pagination.pageLastItem + 1}/#{timesheetController.pagination.itemsCount}"/>&nbsp;
                     <h:commandLink action="#{timesheetController.previous}" value="#{msgs.Previous} #{timesheetController.pagination.pageSize}" rendered="#{timesheetController.pagination.hasPreviousPage}"/>&nbsp;
                     <h:commandLink action="#{timesheetController.next}" value="#{msgs.Next} #{timesheetController.pagination.pageSize}" rendered="#{timesheetController.pagination.hasNextPage}"/>&nbsp;
-                    <p:dataTable value="#{timesheetController.items}" var="item" rowStyleClass="jsfcrud_odd_row,jsfcrud_even_row">
+                    <p:dataTable id="timesheetTable" 
+                                 value="#{timesheetController.items}"
+                                 selection="#{timesheetController.selectedItems}"
+                                 var="item" 
+                                 selectionMode="multiple"
+                                 rowKey="#{item.id}" 
+                                 rowStyleClass="jsfcrud_odd_row,jsfcrud_even_row">
                         <p:column style="text-align: left; width: 3%; padding: .25em; margin: 0;">
                             <f:facet name="header">
                                 <h:outputText value="#{msgs.id}"/>
@@ -44,7 +50,7 @@
                                 <h:outputText value="#{msgs.date}"/>
                             </f:facet>
                             <h:outputText value="#{item.date}">
-                                <f:convertDateTime pattern="MM/dd/yy" />
+                                <f:convertDateTime pattern="MM/dd/yyyy" />
                             </h:outputText>
                         </p:column>
                         <p:column style="width: auto; padding: .25em;">
@@ -87,10 +93,37 @@
                             <h:outputText value=" "/>
                             <h:commandLink action="#{timesheetController.destroy}" value="#{msgs.Delete}"/>
                         </p:column>
+                        <f:facet name="footer">
+                            <p:commandButton process="timesheetTable" update=":timesheetForm:multiItemDetail" 
+                                             icon="ui-icon-search" value="Create Invoice" action="#{timesheetController.prepareInvoice()}"
+                                             disabled="#{timesheetController.selectedItems.size()==0}"/>
+                        </f:facet>
                     </p:dataTable>
                 </h:panelGroup>
                 <br />
                 <p:commandButton action="#{timesheetController.prepareCreate}" value="#{msgs.New}" rendered="#{timesheetController.items.rowCount > 0}"/>
+                <p:dialog header="Selected Items" widgetVar="multiSelectDialog" 
+                          modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="800">
+                    <p:outputPanel id="multiItemDetail" style="text-align:center;">
+                        <p:dataTable value="#{timesheetController.selectedItems}" var="item">
+                            <p:column style="width:5%;">
+                                <h:outputText value="#{item.id}"/>
+                            </p:column>
+                            <p:column style="width:10%; text-align: left;">
+                                <h:outputText value="#{item.date}">
+                                    <f:convertDateTime pattern="MM/dd/yyyy" />
+                                </h:outputText>
+                            </p:column>
+                            <p:column style="width:75%; text-align: left;">
+                                <h:outputText value="#{item.description}"/>
+                            </p:column>
+                            <p:column style="width:5%;"><h:outputText value="#{item.hours}"/></p:column>
+                            <p:column style="width:5%;">
+                                <p:selectBooleanCheckbox value="#{item.posted}"/>
+                            </p:column>
+                        </p:dataTable>
+                    </p:outputPanel>
+                </p:dialog>
             </h:form>
         </ui:define>
     </ui:composition>

@@ -37,6 +37,10 @@ public class InvoiceController implements Serializable {
     public String Html() {
         return "/";
     }
+    
+    public void setCurrent(Invoice i) {
+        current=i;
+    }
     public Invoice getSelected() {
         if (current == null) {
             current = new Invoice();
@@ -98,6 +102,9 @@ public class InvoiceController implements Serializable {
     public String getCurrentInvoiceNumber() {
         //entityManager.createNamedQuery(Item.QUERY_ALL).getResultList();
         return "";
+    }
+    public String getNextInvoiceNumber() {
+        return getFacade().getNextInv();
     }
 
     public String create() {

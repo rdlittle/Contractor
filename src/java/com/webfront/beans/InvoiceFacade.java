@@ -84,7 +84,7 @@ public class InvoiceFacade extends AbstractFacade<Invoice> {
         Integer i = (Integer) query.getSingleResult()+1;
         return i.toString();
     }
-
+    
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public String getNextPeriod() {
         Query query = getEntityManager().createNamedQuery("SeqControl.findById", Integer.class);

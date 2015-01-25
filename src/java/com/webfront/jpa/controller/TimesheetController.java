@@ -5,8 +5,16 @@ import com.webfront.entity.Timesheet;
 import com.webfront.jpa.controller.util.JsfUtil;
 import com.webfront.jpa.controller.util.PaginationHelper;
 import java.io.Serializable;
-import java.util.Map;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.time.Period;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Locale;
 import java.util.ResourceBundle;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -14,9 +22,12 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import javax.persistence.Transient;
+import org.primefaces.component.selectonemenu.SelectOneMenu;
 
 @ManagedBean(name = "timesheetController")
 @SessionScoped
@@ -29,6 +40,17 @@ public class TimesheetController implements Serializable {
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private Integer clientId;
+    private List<Timesheet> selectedItems;
+
+    private Float totalHours;
+    private Float invoiceTotal;
+    private Float rate;
+    private Date invoiceDate;
+    private String clientName;
+
+    @Transient
+    private Period selectedPeriod;
+    private String junk;
 
     public TimesheetController() {
     }
@@ -87,6 +109,52 @@ public class TimesheetController implements Serializable {
         selectedItemIndex = -1;
         return "Create?faces-redirect=true";
     }
+
+    public String prepareInvoice() {
+        if (!selectedItems.isEmpty()) {
+            if(clientId!=null) {
+                setClientName(getFacade().getClientName(clientId));
+            }
+            Date d = getFacade().getPeriod();
+            Calendar cal = Calendar.getInstance(Locale.getDefault());
+            cal.setTime(d);
+            cal.add(Calendar.DAY_OF_YEAR, 1);
+            setInvoiceDate(cal.getTime());
+            setRate(getFacade().getRate());
+            setTotalHours(new Float(0.0));
+            setInvoiceTotal(new Float(0.0));
+            for (Timesheet ts : selectedItems) {
+                totalHours += ts.getHours();
+            }
+            setInvoiceTotal(totalHours * getRate());
+            return "/billing/invoice?faces-redirect=true";
+        }
+        return null;
+    }
+
+    public Period getSelectedPeriod() {
+        return selectedPeriod;
+    }
+
+    public void setSelectedPeriod(Period p) {
+        selectedPeriod = p;
+    }
+    
+    public void changePeriod(AjaxBehaviorEvent evt) {
+        try {
+            SelectOneMenu menu;
+            menu=(SelectOneMenu) evt.getSource();
+            String value = menu.getValue().toString();
+            DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT,Locale.getDefault());
+            Date d = df.parse(value);
+            Calendar cal = Calendar.getInstance(Locale.getDefault());
+            cal.setTime(d);
+            cal.add(Calendar.DAY_OF_YEAR, 1);
+            invoiceDate = cal.getTime();
+        } catch (ParseException ex) {
+            Logger.getLogger(TimesheetController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }    
 
     public String create() {
         try {
@@ -211,6 +279,92 @@ public class TimesheetController implements Serializable {
      */
     public void setClientId(Integer clientId) {
         this.clientId = clientId;
+    }
+
+    /**
+     * @return the selectedItems
+     */
+    public List<Timesheet> getSelectedItems() {
+        return selectedItems;
+    }
+
+    /**
+     * @param selectedItems the selectedItems to set
+     */
+    public void setSelectedItems(List<Timesheet> selectedItems) {
+        this.selectedItems = selectedItems;
+    }
+
+    public Float getTotalHours() {
+        return totalHours;
+    }
+    
+    public void setTotalHours(Float hours) {
+        totalHours = hours;
+    }
+
+    public Float getInvoiceTotal() {
+        return invoiceTotal;
+    }
+    
+    public void setInvoiceTotal(Float total) {
+        invoiceTotal = total;
+    }
+
+    /**
+     * @return the invoiceDate
+     */
+    public Date getInvoiceDate() {
+        return invoiceDate;
+    }
+
+    /**
+     * @param invoiceDate the invoiceDate to set
+     */
+    public void setInvoiceDate(Date invoiceDate) {
+        this.invoiceDate = invoiceDate;
+    }
+
+    /**
+     * @return the junk
+     */
+    public String getJunk() {
+        return junk;
+    }
+
+    /**
+     * @param junk the junk to set
+     */
+    public void setJunk(String junk) {
+        this.junk = junk;
+    }
+
+    /**
+     * @return the rate
+     */
+    public Float getRate() {
+        return rate;
+    }
+
+    /**
+     * @param rate the rate to set
+     */
+    public void setRate(Float rate) {
+        this.rate = rate;
+    }
+
+    /**
+     * @return the clientName
+     */
+    public String getClientName() {
+        return clientName;
+    }
+
+    /**
+     * @param clientName the clientName to set
+     */
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
     }
 
     @FacesConverter(forClass = Timesheet.class)

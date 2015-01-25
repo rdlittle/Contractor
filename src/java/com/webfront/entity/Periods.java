@@ -5,6 +5,7 @@
 package com.webfront.entity;
 
 import java.io.Serializable;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -16,7 +17,7 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "periods")
 @NamedQueries({
-    @NamedQuery(name = "Periods.findAll", query = "SELECT p FROM Periods p"),
+    @NamedQuery(name = "Periods.findAll", query = "SELECT p FROM Periods p ORDER BY p.endDate DESC"),
     @NamedQuery(name = "Periods.findById", query = "SELECT p FROM Periods p WHERE p.id = :id"),
     @NamedQuery(name = "Periods.findByStartDate", query = "SELECT p FROM Periods p WHERE p.startDate = :startDate"),
     @NamedQuery(name = "Periods.findByEndDate", query = "SELECT p FROM Periods p WHERE p.endDate = :endDate")})
@@ -73,7 +74,12 @@ public class Periods implements Serializable {
     public Date getEndDate() {
         return endDate;
     }
-
+    
+    public String asString(Date d, String f) {
+        SimpleDateFormat format = new SimpleDateFormat(f);
+        return format.format(d);
+    }
+    
     public void setEndDate(Date endDate) {
         this.endDate = endDate;
     }
@@ -100,7 +106,8 @@ public class Periods implements Serializable {
 
     @Override
     public String toString() {
-        return "com.webfront.beans.Periods[ id=" + id + " ]";
+        SimpleDateFormat format = new SimpleDateFormat("MM/dd/yyyy");
+        return format.format(this.endDate);
     }
     
 }

@@ -21,8 +21,8 @@
                     <h:outputLabel value="#{msgs.id}" for="id" rendered="false"/>
                     <h:inputText id="id" value="#{timesheetController.selected.id}" title="#{msgs.id}" required="false" requiredMessage="#{msgs.CreateTimesheetRequiredMessage_id}" rendered="false"/>
                     <h:outputLabel value="#{msgs.date}" for="date" />
-                    <p:calendar id="date" value="#{timesheetController.selected.date}" mode="popup" showOn="button" title="#{msgs.date}" >
-                        <f:convertDateTime pattern="MM/dd/yy" />
+                    <p:calendar id="date" pattern="MM/dd/yyyy" value="#{timesheetController.selected.date}" mode="popup" showOn="button" title="#{msgs.date}" >
+                        <f:convertDateTime pattern="MM/dd/yyyy" />
                     </p:calendar>
                     <h:outputLabel value="#{msgs.description}" for="description" />
                     <h:inputText id="description" value="#{timesheetController.selected.description}" title="#{msgs.description}" size="100"/>

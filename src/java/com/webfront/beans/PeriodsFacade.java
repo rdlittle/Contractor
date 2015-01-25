@@ -33,15 +33,27 @@ public class PeriodsFacade extends AbstractFacade<Periods> {
         CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
         CriteriaQuery<Periods> criteriaQuery = criteriaBuilder.createQuery(Periods.class);
         Root<Periods> from=criteriaQuery.from(Periods.class);
-        criteriaQuery.orderBy(criteriaBuilder.desc(from.get("id")));
+        criteriaQuery.orderBy(criteriaBuilder.desc(from.get("endDate")));
         Query query=getEntityManager().createQuery(criteriaQuery);
         query.setMaxResults(range[1]-range[0]);
         query.setFirstResult(range[0]);
         List<Periods> list=query.getResultList();
         return list;
     }
+        
     public PeriodsFacade() {
         super(Periods.class);
+    }
+    
+    public Periods getNextPeriod() {
+        CriteriaBuilder criteriaBuilder = getEntityManager().getCriteriaBuilder();
+        CriteriaQuery<Periods> criteriaQuery = criteriaBuilder.createQuery(Periods.class);
+        Root<Periods> from=criteriaQuery.from(Periods.class);
+        criteriaQuery.orderBy(criteriaBuilder.desc(from.get("endDate")));
+        Query query=getEntityManager().createQuery(criteriaQuery);
+        query.setMaxResults(1);
+        query.setFirstResult(0);
+        return (Periods)query.getSingleResult();
     }
     
 }

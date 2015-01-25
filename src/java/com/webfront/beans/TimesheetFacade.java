@@ -4,7 +4,9 @@
  */
 package com.webfront.beans;
 
+import com.webfront.entity.Client;
 import com.webfront.entity.Timesheet;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
@@ -56,11 +58,40 @@ public class TimesheetFacade extends AbstractFacade<Timesheet> {
     }
     
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public String getClientName(Integer id) {
+        Query query=getEntityManager().createNamedQuery("Client.findById",Client.class);
+        query.setParameter("id",id);
+        Client c = (Client) query.getSingleResult();
+        return c.getName();
+    }
+    
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public String getNextInv() {
         Query query=getEntityManager().createNamedQuery("SeqControl.findById",Integer.class);
         query.setParameter("id", "NEXT_INV");
         Integer i=(Integer)query.getSingleResult();
         return i.toString();
+    }
+    
+    
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public Date getPeriod() {
+        String sql = "select p.end_date from periods p order by p.id desc limit 0,1";
+        Query query = getEntityManager().createNativeQuery(sql);
+        Date d = (Date) query.getSingleResult();
+        return d;
+    }
+    
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public Float getRate() {
+        Map<String, String> map;
+        map = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
+        String value = map.get("timesheetForm:clientSelector");
+        Integer clientId = Integer.parseInt(value);
+        String sql = "select r.rate from rates r inner join client c on r.id = c.rate where c.id = "+clientId;
+        Query query = getEntityManager().createNativeQuery(sql);
+        Float rate = (Float)query.getSingleResult();
+        return rate;
     }
     
     public TimesheetFacade() {

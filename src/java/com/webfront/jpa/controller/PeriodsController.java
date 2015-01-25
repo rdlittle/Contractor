@@ -5,6 +5,10 @@ import com.webfront.entity.Periods;
 import com.webfront.jpa.controller.util.JsfUtil;
 import com.webfront.jpa.controller.util.PaginationHelper;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -13,6 +17,7 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
@@ -30,7 +35,7 @@ public class PeriodsController implements Serializable {
 
     public PeriodsController() {
     }
-
+    
     public Periods getSelected() {
         if (current == null) {
             current = new Periods();
@@ -158,6 +163,20 @@ public class PeriodsController implements Serializable {
         }
         return items;
     }
+    
+    public ArrayList<Periods> getItemsAsArrayList() {
+        ArrayList<Periods> newList = new ArrayList<>();
+        newList.addAll((List<Periods>)getItems().getWrappedData());
+        newList.sort(new Comparator<Periods>() {
+            @Override
+            public int compare(Periods p1, Periods p2) {
+                  Date d1 = p1.getEndDate();
+                  Date d2 = p2.getEndDate();
+                  return d2.compareTo(d1);
+            }
+        });  
+        return newList;
+    }
 
     private void recreateModel() {
         items = null;
@@ -179,11 +198,16 @@ public class PeriodsController implements Serializable {
         return "List";
     }
 
+    public void changePeriod(final AjaxBehaviorEvent evt) {
+        System.out.println(evt.getSource().toString());
+    }
+    
     public SelectItem[] getItemsAvailableSelectMany() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
+        SelectItem[] itemList = JsfUtil.getSelectItems(ejbFacade.findAll(), true);
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
