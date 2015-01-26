@@ -113,7 +113,7 @@ public class InvoiceController implements Serializable {
             getFacade().setNextInv(Integer.parseInt(current.getInvoice()));
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Messages").getString("Created"));
             Double serial=Math.random();
-            return "List?faces-redirect=true"+"&serial="+serial.toString();
+            return "/invoices/List?faces-redirect=true"+"&serial="+serial.toString();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Messages").getString("PersistenceError"));
             return null;

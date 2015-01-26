@@ -10,10 +10,6 @@
 
         <ui:composition template="./../layout.xhtml">
 
-            <ui:define name="windowTitle">
-                Billing
-            </ui:define>
-
             <ui:define name="content">
                 <p:dataTable value="#{timesheetController.selectedItems}" var="item">
                     <p:column style="text-align: left; width: 3%; padding: .25em; margin: 0;">
@@ -70,10 +66,11 @@
 
                         <p:row>
                             <p:column>
-                                <h:outputLabel value="#{msgs.amount}" for="amount" />
+                                <h:outputLabel value="#{msgs.amount}" for="invAmount" />
                             </p:column>
                             <p:column>
-                                <h:inputText id="amount" value="#{timesheetController.invoiceTotal}" title="#{msgs.amount}" style="text-align: right;">
+                                <h:inputText id="invAmount" value="#{timesheetController.invoiceTotal}" 
+                                             title="#{msgs.amount}" style="text-align: right;">
                                     <f:convertNumber minFractionDigits="2"/>
                                 </h:inputText>
                             </p:column>
@@ -134,6 +131,7 @@
                         </p:row>
 
                     </p:panelGrid>
+                    <p:messages id="messages" showDetail="true" autoUpdate="true" closable="true" />
                 </h:form>
 
             </ui:define>

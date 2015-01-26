@@ -56,7 +56,7 @@ public class BillingController {
             
             String invoiceNum = getInvoiceFacade().getNextInv();
             String invoiceDate = requestMap.get("invoiceForm:invDate_input");
-            String amount = requestMap.get(":invoiceForm:amount");
+            String amount = requestMap.get("invoiceForm:invAmount");
             Periods period = getPeriodsFacade().getNextPeriod();
             
             DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
@@ -78,6 +78,7 @@ public class BillingController {
             invoice.setPeriodNum(period.getId().toString());
             
             getInvoiceFacade().create(invoice);
+            getInvoiceFacade().setNextInv(Integer.parseInt(invoice.getInvoice()));
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Messages").getString("Created"));
             Double serial=Math.random();
             return "List?faces-redirect=true"+"&serial="+serial.toString();

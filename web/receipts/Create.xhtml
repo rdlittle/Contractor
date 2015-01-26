@@ -3,7 +3,6 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
     <ui:composition template="/layout.xhtml">
@@ -21,8 +20,7 @@
                     <h:outputLabel value="#{msgs.id}" for="id" rendered="false" />
                     <h:inputText id="id" value="#{receiptsController.selected.id}" title="#{msgs.id}" rendered="false"/>
                     <h:outputLabel value="#{msgs.recdDate}" for="recdDate" />
-                    <p:calendar id="recdDate" value="#{receiptsController.selected.recdDate}" title="#{msgs.recdDate}" >
-                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    <p:calendar id="recdDate" pattern="MM/dd/yyyy" value="#{receiptsController.selected.recdDate}" title="#{msgs.recdDate}" >
                     </p:calendar>
                     <h:outputLabel value="#{msgs.checkNum}" for="checkNum" />
                     <h:inputText id="checkNum" value="#{receiptsController.selected.checkNum}" title="#{msgs.checkNum}" />

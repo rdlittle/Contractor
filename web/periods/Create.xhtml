@@ -21,12 +21,10 @@
                     <h:outputLabel value="#{msgs.id}" for="id" rendered="false" />
                     <h:inputText id="id" value="#{periodsController.selected.id}" title="#{msgs.id}" rendered="false"/>
                     <h:outputLabel value="#{msgs.startDate}" for="startDate" />
-                    <p:calendar id="startDate" value="#{periodsController.selected.startDate}" title="#{msgs.startDate}">
-                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    <p:calendar id="startDate" pattern="MM/dd/yyyy" value="#{periodsController.selected.startDate}" title="#{msgs.startDate}">
                     </p:calendar>
                     <h:outputLabel value="#{msgs.endDate}" for="endDate" />
-                    <p:calendar id="endDate" value="#{periodsController.selected.endDate}" title="#{msgs.endDate}">
-                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                    <p:calendar id="endDate" pattern="MM/dd/yyyy" value="#{periodsController.selected.endDate}" title="#{msgs.endDate}">
                     </p:calendar>
                 </p:panelGrid>
                 <br />
