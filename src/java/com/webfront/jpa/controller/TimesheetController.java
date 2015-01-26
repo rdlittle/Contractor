@@ -1,6 +1,7 @@
 package com.webfront.jpa.controller;
 
 import com.webfront.beans.TimesheetFacade;
+import com.webfront.entity.Periods;
 import com.webfront.entity.Timesheet;
 import com.webfront.jpa.controller.util.JsfUtil;
 import com.webfront.jpa.controller.util.PaginationHelper;
@@ -49,7 +50,7 @@ public class TimesheetController implements Serializable {
     private String clientName;
 
     @Transient
-    private Period selectedPeriod;
+    private Periods selectedPeriod;
     private String junk;
 
     public TimesheetController() {
@@ -132,11 +133,11 @@ public class TimesheetController implements Serializable {
         return null;
     }
 
-    public Period getSelectedPeriod() {
+    public Periods getSelectedPeriod() {
         return selectedPeriod;
     }
 
-    public void setSelectedPeriod(Period p) {
+    public void setSelectedPeriods(Periods p) {
         selectedPeriod = p;
     }
     
