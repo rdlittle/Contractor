@@ -8,7 +8,6 @@ import com.webfront.jpa.controller.util.PaginationHelper;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.time.Period;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -17,6 +16,7 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
+import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -29,6 +29,8 @@ import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
 import javax.persistence.Transient;
 import org.primefaces.component.selectonemenu.SelectOneMenu;
+import org.primefaces.event.SelectEvent;
+import org.primefaces.event.UnselectEvent;
 
 @ManagedBean(name = "timesheetController")
 @SessionScoped
@@ -113,7 +115,7 @@ public class TimesheetController implements Serializable {
 
     public String prepareInvoice() {
         if (!selectedItems.isEmpty()) {
-            if(clientId!=null) {
+            if (clientId != null) {
                 setClientName(getFacade().getClientName(clientId));
             }
             Date d = getFacade().getPeriod();
@@ -140,13 +142,13 @@ public class TimesheetController implements Serializable {
     public void setSelectedPeriods(Periods p) {
         selectedPeriod = p;
     }
-    
+
     public void changePeriod(AjaxBehaviorEvent evt) {
         try {
             SelectOneMenu menu;
-            menu=(SelectOneMenu) evt.getSource();
+            menu = (SelectOneMenu) evt.getSource();
             String value = menu.getValue().toString();
-            DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT,Locale.getDefault());
+            DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
             Date d = df.parse(value);
             Calendar cal = Calendar.getInstance(Locale.getDefault());
             cal.setTime(d);
@@ -155,7 +157,7 @@ public class TimesheetController implements Serializable {
         } catch (ParseException ex) {
             Logger.getLogger(TimesheetController.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }    
+    }
 
     public String create() {
         try {
@@ -299,7 +301,7 @@ public class TimesheetController implements Serializable {
     public Float getTotalHours() {
         return totalHours;
     }
-    
+
     public void setTotalHours(Float hours) {
         totalHours = hours;
     }
@@ -307,7 +309,7 @@ public class TimesheetController implements Serializable {
     public Float getInvoiceTotal() {
         return invoiceTotal;
     }
-    
+
     public void setInvoiceTotal(Float total) {
         invoiceTotal = total;
     }
@@ -366,6 +368,14 @@ public class TimesheetController implements Serializable {
      */
     public void setClientName(String clientName) {
         this.clientName = clientName;
+    }
+
+    public void onRowSelect(SelectEvent event) {
+ 
+    }
+
+    public void onRowUnselect(UnselectEvent event) {
+ 
     }
 
     @FacesConverter(forClass = Timesheet.class)

@@ -41,9 +41,9 @@
                 </p:dataTable>
 
                 <h:form id="invoiceForm">
-                    <p:panelGrid style="float: right; width: 25%; text-align: right;">
+                    <p:panelGrid style="float: right; width: 25%; text-align: right; vertical-align: middle;">
                         <p:row>
-                            <p:column>
+                            <p:column style="vertical-align: middle;">
                                 <h:outputLabel value ="Total hours" style="text-align: right;"/>
                             </p:column>
                             <p:column>
@@ -54,7 +54,7 @@
                         </p:row>
 
                         <p:row>
-                            <p:column>
+                            <p:column style="vertical-align: middle;">
                                 <h:outputLabel value="#{msgs.rate}" for="rate" />
                             </p:column>
                             <p:column>
@@ -65,7 +65,7 @@
                         </p:row>                          
 
                         <p:row>
-                            <p:column>
+                            <p:column style="vertical-align: middle;">
                                 <h:outputLabel value="#{msgs.amount}" for="invAmount" />
                             </p:column>
                             <p:column>
@@ -77,24 +77,38 @@
                         </p:row>                        
 
                         <p:row>
-                            <p:column>
-                                <h:outputLabel value="Period ending" for="periodSelector" rendered="true"/>
+                            <p:column style="vertical-align: middle;">
+                                <h:outputLabel value="Billing Period" for="periodSelector" rendered="true"/>
                             </p:column>
                             <p:column>
-                                <h:outputLabel value="New" style="vertical-align: center"/>
-                                <p:selectOneMenu id="periodSelector" value="#{timesheetController.junk}">
-                                    <p:ajax event="valueChange" listener="#{timesheetController.changePeriod}" update="invDate"/>
-                                    <f:selectItems value="#{periodsController.itemsAsArrayList}" 
-                                                   var = "pItem"
-                                                   itemLabel='#{pItem.asString(pItem.endDate, "MM/dd/yyyy")}'
-                                                   itemValue="#{pItem}">
-                                    </f:selectItems>
-                                </p:selectOneMenu>
+                                <p:panelGrid>
+                                    <p:row>
+                                        <p:column>
+                                            <p:selectOneMenu id="periodSelector" value="#{timesheetController.junk}">
+                                                <p:ajax event="valueChange" listener="#{timesheetController.changePeriod}" 
+                                                        update=":invoiceForm:invDate"/>
+                                                <f:selectItems value="#{periodsController.itemsAsArrayList}" 
+                                                               var = "pItem"
+                                                               itemLabel='#{pItem.asString(pItem.endDate, "MM/dd/yyyy")}'
+                                                               itemValue="#{pItem}">
+                                                </f:selectItems>
+                                            </p:selectOneMenu>
+                                        </p:column>
+                                    </p:row>
+                                    <p:row>
+                                        <p:column>
+                                            <p:commandButton value="New period" icon="ui-icon-extlink" actionListener="#{periodsController.newPeriod}">
+                                                <p:ajax event="dialogReturn" listener="#{periodsController.onPeriodCreated}" 
+                                                        update=":invoiceForm"/>
+                                            </p:commandButton>
+                                        </p:column>
+                                    </p:row>
+                                </p:panelGrid>
                             </p:column>
                         </p:row>
 
                         <p:row>
-                            <p:column>
+                            <p:column style="vertical-align: middle;">
                                 <h:outputLabel value="#{msgs.invDate}" for="invDate" />
                             </p:column>
                             <p:column>
@@ -105,7 +119,7 @@
                         </p:row>
 
                         <p:row>
-                            <p:column>
+                            <p:column style="vertical-align: middle;">
                                 <h:outputLabel value="#{msgs.invoice}" for="invNum" rendered="true" />
                             </p:column>
                             <p:column>
@@ -115,14 +129,14 @@
                         </p:row>
 
                         <p:row>
-                            <p:column>
+                            <p:column style="vertical-align: middle;">
                                 <h:outputLabel value="#{msgs.client}" for="client" />
                             </p:column>
                             <p:column>
                                 <h:inputText id="client" value="#{timesheetController.clientName}" title="#{msgs.client}" style="text-align: right;"/>
                             </p:column>
                         </p:row>  
-                        
+
                         <p:row>
                             <p:column/>
                             <p:column>

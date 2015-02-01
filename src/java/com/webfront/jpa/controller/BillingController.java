@@ -59,6 +59,7 @@ public class BillingController {
             String amount = requestMap.get("invoiceForm:invAmount");
             Periods period = getPeriodsFacade().getNextPeriod();
             
+            amount = amount.replaceAll(",", "");
             DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
             Date d = df.parse(invoiceDate);
             

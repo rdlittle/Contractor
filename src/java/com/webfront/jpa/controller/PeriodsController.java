@@ -8,7 +8,9 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -17,16 +19,20 @@ import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.AjaxBehaviorEvent;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
+import org.primefaces.context.RequestContext;
+import org.primefaces.event.SelectEvent;
 
 @ManagedBean(name = "periodsController")
 @SessionScoped
 public class PeriodsController implements Serializable {
 
     private Periods current;
+    private Periods newPeriod;
     private DataModel items = null;
     @EJB
     private com.webfront.beans.PeriodsFacade ejbFacade;
@@ -35,7 +41,7 @@ public class PeriodsController implements Serializable {
 
     public PeriodsController() {
     }
-    
+
     public Periods getSelected() {
         if (current == null) {
             current = new Periods();
@@ -92,6 +98,40 @@ public class PeriodsController implements Serializable {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Messages").getString("PersistenceError"));
             return null;
         }
+    }
+
+    public void newPeriod() {
+        RequestContext r = RequestContext.getCurrentInstance();
+        Map<String,Object> params=new HashMap<>();
+        params.put("model", true);
+        params.put("contentWidth",400);
+        params.put("contentHeight", 300);
+        r.openDialog("newPeriod",params,null);
+        setNewPeriod(new Periods());
+    }
+
+    public void selectNewPeriodFromDialog(Periods p) {
+        RequestContext.getCurrentInstance().closeDialog(null);
+    }
+    
+    public void closeDialog() {
+        RequestContext.getCurrentInstance().closeDialog(null);
+        newPeriod = null;
+    }
+
+    public void onPeriodCreated(SelectEvent evt) {
+        if (newPeriod != null) {
+            current = newPeriod;
+            getFacade().create(current);
+            current = new Periods();
+            recreateModel();
+        }
+    }
+
+    public void createNew(ActionEvent evt) {
+        getFacade().create(current);
+        current = new Periods();
+        recreateModel();
     }
 
     public String prepareEdit() {
@@ -163,18 +203,18 @@ public class PeriodsController implements Serializable {
         }
         return items;
     }
-    
+
     public ArrayList<Periods> getItemsAsArrayList() {
         ArrayList<Periods> newList = new ArrayList<>();
-        newList.addAll((List<Periods>)getItems().getWrappedData());
+        newList.addAll((List<Periods>) getItems().getWrappedData());
         newList.sort(new Comparator<Periods>() {
             @Override
             public int compare(Periods p1, Periods p2) {
-                  Date d1 = p1.getEndDate();
-                  Date d2 = p2.getEndDate();
-                  return d2.compareTo(d1);
+                Date d1 = p1.getEndDate();
+                Date d2 = p2.getEndDate();
+                return d2.compareTo(d1);
             }
-        });  
+        });
         return newList;
     }
 
@@ -201,7 +241,7 @@ public class PeriodsController implements Serializable {
     public void changePeriod(final AjaxBehaviorEvent evt) {
         System.out.println(evt.getSource().toString());
     }
-    
+
     public SelectItem[] getItemsAvailableSelectMany() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
     }
@@ -209,6 +249,20 @@ public class PeriodsController implements Serializable {
     public SelectItem[] getItemsAvailableSelectOne() {
         SelectItem[] itemList = JsfUtil.getSelectItems(ejbFacade.findAll(), true);
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+    }
+
+    /**
+     * @return the newPeriod
+     */
+    public Periods getNewPeriod() {
+        return newPeriod;
+    }
+
+    /**
+     * @param newPeriod the newPeriod to set
+     */
+    public void setNewPeriod(Periods newPeriod) {
+        this.newPeriod = newPeriod;
     }
 
     @FacesConverter(forClass = Periods.class)

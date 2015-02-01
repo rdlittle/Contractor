@@ -17,7 +17,6 @@
                 <h:panelGroup id="messagePanel" layout="block">
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
-
                 <h:outputLabel for="clientSelector" value="Select Client: "/>
                 <h:selectOneMenu id="clientSelector" value="#{timesheetController.clientId}"
                                  onchange="submit()" 
@@ -39,6 +38,8 @@
                                  selectionMode="multiple"
                                  rowKey="#{item.id}" 
                                  rowStyleClass="jsfcrud_odd_row,jsfcrud_even_row">
+                        <p:ajax event="rowSelect" listener="#{timesheetController.onRowSelect}" update=":timesheetForm" />
+                        <p:ajax event="rowUnselect" listener="#{timesheetController.onRowUnselect}" update=":timesheetForm" />
                         <p:column style="text-align: left; width: 3%; padding: .25em; margin: 0;">
                             <f:facet name="header">
                                 <h:outputText value="#{msgs.id}"/>
@@ -94,36 +95,17 @@
                             <h:commandLink action="#{timesheetController.destroy}" value="#{msgs.Delete}"/>
                         </p:column>
                         <f:facet name="footer">
-                            <p:commandButton process="timesheetTable" update=":timesheetForm:multiItemDetail" 
-                                             icon="ui-icon-search" value="Create Invoice" action="#{timesheetController.prepareInvoice()}"
+                            <p:commandButton id="previewButton" 
+                                             process="timesheetTable" 
+                                             icon="ui-icon-search" value="Preview Invoice" 
+                                             action="#{timesheetController.prepareInvoice()}"
                                              disabled="#{timesheetController.selectedItems.size()==0}"/>
                         </f:facet>
                     </p:dataTable>
                 </h:panelGroup>
                 <br />
                 <p:commandButton action="#{timesheetController.prepareCreate}" value="#{msgs.New}" rendered="#{timesheetController.items.rowCount > 0}"/>
-                <p:dialog header="Selected Items" widgetVar="multiSelectDialog" 
-                          modal="true" showEffect="fade" hideEffect="fade" resizable="false" width="800">
-                    <p:outputPanel id="multiItemDetail" style="text-align:center;">
-                        <p:dataTable value="#{timesheetController.selectedItems}" var="item">
-                            <p:column style="width:5%;">
-                                <h:outputText value="#{item.id}"/>
-                            </p:column>
-                            <p:column style="width:10%; text-align: left;">
-                                <h:outputText value="#{item.date}">
-                                    <f:convertDateTime pattern="MM/dd/yyyy" />
-                                </h:outputText>
-                            </p:column>
-                            <p:column style="width:75%; text-align: left;">
-                                <h:outputText value="#{item.description}"/>
-                            </p:column>
-                            <p:column style="width:5%;"><h:outputText value="#{item.hours}"/></p:column>
-                            <p:column style="width:5%;">
-                                <p:selectBooleanCheckbox value="#{item.posted}"/>
-                            </p:column>
-                        </p:dataTable>
-                    </p:outputPanel>
-                </p:dialog>
+                
             </h:form>
         </ui:define>
     </ui:composition>

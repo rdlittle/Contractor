@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui">
+
+    <h:head>
+        <title>Billing Period</title>
+        <style type="text/css">
+            .ui-widget {
+                font-size: 90%;
+            }
+        </style>
+    </h:head>
+
+    <h:body>
+        <h:form>
+            <p:panelGrid columns="2" columnClasses="leftCol,rightCol" style="margin-top: 2em;">
+                <h:outputLabel value="#{msgs.startDate}" for="startDate" />
+                <p:calendar id="startDate" pattern="MM/dd/yyyy" value="#{periodsController.newPeriod.startDate}" title="#{msgs.startDate}">
+                </p:calendar>
+                <h:outputLabel value="#{msgs.endDate}" for="endDate" />
+                <p:calendar id="endDate" pattern="MM/dd/yyyy" value="#{periodsController.newPeriod.endDate}" title="#{msgs.endDate}">
+                </p:calendar>
+            </p:panelGrid>
+            <br />
+            <p:commandButton value="Cancel" actionListener="#{periodsController.closeDialog}"
+                             style="float: right;"/>            
+            <p:commandButton value="OK" actionListener="#{periodsController.selectNewPeriodFromDialog(null)}"
+                             style="float: right;"/>
+        </h:form>
+    </h:body>
+
+</html>

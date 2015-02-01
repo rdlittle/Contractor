@@ -2,38 +2,38 @@
 <Scene Scope="Project" version="2">
     <Scope Scope="Faces Configuration Only"/>
     <Scope Scope="Project">
-        <Node id="client/List.xhtml" x="650" y="300" zoom="true"/>
-        <Node id="invoices/View.xhtml" x="1150" y="450" zoom="true"/>
-        <Node id="template.xhtml" x="150" y="1050" zoom="true"/>
         <Node id="periods/List.xhtml" x="650" y="150" zoom="true"/>
-        <Node id="leftNav.xhtml" x="400" y="600" zoom="true"/>
-        <Node id="periods/Edit.xhtml" x="1150" y="300" zoom="true"/>
+        <Node id="invoices/View.xhtml" x="1150" y="450" zoom="true"/>
+        <Node id="company/Edit.xhtml" x="150" y="300" zoom="true"/>
         <Node id="periods/View.xhtml" x="1150" y="150" zoom="true"/>
-        <Node id="sequence/List.xhtml" x="1900" y="150" zoom="true"/>
-        <Node id="receipts/List.xhtml" x="900" y="300" zoom="true"/>
-        <Node id="client/Edit.xhtml" x="150" y="900" zoom="true"/>
-        <Node id="sequence/Edit.xhtml" x="1400" y="450" zoom="true"/>
-        <Node id="sequence/View.xhtml" x="1650" y="300" zoom="true"/>
-        <Node id="invoices/Edit.xhtml" x="1400" y="300" zoom="true"/>
-        <Node id="company/Create.xhtml" x="400" y="450" zoom="true"/>
-        <Node id="receipts/View.xhtml" x="650" y="600" zoom="true"/>
-        <Node id="invoices/List.xhtml" x="150" y="600" zoom="true"/>
-        <Node id="layout.xhtml" x="150" y="150" zoom="true"/>
-        <Node id="client/Create.xhtml" x="400" y="900" zoom="true"/>
+        <Node id="leftNav.xhtml" x="400" y="600" zoom="true"/>
         <Node id="receipts/Create.xhtml" x="650" y="450" zoom="true"/>
+        <Node id="client/List.xhtml" x="650" y="300" zoom="true"/>
+        <Node id="periods/Edit.xhtml" x="1150" y="300" zoom="true"/>
+        <Node id="invoices/Create.xhtml" x="141" y="451" zoom="true"/>
+        <Node id="company/View.xhtml" x="1400" y="150" zoom="true"/>
+        <Node id="client/View.xhtml" x="400" y="300" zoom="true"/>
+        <Node id="company/Create.xhtml" x="400" y="450" zoom="true"/>
+        <Node id="template.xhtml" x="150" y="1050" zoom="true"/>
+        <Node id="company/List.xhtml" x="150" y="750" zoom="true"/>
+        <Node id="layout.xhtml" x="150" y="150" zoom="true"/>
+        <Node id="timesheet/Create.xhtml" x="650" y="750" zoom="true"/>
+        <Node id="periods/Create.xhtml" x="900" y="150" zoom="true"/>
+        <Node id="client/Edit.xhtml" x="150" y="900" zoom="true"/>
+        <Node id="timesheet/View.xhtml" x="1650" y="150" zoom="true"/>
+        <Node id="index.xhtml" x="400" y="150" zoom="true"/>
+        <Node id="timesheet/List.xhtml" x="900" y="600" zoom="true"/>
         <Node id="receipts/Edit.xhtml" x="400" y="750" zoom="true"/>
         <Node id="timesheet/Edit.xhtml" x="900" y="450" zoom="true"/>
         <Node id="sequence/Create.xhtml" x="1150" y="600" zoom="true"/>
-        <Node id="index.xhtml" x="400" y="150" zoom="true"/>
-        <Node id="timesheet/List.xhtml" x="900" y="600" zoom="true"/>
-        <Node id="timesheet/View.xhtml" x="1650" y="150" zoom="true"/>
-        <Node id="company/Edit.xhtml" x="150" y="300" zoom="true"/>
-        <Node id="timesheet/Create.xhtml" x="650" y="750" zoom="true"/>
-        <Node id="company/View.xhtml" x="1400" y="150" zoom="true"/>
-        <Node id="client/View.xhtml" x="400" y="300" zoom="true"/>
-        <Node id="company/List.xhtml" x="150" y="750" zoom="true"/>
-        <Node id="invoices/Create.xhtml" x="141" y="451" zoom="true"/>
-        <Node id="periods/Create.xhtml" x="900" y="150" zoom="true"/>
+        <Node id="receipts/View.xhtml" x="650" y="600" zoom="true"/>
+        <Node id="invoices/Edit.xhtml" x="1400" y="300" zoom="true"/>
+        <Node id="sequence/Edit.xhtml" x="1400" y="450" zoom="true"/>
+        <Node id="client/Create.xhtml" x="400" y="900" zoom="true"/>
+        <Node id="sequence/View.xhtml" x="1650" y="300" zoom="true"/>
+        <Node id="receipts/List.xhtml" x="900" y="300" zoom="true"/>
+        <Node id="sequence/List.xhtml" x="1900" y="150" zoom="true"/>
+        <Node id="invoices/List.xhtml" x="150" y="600" zoom="true"/>
     </Scope>
     <Scope Scope="All Faces Configurations"/>
 </Scene>
