@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Invoice" pageWidth="572" pageHeight="752" columnWidth="534" leftMargin="19" rightMargin="19" topMargin="19" bottomMargin="19" uuid="a2d74615-0417-4336-aace-c5d49a25f5ee">
+	<property name="ireport.zoom" value="1.5"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="48"/>
+	<parameter name="invNum" class="java.lang.String">
+		<defaultValueExpression><![CDATA[38]]></defaultValueExpression>
+	</parameter>
+	<parameter name="clientId" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select cl.name,cl.address1,concat(concat(concat(cl.city,", "),cl.state),"   ",cl.zip) cityStZip, cl.attn, (select DATE_FORMAT((select date_add(p.end_date,interval 1 day) from periods p inner join invoices i on p.id = i.period_num where i.invoice = $P{invNum}),'%c/%d/%y')) as invoiceDate,(select email from company co where co.companyId = 1) email, s.nextSeq -1 from client cl, seqcontrol s where cl.id = $P{clientId} and s.id = "NEXT_INV" ;]]>
+	</queryString>
+	<field name="name" class="java.lang.String"/>
+	<field name="address1" class="java.lang.String"/>
+	<field name="cityStZip" class="java.lang.String"/>
+	<field name="attn" class="java.lang.String"/>
+	<field name="invoiceDate" class="java.lang.String"/>
+	<field name="email" class="java.lang.String"/>
+	<field name="s.nextSeq -1" class="java.lang.Long"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="79" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="534" height="79" uuid="8d253a4d-684a-46af-8996-681c000059a1"/>
+				<subreportParameter name="INV_NUM">
+					<subreportParameterExpression><![CDATA[$P{invNum}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Invoice_companyHeader.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</title>
+	<pageHeader>
+		<band height="101" splitType="Stretch">
+			<textField>
+				<reportElement x="100" y="30" width="100" height="15" uuid="e87c1daf-85c7-49ea-8456-735e920474d1"/>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="45" width="234" height="15" uuid="930576db-24b5-44e8-bc59-aeb20776c9a9"/>
+				<textFieldExpression><![CDATA[$F{address1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="100" y="75" width="234" height="15" uuid="26939382-8c24-4aad-b2c4-a137cffbd1e2"/>
+				<textFieldExpression><![CDATA[$F{attn}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="0" y="30" width="100" height="15" uuid="c33d1b06-73ec-4f49-8b73-aa4b865a2b7e"/>
+				<text><![CDATA[Bill To]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="45" width="100" height="15" uuid="5049cd5f-cfd4-4be5-8f53-d35abc2db258"/>
+				<text><![CDATA[Address]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="60" width="100" height="15" uuid="5d33dd93-4abc-411e-81d9-f0a1c20cb0be"/>
+				<text><![CDATA[City]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="75" width="100" height="15" uuid="682c002b-0de1-45ad-8e4f-c2c5fdb77361"/>
+				<text><![CDATA[Attention]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="100" width="534" height="1" uuid="0e04f6fd-4b9d-427a-8be3-52e634f0314d"/>
+			</line>
+			<line>
+				<reportElement x="0" y="-1" width="534" height="1" uuid="5e47a596-29e2-43ae-b13f-86a828cab533"/>
+			</line>
+			<textField>
+				<reportElement x="100" y="60" width="234" height="15" uuid="175d6c15-9201-455e-b12b-4872530fdc4d"/>
+				<textFieldExpression><![CDATA[$F{cityStZip}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="434" y="53" width="100" height="15" uuid="e033be3f-5b3a-45bf-a4f0-7a31a4e6c539"/>
+				<textFieldExpression><![CDATA[$P{invNum}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="363" y="53" width="66" height="15" uuid="2c50eb21-c560-4a08-be08-27bb62a6f1e6"/>
+				<text><![CDATA[Invoice #]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="363" y="38" width="66" height="15" uuid="df9455f9-7ecf-4204-9733-038df27bc54c"/>
+				<text><![CDATA[Invoice Date]]></text>
+			</staticText>
+			<rectangle>
+				<reportElement mode="Opaque" x="0" y="1" width="534" height="19" forecolor="#CCFFCC" backcolor="#CCFFCC" uuid="a1d5c64e-0f2e-4852-95fd-7c6e01f81780"/>
+			</rectangle>
+			<textField pattern="MM/dd/yyyy">
+				<reportElement x="434" y="38" width="100" height="15" uuid="d5da605b-f4bb-4353-8042-e68e9eacfe14"/>
+				<textFieldExpression><![CDATA[$F{invoiceDate}]]></textFieldExpression>
+			</textField>
+		</band>
+	</pageHeader>
+	<detail>
+		<band height="104" splitType="Stretch">
+			<subreport>
+				<reportElement x="0" y="0" width="534" height="104" uuid="438bf92c-8153-4fa7-b04a-3ff03d5b8cb6"/>
+				<subreportParameter name="invNum">
+					<subreportParameterExpression><![CDATA[$P{invNum}]]></subreportParameterExpression>
+				</subreportParameter>
+				<connectionExpression><![CDATA[$P{REPORT_CONNECTION}]]></connectionExpression>
+				<subreportExpression><![CDATA["Invoice_timesheet.jasper"]]></subreportExpression>
+			</subreport>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="54" splitType="Stretch">
+			<textField>
+				<reportElement x="128" y="34" width="279" height="20" uuid="708fd2f4-796b-4dcd-9fc0-d7b05c19690b"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{email}]]></textFieldExpression>
+			</textField>
+			<staticText>
+				<reportElement x="217" y="14" width="100" height="20" uuid="62b9b72d-ba8e-47c6-a5e0-93470505d2a1"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="14"/>
+				</textElement>
+				<text><![CDATA[Thank You]]></text>
+			</staticText>
+		</band>
+	</pageFooter>
+</jasperReport>

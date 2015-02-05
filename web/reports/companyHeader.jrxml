@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="companyHeader" pageWidth="572" pageHeight="752" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="4a9a54a9-9db0-4c47-862f-be426eed08a0">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<style name="padLeft">
+		<box leftPadding="5"/>
+	</style>
+	<style name="padRight">
+		<box rightPadding="5"/>
+	</style>
+	<queryString>
+		<![CDATA[select c.companyName, concat(concat(c.address1," "),c.address2) address, concat(concat(concat(c.city,", "),c.state),"   ",c.zip) cityStateZip, c.phone1, c.attn as name, c.email from company c where companyId = 1;]]>
+	</queryString>
+	<field name="companyName" class="java.lang.String"/>
+	<field name="address" class="java.lang.String"/>
+	<field name="cityStateZip" class="java.lang.String"/>
+	<field name="phone1" class="java.lang.String"/>
+	<field name="name" class="java.lang.String"/>
+	<field name="email" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="74" splitType="Stretch">
+			<rectangle>
+				<reportElement mode="Opaque" x="0" y="0" width="572" height="68" backcolor="#99FF99" uuid="6c17d6ae-7ac3-4473-902a-9f01b416a602"/>
+				<graphicElement>
+					<pen lineWidth="0.0" lineStyle="Solid"/>
+				</graphicElement>
+			</rectangle>
+			<staticText>
+				<reportElement style="padLeft" mode="Transparent" x="2" y="0" width="139" height="68" backcolor="#99FF99" uuid="8d84a5ff-a5c9-443c-ac64-93b2e6456f54"/>
+				<textElement verticalAlignment="Middle">
+					<font fontName="SansSerif" size="36" isItalic="true"/>
+				</textElement>
+				<text><![CDATA[Invoice]]></text>
+			</staticText>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="81" splitType="Stretch">
+			<textField>
+				<reportElement style="padLeft" x="2" y="60" width="343" height="20" uuid="2bf41312-d21b-4427-a8cb-96fa6d7ab68c"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{phone1}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="padLeft" x="2" y="40" width="343" height="20" uuid="9f654081-c8fe-4018-8134-09b4672a610b"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cityStateZip}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="padLeft" x="2" y="20" width="343" height="20" uuid="fc8a0285-915b-4f7b-a607-0b4aa641d0c9"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement style="padLeft" x="2" y="0" width="343" height="20" uuid="057892a7-cacb-48a1-a707-1bdd586eaa05"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
+			</textField>
+			<image>
+				<reportElement x="457" y="2" width="115" height="78" uuid="648a9730-9f91-4a4d-a537-c4c43f521aac"/>
+				<imageExpression><![CDATA["computer.gif"]]></imageExpression>
+			</image>
+		</band>
+	</columnHeader>
+	<detail>
+		<band splitType="Stretch"/>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="50" splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

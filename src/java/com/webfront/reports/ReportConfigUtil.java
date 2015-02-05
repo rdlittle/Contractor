@@ -6,6 +6,7 @@ package com.webfront.reports;
 
 import java.io.File;
 import java.io.PrintWriter;
+import java.sql.Connection;
 import java.util.Map;
 import javax.servlet.ServletContext;
 import javax.sql.DataSource;
@@ -57,7 +58,9 @@ public class ReportConfigUtil {
     parameters.put("BaseDir", reportFile.getParentFile());
     JasperPrint jasperPrint=null;
     try {
-        jasperPrint =  JasperFillManager.fillReport(reportFile.getPath(), parameters, dataSource.getConnection());
+        String filePath = reportFile.getPath();
+        Connection conn = dataSource.getConnection();
+        jasperPrint =  JasperFillManager.fillReport(filePath, parameters, conn);
     } catch(Exception e) {
         e.printStackTrace();
         return null;

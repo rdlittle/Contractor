@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Invoice_timesheet_subreport1" pageWidth="535" pageHeight="752" columnWidth="535" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="af8b4f1e-79ce-45b3-b0b3-1159a71b5162">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="invNum" class="java.lang.String"/>
+	<parameter name="clientId" class="java.lang.Integer">
+		<defaultValueExpression><![CDATA[1]]></defaultValueExpression>
+	</parameter>
+	<queryString>
+		<![CDATA[select (select rates.rate from rates inner join client on client.rate = rates.id where client.id = $P{clientId}) * sum(timesheet.hours) from timesheet where clientId = $P{clientId} and invNum = $P{invNum};]]>
+	</queryString>
+	<field name="(select rates.rate from rates inner join client on client.rate = rates.id where client.id = 1) * sum(timesheet.hours)" class="java.lang.Double"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<detail>
+		<band height="21" splitType="Stretch">
+			<staticText>
+				<reportElement uuid="8a3788b8-ef1c-4bcb-aec3-8d80e6429f39" x="335" y="1" width="100" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[Invoice Total]]></text>
+			</staticText>
+			<textField pattern="###0.00;-###0.00">
+				<reportElement uuid="cb10b206-6f5a-4605-8aba-ae2b74ec7581" x="435" y="0" width="100" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{(select rates.rate from rates inner join client on client.rate = rates.id where client.id = 1) * sum(timesheet.hours)}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+</jasperReport>

@@ -40,7 +40,7 @@ public class Pdf extends HttpServlet {
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Resource(name = "jdbc/contractor")
+    @Resource(name = "contractor")
     private DataSource dataSource;
     
     public void setDataSource(DataSource ds) {

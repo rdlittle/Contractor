@@ -17,53 +17,53 @@ import javax.sql.DataSource;
  *
  * @author rlittle
  */
-@ManagedBean(name="ReportBean")
+@ManagedBean(name = "ReportBean")
 @RequestScoped
 public class ReportBean extends AbstractReportBean {
 
-  private final String COMPILE_FILE_NAME = "my_first_report";
-  private String invNum;
-  private String invDate;
-  private String clientId;
-  
-  private DataSource dataSource;
-  
-  @Resource(lookup="jdbc/contractor")
-  public void setDataSource(DataSource ds) {
-      this.dataSource=ds;
-  }
-  
-  @Override
-  public DataSource getDataSource() {
-      return this.dataSource;
-  }
-  
-  @Override
-  protected String getCompileFileName() {
-    return COMPILE_FILE_NAME;
-  }
-  
-  @Override
-  protected Map<String, Object> getReportParameters() {
-    Map<String, Object> reportParameters = new HashMap<String, Object>();
-    
-    reportParameters.put("invNum", invNum);
-    reportParameters.put("clientId", new Integer(clientId));
-    String value = FacesContext.getCurrentInstance().
-		getExternalContext().getRequestParameterMap().get("hidden1");
-    
-    return reportParameters;
-  }
+    private final String COMPILE_FILE_NAME = "my_first_report";
+    private String invNum;
+    private String invDate;
+    private String clientId;
 
-  public String execute() {
-    try {
-      super.prepareReport();
-    } catch (Exception e) {
-      // make your own exception handling
+    private DataSource dataSource;
+
+    @Resource(lookup="jdbc/contractor")
+    public void setDataSource(DataSource ds) {
+        this.dataSource = ds;
     }
-    
-    return null;
-  }
+
+    @Override
+    public DataSource getDataSource() {
+        return this.dataSource;
+    }
+
+    @Override
+    protected String getCompileFileName() {
+        return COMPILE_FILE_NAME;
+    }
+
+    @Override
+    protected Map<String, Object> getReportParameters() {
+        Map<String, Object> reportParameters = new HashMap<>();
+
+        reportParameters.put("invNum", invNum);
+        reportParameters.put("clientId", new Integer(clientId));
+        String value = FacesContext.getCurrentInstance().
+                getExternalContext().getRequestParameterMap().get("hidden1");
+
+        return reportParameters;
+    }
+
+    public String execute() {
+        try {
+            super.prepareReport();
+        } catch (Exception e) {
+            // make your own exception handling
+        }
+
+        return null;
+    }
 
     /**
      * @return the invNum

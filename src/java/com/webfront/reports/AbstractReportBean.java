@@ -40,8 +40,8 @@ public abstract class AbstractReportBean {
 
     protected void prepareReport() throws JRException, IOException {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
-
         ServletContext context = (ServletContext) externalContext.getContext();
+
         HttpServletRequest request = (HttpServletRequest) externalContext.getRequest();
         HttpServletResponse response = (HttpServletResponse) externalContext.getResponse();
         
@@ -50,7 +50,8 @@ public abstract class AbstractReportBean {
             throw new JRRuntimeException("File Invoice.jasper not found. The report design must be compiled first.");
         }
 
-        JasperPrint jasperPrint = ReportConfigUtil.fillReport(reportFile, getReportParameters(), getDataSource());
+        DataSource ds = getDataSource();
+        JasperPrint jasperPrint = ReportConfigUtil.fillReport(reportFile, getReportParameters(), ds);
 
         if (getExportOption().equals(ExportOption.HTML)) {
             ReportConfigUtil.exportReportAsHtml(jasperPrint, response.getWriter());
@@ -58,6 +59,7 @@ public abstract class AbstractReportBean {
             String reportName="/servlets/reports/invoice_";
             reportName+=getReportParameters().get("invNum");
             reportName+="."+getExportOption();
+            response.setContentType("application/pdf");  
             response.setHeader("Content-Disposition","inline, filename=myReport.pdf");
             request.getSession().setAttribute(BaseHttpServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE, jasperPrint);
             response.sendRedirect(request.getContextPath() + "/servlets/reports/" + getExportOption());
