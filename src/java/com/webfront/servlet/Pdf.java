@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 import net.sf.jasperreports.engine.*;
 import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.j2ee.servlets.BaseHttpServlet;
 
 /**
  *
@@ -69,6 +70,7 @@ public class Pdf extends HttpServlet {
             bytes = JasperRunManager.runReportToPdf(jasperReport,parameters,conn);
             //jasperPrint =
             //        JasperFillManager.fillReport(jasperReport, parameters, conn);
+            //            //response.setContentType("application/pdf");  
             
         } catch (SQLException e) {
         } catch (JRException e) {

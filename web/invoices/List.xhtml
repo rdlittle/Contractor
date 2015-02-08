@@ -19,7 +19,7 @@
                 </h:panelGroup>
                 
                 <h:outputLabel for="clientSelector" value="Select Client: "/>
-                <h:selectOneMenu id="clientSelector" value="#{InvoiceController.clientId}" 
+                <h:selectOneMenu id="clientSelector" value="#{sessionBean.clientId}" 
                                  onchange="submit()" 
                                  valueChangeListener="#{InvoiceController.prepareList()}">
                     <f:selectItems id="clientList" var="client"

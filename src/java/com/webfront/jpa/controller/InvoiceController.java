@@ -1,6 +1,7 @@
 package com.webfront.jpa.controller;
 
 import com.webfront.beans.InvoiceFacade;
+import com.webfront.beans.Session;
 import com.webfront.entity.Invoice;
 import com.webfront.jpa.controller.util.JsfUtil;
 import com.webfront.jpa.controller.util.PaginationHelper;
@@ -9,6 +10,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -29,9 +31,11 @@ public class InvoiceController implements Serializable {
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private List<Invoice> invoiceList;
+    @ManagedProperty(value="#{sessionBean.clientId}")
     private Integer clientId;
 
     public InvoiceController() {
+        
     }
 
     public String Html() {

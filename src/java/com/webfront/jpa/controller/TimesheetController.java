@@ -8,6 +8,7 @@ import com.webfront.jpa.controller.util.PaginationHelper;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +17,6 @@ import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
@@ -56,6 +56,7 @@ public class TimesheetController implements Serializable {
     private String junk;
 
     public TimesheetController() {
+        selectedItems = new ArrayList<>();
     }
 
     public Timesheet getSelected() {

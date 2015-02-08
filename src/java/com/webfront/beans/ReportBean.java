@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map;
 import javax.annotation.Resource;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.RequestScoped;
+import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 import javax.sql.DataSource;
 
@@ -18,7 +18,7 @@ import javax.sql.DataSource;
  * @author rlittle
  */
 @ManagedBean(name = "ReportBean")
-@RequestScoped
+@SessionScoped
 public class ReportBean extends AbstractReportBean {
 
     private final String COMPILE_FILE_NAME = "my_first_report";
@@ -26,9 +26,13 @@ public class ReportBean extends AbstractReportBean {
     private String invDate;
     private String clientId;
 
-    private DataSource dataSource;
+    private static DataSource dataSource;
+    
+    public ReportBean() {
+        
+    }
 
-    @Resource(lookup="jdbc/contractor")
+    @Resource(name="jdbc/contractor")
     public void setDataSource(DataSource ds) {
         this.dataSource = ds;
     }
@@ -46,8 +50,8 @@ public class ReportBean extends AbstractReportBean {
     @Override
     protected Map<String, Object> getReportParameters() {
         Map<String, Object> reportParameters = new HashMap<>();
-
         reportParameters.put("invNum", invNum);
+        reportParameters.put("invDate", invDate);
         reportParameters.put("clientId", new Integer(clientId));
         String value = FacesContext.getCurrentInstance().
                 getExternalContext().getRequestParameterMap().get("hidden1");
@@ -62,7 +66,7 @@ public class ReportBean extends AbstractReportBean {
             // make your own exception handling
         }
 
-        return null;
+        return "reports/InvoiceForm.xhtml";
     }
 
     /**

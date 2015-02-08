@@ -18,7 +18,7 @@
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
                 <h:outputLabel for="clientSelector" value="Select Client: "/>
-                <h:selectOneMenu id="clientSelector" value="#{timesheetController.clientId}"
+                <h:selectOneMenu id="clientSelector" value="#{sessionBean.clientId}"
                                  onchange="submit()" 
                                  valueChangeListener="#{timesheetController.prepareList()}">
                     <f:selectItems id="clientList" var="client"
@@ -36,6 +36,7 @@
                                  selection="#{timesheetController.selectedItems}"
                                  var="item" 
                                  selectionMode="multiple"
+                                 rowSelectMode ="add"
                                  rowKey="#{item.id}" 
                                  rowStyleClass="jsfcrud_odd_row,jsfcrud_even_row">
                         <p:ajax event="rowSelect" listener="#{timesheetController.onRowSelect}" update=":timesheetForm" />
@@ -88,8 +89,6 @@
                             <f:facet name="header">
                                 <h:outputText value="&nbsp;"/>
                             </f:facet>
-                            <h:commandLink action="#{timesheetController.prepareView}" value="#{msgs.View}"/>
-                            <h:outputText value=" "/>
                             <h:commandLink action="#{timesheetController.prepareEdit}" value="#{msgs.Edit}"/>
                             <h:outputText value=" "/>
                             <h:commandLink action="#{timesheetController.destroy}" value="#{msgs.Delete}"/>
@@ -99,7 +98,7 @@
                                              process="timesheetTable" 
                                              icon="ui-icon-search" value="Preview Invoice" 
                                              action="#{timesheetController.prepareInvoice()}"
-                                             disabled="#{timesheetController.selectedItems.size()==0}"/>
+                                             disabled="#{timesheetController.selectedItems.size()==0 || timesheetController.selectedItems==null}"/>
                         </f:facet>
                     </p:dataTable>
                 </h:panelGroup>
