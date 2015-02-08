@@ -32,8 +32,6 @@
                     <h:inputText id="clientID" value="#{timesheetController.selected.clientID}" title="#{msgs.clientID}" />
                     <h:outputLabel value="#{msgs.posted}" for="posted" />
                     <h:inputText id="posted" value="#{timesheetController.selected.posted}"/>
-                    <h:outputLabel for="invNum" value="#{msgs.invoice}"/>
-                    <h:inputText id="invNum" value="#{timesheetController.selected.invNum}"/>
                 </p:panelGrid>
                 <p:commandButton action="#{timesheetController.create}" value="#{msgs.Save}" />
                 &nbsp;&nbsp;

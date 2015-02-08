@@ -81,7 +81,7 @@ public class InvoiceFacade extends AbstractFacade<Invoice> {
     public String getNextInv() {
         Query query = getEntityManager().createNamedQuery("SeqControl.findById", Integer.class);
         query.setParameter("id", "NEXT_INV");
-        Integer i = (Integer) query.getSingleResult()+1;
+        Integer i = (Integer) query.getSingleResult();
         return i.toString();
     }
     

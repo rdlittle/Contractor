@@ -108,8 +108,6 @@ public class TimesheetController implements Serializable {
 
     public String prepareCreate() {
         current = new Timesheet();
-        String inv = getFacade().getNextInv();
-        current.setInvNum(inv);
         selectedItemIndex = -1;
         return "Create?faces-redirect=true";
     }
@@ -163,7 +161,6 @@ public class TimesheetController implements Serializable {
     public String create() {
         try {
             getFacade().create(current);
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Messages").getString("Created"));
             recreateModel();
             return "List?faces-redirect=true&clientId=" + Integer.toString(current.getClientID());
         } catch (Exception e) {

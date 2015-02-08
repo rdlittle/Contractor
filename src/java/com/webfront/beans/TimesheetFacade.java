@@ -69,7 +69,7 @@ public class TimesheetFacade extends AbstractFacade<Timesheet> {
     public String getNextInv() {
         Query query=getEntityManager().createNamedQuery("SeqControl.findById",Integer.class);
         query.setParameter("id", "NEXT_INV");
-        Integer i=(Integer)query.getSingleResult();
+        Integer i=(Integer)query.getSingleResult()+1;
         return i.toString();
     }
     

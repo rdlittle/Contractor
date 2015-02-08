@@ -18,7 +18,7 @@
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
                 <h:outputLabel for="clientSelector" value="Select Client: "/>
-                <h:selectOneMenu id="clientSelector" value="#{sessionBean.clientId}"
+                <h:selectOneMenu id="clientSelector" value="#{timesheetController.clientId}"
                                  onchange="submit()" 
                                  valueChangeListener="#{timesheetController.prepareList()}">
                     <f:selectItems id="clientList" var="client"
@@ -103,7 +103,8 @@
                     </p:dataTable>
                 </h:panelGroup>
                 <br />
-                <p:commandButton action="#{timesheetController.prepareCreate}" value="#{msgs.New}" rendered="#{timesheetController.items.rowCount > 0}"/>
+                <p:commandButton action="#{timesheetController.prepareCreate}" 
+                                 value="#{msgs.New}" rendered="#{timesheetController.items.rowCount > 0}"/>
                 
             </h:form>
         </ui:define>

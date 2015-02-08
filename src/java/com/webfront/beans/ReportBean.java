@@ -66,7 +66,7 @@ public class ReportBean extends AbstractReportBean {
             // make your own exception handling
         }
 
-        return "reports/InvoiceForm.xhtml";
+        return null;
     }
 
     /**

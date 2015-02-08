@@ -79,17 +79,17 @@ public class BillingController {
             invoice.setPeriodNum(period.getId().toString());
             
             getInvoiceFacade().create(invoice);
-            getInvoiceFacade().setNextInv(Integer.parseInt(invoice.getInvoice()));
-            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Messages").getString("Created"));
+            getInvoiceFacade().setNextInv(Integer.parseInt(invoiceNum)+1);
+//            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Messages").getString("Created"));
             Double serial=Math.random();
-            return "List?faces-redirect=true"+"&serial="+serial.toString();
+            return "/invoices/List?faces-redirect=true"+"&serial="+serial.toString();
             
         } catch (ParseException ex) {
             Logger.getLogger(BillingController.class.getName()).log(Level.SEVERE, null, ex);
         }
         return null;
     }
-
+    
     /**
      * @return the timesheetFacade
      */
