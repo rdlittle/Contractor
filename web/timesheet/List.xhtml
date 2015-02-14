@@ -13,6 +13,9 @@
             </title>
         </ui:define>
         <ui:define name="content">
+            <f:metadata>
+                <f:viewAction action="#{timesheetController.init()}" phase="UPDATE_MODEL_VALUES"/>
+            </f:metadata>            
             <h:form id="timesheetForm">
                 <h:panelGroup id="messagePanel" layout="block">
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>

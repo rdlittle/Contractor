@@ -94,6 +94,12 @@ public class TimesheetController implements Serializable {
         return pagination;
     }
 
+   
+    public void init() {
+        recreateModel();
+        getPagination().createPageDataModel();
+    }
+    
     public String prepareList() {
         recreateModel();
         return "List?faces-redirect=true";
