@@ -13,11 +13,14 @@
             </title>
         </ui:define>
         <ui:define name="content">
+            <f:metadata>
+                <f:viewAction action="#{InvoiceController.init()}" phase="UPDATE_MODEL_VALUES"/>
+            </f:metadata>
             <h:form id="invoiceList">
                 <h:panelGroup id="messagePanel" layout="block">
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
-                
+
                 <h:outputLabel for="clientSelector" value="Select Client: "/>
                 <h:selectOneMenu id="clientSelector" value="#{sessionBean.clientId}" 
                                  onchange="submit()" 
@@ -27,14 +30,14 @@
                                    itemValue="#{client.id}"
                                    itemLabel="#{client.name}"/>
                 </h:selectOneMenu>
+
                 &nbsp;
-                
                 <h:panelGroup rendered="#{InvoiceController.items.rowCount > 0}">
                     <h:outputText value="#{InvoiceController.pagination.pageFirstItem + 1}..#{InvoiceController.pagination.pageLastItem + 1}/#{InvoiceController.pagination.itemsCount}" 
                                   rendered="#{InvoiceController.pagination.itemsCount > 0}"/>&nbsp;
                     <h:commandLink action="#{InvoiceController.previous}" value="#{msgs.Previous} #{InvoiceController.pagination.pageSize}" rendered="#{InvoiceController.pagination.hasPreviousPage}"/>&nbsp;
                     <h:commandLink action="#{InvoiceController.next}" value="#{msgs.Next} #{InvoiceController.pagination.pageSize}" rendered="#{InvoiceController.pagination.hasNextPage}"/>&nbsp;
-                    <p:dataTable value="#{InvoiceController.items}" var="item" rowStyleClass="jsfcrud_odd_row,jsfcrud_even_row" style="border:solid 1px">
+                    <p:dataTable value="#{InvoiceController.items}" var="item" style="border:solid 1px">
                         <p:column rendered="false">
                             <f:facet name="header">
                                 <h:outputText value="#{msgs.id}"/>
@@ -106,7 +109,8 @@
                     </p:dataTable>
                 </h:panelGroup>
                 <br />
-                <p:commandButton action="#{InvoiceController.prepareCreate}" value="#{msgs.New}" rendered="#{InvoiceController.items.rowCount > 0}"/>
+                <p:commandButton action="#{InvoiceController.prepareCreate}" 
+                                 value="#{msgs.New}" rendered="#{InvoiceController.items.rowCount > 0}"/>
             </h:form>
         </ui:define>
     </ui:composition>

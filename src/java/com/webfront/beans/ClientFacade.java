@@ -14,6 +14,8 @@ import javax.persistence.PersistenceContext;
  * @author rlittle
  */
 @Stateless
+
+
 public class ClientFacade extends AbstractFacade<Client> {
     @PersistenceContext(unitName = "ContractorPU")
     private EntityManager em;

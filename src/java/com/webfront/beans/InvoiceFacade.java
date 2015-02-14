@@ -10,6 +10,7 @@ import java.util.Map;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -35,19 +36,19 @@ public class InvoiceFacade extends AbstractFacade<Invoice> {
 
     @Override
     public List<Invoice> findRange(int[] range) {
-
-        Map<String, String> map;
-        map = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        String value = map.get("invoiceList:clientSelector");
-        Integer clientId;
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext et = fc.getExternalContext();
+        Map<String, Object> map = et.getSessionMap();
+        ContractorSession sb = (ContractorSession) map.get("sessionBean");
+        if (sb.clientId != null) {
+            clientId = sb.clientId;
+        }
         String stmt = "SELECT i FROM Invoice i WHERE i.client = ?1 ORDER BY i.id DESC";
-
         Query query = getEntityManager().createQuery(stmt, Invoice.class);
-        if (value != null) {
-            clientId = Integer.valueOf(value);
-            query.setParameter(1, clientId.intValue());
+        if (clientId != null) {
+            query.setParameter(1, clientId);
             query.setMaxResults(range[1] - range[0]);
-            query.setFirstResult(range[0]);            
+            query.setFirstResult(range[0]);
             return query.getResultList();
         }
         return null;
@@ -63,15 +64,17 @@ public class InvoiceFacade extends AbstractFacade<Invoice> {
     }
 
     public List<Invoice> findClientInvoices() {
-        Map<String, String> map;
-        map = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        String value = map.get("invoiceForm:clientSelector");
-        Integer clientId;
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext et = fc.getExternalContext();
+        Map<String, Object> map = et.getSessionMap();
+        ContractorSession sb = (ContractorSession) map.get("sessionBean");
+        if (sb.clientId != null) {
+            clientId = sb.clientId;
+        }
         String stmt = "SELECT i FROM Invoice i WHERE i.client = ?1 ORDER BY i.id DESC";
         Query query = getEntityManager().createQuery(stmt, Invoice.class);
-        if (value != null) {
-            clientId = Integer.valueOf(value);
-            query.setParameter(1, clientId.intValue());
+        if (clientId != null) {
+            query.setParameter(1, clientId);
             return query.getResultList();
         }
         return null;
@@ -84,7 +87,7 @@ public class InvoiceFacade extends AbstractFacade<Invoice> {
         Integer i = (Integer) query.getSingleResult();
         return i.toString();
     }
-    
+
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public String getNextPeriod() {
         Query query = getEntityManager().createNamedQuery("SeqControl.findById", Integer.class);
@@ -92,15 +95,16 @@ public class InvoiceFacade extends AbstractFacade<Invoice> {
         Integer i = (Integer) query.getSingleResult();
         return i.toString();
     }
-    
+
     public void setNextInv(int invNum) {
         Query query = getEntityManager().createNamedQuery("SeqControl.updateSeq", Integer.class);
         query.setParameter("nextSeq", invNum);
         query.setParameter("id", "NEXT_INV");
         query.executeUpdate();
     }
-    
+
     public InvoiceFacade() {
         super(Invoice.class);
     }
+
 }

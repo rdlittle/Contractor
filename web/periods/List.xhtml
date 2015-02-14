@@ -22,7 +22,7 @@
                     <h:outputText value="#{periodsController.pagination.pageFirstItem + 1}..#{periodsController.pagination.pageLastItem + 1}/#{periodsController.pagination.itemsCount}"/>&nbsp;
                     <h:commandLink action="#{periodsController.previous}" value="#{msgs.Previous} #{periodsController.pagination.pageSize}" rendered="#{periodsController.pagination.hasPreviousPage}"/>&nbsp;
                     <h:commandLink action="#{periodsController.next}" value="#{msgs.Next} #{periodsController.pagination.pageSize}" rendered="#{periodsController.pagination.hasNextPage}"/>&nbsp;
-                    <p:dataTable value="#{periodsController.items}" var="item" rowStyleClass="jsfcrud_odd_row,jsfcrud_even_row" style="border:solid 1px">
+                    <p:dataTable value="#{periodsController.items}" var="item" style="border:solid 1px">
                         <p:column style="width: 5%; text-align: left;">
                             <f:facet name="header">
                                 <h:outputText value="#{msgs.id}"/>

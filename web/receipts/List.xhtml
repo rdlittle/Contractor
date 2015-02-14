@@ -18,7 +18,7 @@
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
                 <h:outputLabel for="clientSelector" value="Select Client: "/>
-                <h:selectOneMenu id="clientSelector" value="#{receiptsController.clientId}" 
+                <h:selectOneMenu id="clientSelector" value="#{sessionBean.clientId}" 
                                  onchange="submit()" 
                                  valueChangeListener="#{receiptsController.prepareList()}">
                     <f:selectItems id="clientList" var="client"
@@ -31,7 +31,7 @@
                     <h:outputText value="#{receiptsController.pagination.pageFirstItem + 1}..#{receiptsController.pagination.pageLastItem + 1}/#{receiptsController.pagination.itemsCount}"/>&nbsp;
                     <h:commandLink action="#{receiptsController.previous}" value="#{msgs.Previous} #{receiptsController.pagination.pageSize}" rendered="#{receiptsController.pagination.hasPreviousPage}"/>&nbsp;
                     <h:commandLink action="#{receiptsController.next}" value="#{msgs.Next} #{receiptsController.pagination.pageSize}" rendered="#{receiptsController.pagination.hasNextPage}"/>&nbsp;
-                    <p:dataTable value="#{receiptsController.items}" var="item" rowStyleClass="jsfcrud_odd_row,jsfcrud_even_row" style="border:solid 1px">
+                    <p:dataTable value="#{receiptsController.items}" var="item" style="border:solid 1px">
                         <p:column style="width: 5%; text-align: left;">
                             <f:facet name="header">
                                 <h:outputText value="#{msgs.id}" style="text-align: left;"/>

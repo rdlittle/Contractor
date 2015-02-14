@@ -8,6 +8,7 @@ import com.webfront.entity.Receipts;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -30,17 +31,19 @@ public class ReceiptsFacade extends AbstractFacade<Receipts> {
 
     @Override
     public List<Receipts> findRange(int[] range) {
-
-        Map<String, String> map;
-        map = FacesContext.getCurrentInstance().getExternalContext().getRequestParameterMap();
-        String value = map.get("receiptsForm:clientSelector");
-        Integer clientId;
+        Integer clientId=null;
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext et = fc.getExternalContext();
+        Map<String, Object> map = et.getSessionMap();
+        ContractorSession sb = (ContractorSession) map.get("sessionBean");
+        if (sb.clientId != null) {
+            clientId = sb.clientId;
+        }
         String stmt = "SELECT r FROM Receipts r WHERE r.payeeId = ?1 ORDER BY r.id DESC";
 
         Query query = getEntityManager().createQuery(stmt, Receipts.class);
-        if (value != null) {
-            clientId = Integer.valueOf(value);
-            query.setParameter(1, clientId.intValue());
+        if (clientId != null) {
+            query.setParameter(1, clientId);
             query.setMaxResults(range[1] - range[0]);
             query.setFirstResult(range[0]);
             return query.getResultList();

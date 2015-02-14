@@ -1,7 +1,6 @@
 package com.webfront.jpa.controller;
 
 import com.webfront.beans.InvoiceFacade;
-import com.webfront.beans.Session;
 import com.webfront.entity.Invoice;
 import com.webfront.jpa.controller.util.JsfUtil;
 import com.webfront.jpa.controller.util.PaginationHelper;
@@ -10,7 +9,6 @@ import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.FacesContext;
@@ -31,20 +29,19 @@ public class InvoiceController implements Serializable {
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private List<Invoice> invoiceList;
-    @ManagedProperty(value="#{sessionBean.clientId}")
-    private Integer clientId;
 
     public InvoiceController() {
-        
+
     }
 
     public String Html() {
         return "/";
     }
-    
+
     public void setCurrent(Invoice i) {
-        current=i;
+        current = i;
     }
+
     public Invoice getSelected() {
         if (current == null) {
             current = new Invoice();
@@ -56,11 +53,11 @@ public class InvoiceController implements Serializable {
     private InvoiceFacade getFacade() {
         return ejbFacade;
     }
-    
+
     public List<Invoice> getInvoiceList() {
         List<Invoice> list;
-        list=null;
-        list=getFacade().findClientInvoices();
+        list = null;
+        list = getFacade().findClientInvoices();
         return list;
     }
 
@@ -87,6 +84,12 @@ public class InvoiceController implements Serializable {
         return "List?faces-redirect=true";
     }
 
+    public void init() {
+        if (!FacesContext.getCurrentInstance().isPostback()) {
+            items = getPagination().createPageDataModel();
+        }
+    }
+
     public String prepareView() {
         current = (Invoice) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
@@ -95,18 +98,19 @@ public class InvoiceController implements Serializable {
 
     public String prepareCreate() {
         current = new Invoice();
-        String inv=getFacade().getNextInv();
+        String inv = getFacade().getNextInv();
         current.setInvoice(inv);
-        String pid=getFacade().getNextPeriod();
+        String pid = getFacade().getNextPeriod();
         current.setPeriodNum(pid);
         selectedItemIndex = -1;
         return "Create?faces-redirect=true";
     }
-    
+
     public String getCurrentInvoiceNumber() {
         //entityManager.createNamedQuery(Item.QUERY_ALL).getResultList();
         return "";
     }
+
     public String getNextInvoiceNumber() {
         return getFacade().getNextInv();
     }
@@ -116,8 +120,8 @@ public class InvoiceController implements Serializable {
             getFacade().create(current);
             getFacade().setNextInv(Integer.parseInt(current.getInvoice()));
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Messages").getString("Created"));
-            Double serial=Math.random();
-            return "/invoices/List?faces-redirect=true"+"&serial="+serial.toString();
+            Double serial = Math.random();
+            return "/invoices/List?faces-redirect=true" + "&serial=" + serial.toString();
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Messages").getString("PersistenceError"));
             return null;
@@ -220,20 +224,6 @@ public class InvoiceController implements Serializable {
 
     public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
-    }
-
-    /**
-     * @return the clientId
-     */
-    public Integer getClientId() {
-        return clientId;
-    }
-
-    /**
-     * @param clientId the clientId to set
-     */
-    public void setClientId(Integer clientId) {
-        this.clientId = clientId;
     }
 
     @FacesConverter(forClass = Invoice.class)

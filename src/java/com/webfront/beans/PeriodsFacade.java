@@ -56,4 +56,8 @@ public class PeriodsFacade extends AbstractFacade<Periods> {
         return (Periods)query.getSingleResult();
     }
     
+    public void newBillingPeriod() {
+        
+    }
+    
 }

@@ -42,7 +42,6 @@ public class TimesheetController implements Serializable {
     private com.webfront.beans.TimesheetFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
-    private Integer clientId;
     private List<Timesheet> selectedItems;
 
     private Float totalHours;
@@ -114,8 +113,9 @@ public class TimesheetController implements Serializable {
 
     public String prepareInvoice() {
         if (!selectedItems.isEmpty()) {
-            if (clientId != null) {
-                setClientName(getFacade().getClientName(clientId));
+            Integer cid = getFacade().clientId;
+            if (cid != null) {
+                setClientName(getFacade().getClientName(cid));
             }
             Date d = getFacade().getPeriod();
             Calendar cal = Calendar.getInstance(Locale.getDefault());
@@ -266,20 +266,6 @@ public class TimesheetController implements Serializable {
 
     public SelectItem[] getItemsAvailableSelectOne() {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
-    }
-
-    /**
-     * @return the clientId
-     */
-    public Integer getClientId() {
-        return clientId;
-    }
-
-    /**
-     * @param clientId the clientId to set
-     */
-    public void setClientId(Integer clientId) {
-        this.clientId = clientId;
     }
 
     /**

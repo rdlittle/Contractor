@@ -20,12 +20,12 @@
             <ui:insert name="top"><h2>#{msgs.appWelcome}</h2></ui:insert>
         </div>
         <div>
-            <div id="left">
+            <div id="left" class="menu">
                 <ui:insert name="left">
-                    <ui:include src="leftNav.xhtml"/>
+                    <ui:include src="menu.xhtml"/>
                 </ui:insert>
             </div>
-            <div id="content" class="left_content">
+            <div id="content">
                 <ui:insert name="content">Choose From Options At Left</ui:insert>
             </div>
         </div>

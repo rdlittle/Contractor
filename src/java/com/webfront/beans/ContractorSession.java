@@ -6,7 +6,6 @@
 package com.webfront.beans;
 
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 
 /**
@@ -15,22 +14,21 @@ import javax.faces.bean.SessionScoped;
  */
 @ManagedBean(name="sessionBean")
 @SessionScoped
-public class Session {
-    @ManagedProperty(value = "#{clientId}")
-    private Integer clientId;
+public class ContractorSession {
+    protected Integer clientId;
 
     /**
      * @return the clientId
      */
     public Integer getClientId() {
-        return clientId;
+        return this.clientId;
     }
 
     /**
-     * @param clientId the clientId to set
+     * @param cid the clientId to set
      */
-    public void setClientId(Integer clientId) {
-        this.clientId = clientId;
+    public void setClientId(Integer cid) {
+        clientId = cid;
     }
     
 }

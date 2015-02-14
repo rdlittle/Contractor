@@ -5,8 +5,10 @@
 package com.webfront.beans;
 
 import java.util.List;
+import javax.faces.bean.ManagedProperty;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaQuery;
 
 /**
  *
@@ -15,12 +17,15 @@ import javax.persistence.criteria.CriteriaBuilder;
 public abstract class AbstractFacade<T> {
     private Class<T> entityClass;
     private String order;
-
+    
     public AbstractFacade(Class<T> entityClass) {
         this.entityClass = entityClass;
         this.order="asc";
     }
-
+    
+    @ManagedProperty(value="#{sessionBean.clientId}")
+    public Integer clientId;
+    
     protected abstract EntityManager getEntityManager();
 
     public void setOrder(String ord) {
@@ -46,7 +51,10 @@ public abstract class AbstractFacade<T> {
     }
 
     public List<T> findAll() {
-        javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
+        EntityManager em = getEntityManager();
+        CriteriaBuilder cb = em.getCriteriaBuilder();
+        CriteriaQuery cq = cb.createQuery();
+        //javax.persistence.criteria.CriteriaQuery cq = em.getCriteriaBuilder().createQuery();
         cq.select(cq.from(entityClass));
         return getEntityManager().createQuery(cq).getResultList();
     }
@@ -67,6 +75,7 @@ public abstract class AbstractFacade<T> {
         cq.select(getEntityManager().getCriteriaBuilder().count(rt));
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
+        
     }
     
 }

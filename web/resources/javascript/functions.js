@@ -18,6 +18,7 @@ function doPreview(invNumber,expFormat) {
     alert(document.forms[0]['popupForm:num'].value);
     window.close();    
 }
+
 function popup(source,name) {
     //formId=source.form.id;
     invDate=source.document.getElementById("invoiceForm:invoiceDate").value;
@@ -32,4 +33,8 @@ function popup(source,name) {
 function showInfo() {
     n=document.getElementById('popupForm:num').value;
     alert(n);
+}
+
+function send() {
+    alert("Hi");
 }

@@ -22,7 +22,7 @@
                     <h:outputText value="#{clientController.pagination.pageFirstItem + 1}..#{clientController.pagination.pageLastItem + 1}/#{clientController.pagination.itemsCount}"/>&nbsp;
                     <p:commandButton action="#{clientController.previous}" value="#{msgs.Previous} #{clientController.pagination.pageSize}" rendered="#{clientController.pagination.hasPreviousPage}"/>&nbsp;
                     <p:commandButton action="#{clientController.next}" value="#{msgs.Next} #{clientController.pagination.pageSize}" rendered="#{clientController.pagination.hasNextPage}"/>&nbsp;
-                    <p:dataTable value="#{clientController.items}" var="item" rowStyleClass="jsfcrud_odd_row,jsfcrud_even_row" style="border:solid 1px">
+                    <p:dataTable value="#{clientController.items}" var="item" style="border:solid 1px">
                         <p:column>
                             <f:facet name="header">
                                 <h:outputText value="#{msgs.ID}"/>

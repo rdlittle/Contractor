@@ -18,7 +18,7 @@
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
                 <h:outputLabel for="clientSelector" value="Select Client: "/>
-                <h:selectOneMenu id="clientSelector" value="#{timesheetController.clientId}"
+                <h:selectOneMenu id="clientSelector" value="#{sessionBean.clientId}"
                                  onchange="submit()" 
                                  valueChangeListener="#{timesheetController.prepareList()}">
                     <f:selectItems id="clientList" var="client"
@@ -37,8 +37,7 @@
                                  var="item" 
                                  selectionMode="multiple"
                                  rowSelectMode ="add"
-                                 rowKey="#{item.id}" 
-                                 rowStyleClass="jsfcrud_odd_row,jsfcrud_even_row">
+                                 rowKey="#{item.id}">
                         <p:ajax event="rowSelect" listener="#{timesheetController.onRowSelect}" update=":timesheetForm" />
                         <p:ajax event="rowUnselect" listener="#{timesheetController.onRowUnselect}" update=":timesheetForm" />
                         <p:column style="text-align: left; width: 3%; padding: .25em; margin: 0;">

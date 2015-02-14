@@ -11,14 +11,13 @@ import com.webfront.beans.TimesheetFacade;
 import com.webfront.entity.Invoice;
 import com.webfront.entity.Periods;
 import com.webfront.entity.Timesheet;
-import com.webfront.jpa.controller.util.JsfUtil;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 import java.util.Map;
-import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.ejb.EJB;
@@ -59,6 +58,10 @@ public class BillingController {
             String amount = requestMap.get("invoiceForm:invAmount");
             Periods period = getPeriodsFacade().getNextPeriod();
             
+            Calendar cal = Calendar.getInstance(Locale.getDefault());
+            cal.setTime(period.getEndDate());
+            boolean isMonday = false;
+            
             amount = amount.replaceAll(",", "");
             DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
             Date d = df.parse(invoiceDate);
@@ -80,8 +83,20 @@ public class BillingController {
             
             getInvoiceFacade().create(invoice);
             getInvoiceFacade().setNextInv(Integer.parseInt(invoiceNum)+1);
-//            JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Messages").getString("Created"));
+            int dow = cal.get(Calendar.DAY_OF_WEEK);
+            while(dow != 2) {
+                cal.add(Calendar.DAY_OF_YEAR, 1);
+                dow = cal.get(Calendar.DAY_OF_WEEK);
+            }
+            
+            period = new Periods();
+            period.setStartDate(cal.getTime());
+            cal.add(Calendar.DAY_OF_YEAR, 4);
+            period.setEndDate(cal.getTime());
+            getPeriodsFacade().create(period);
+            
             Double serial=Math.random();
+            
             return "/invoices/List?faces-redirect=true"+"&serial="+serial.toString();
             
         } catch (ParseException ex) {
