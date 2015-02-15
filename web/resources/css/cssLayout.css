@@ -16,17 +16,11 @@
 #content {
     position: relative;
     background: #c2dfef;
-    width: 86%;
+    width: 85%;
     margin-left: 10px;
-    float: left;
+    float: right;
     clear: none;
 }
-
-/*
-.menu {
-    font-size: 1em;
-}
-*/
 
 #top a:link, #top a:visited {
     color: white;
@@ -38,19 +32,4 @@
     color: black;
     font-weight : bold;
     text-decoration : underline;
-}
-
-table {
-    width:100%;
-}
-table tr td {
-    padding: 0px;
-}
-
-.leftCol {
-    width: 10%;
-}
-
-.rightCol {
-    width: 60%;
 }

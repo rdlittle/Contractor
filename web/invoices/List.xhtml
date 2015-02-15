@@ -37,14 +37,8 @@
                                   rendered="#{InvoiceController.pagination.itemsCount > 0}"/>&nbsp;
                     <h:commandLink action="#{InvoiceController.previous}" value="#{msgs.Previous} #{InvoiceController.pagination.pageSize}" rendered="#{InvoiceController.pagination.hasPreviousPage}"/>&nbsp;
                     <h:commandLink action="#{InvoiceController.next}" value="#{msgs.Next} #{InvoiceController.pagination.pageSize}" rendered="#{InvoiceController.pagination.hasNextPage}"/>&nbsp;
-                    <p:dataTable value="#{InvoiceController.items}" var="item" style="border:solid 1px">
-                        <p:column rendered="false">
-                            <f:facet name="header">
-                                <h:outputText value="#{msgs.id}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.id}"/>
-                        </p:column>
-                        <p:column style="text-align: left; width: 5%; padding: .25em .25em; margin: 0;">
+                    <p:dataTable value="#{InvoiceController.items}" var="item">
+                        <p:column style="text-align: center; width: 5%;">
                             <f:facet name="header">
                                 <h:outputText value="#{msgs.date}"/>
                             </f:facet>
@@ -52,43 +46,43 @@
                                 <f:convertDateTime pattern="MM/dd/yyyy" />
                             </h:outputText>
                         </p:column>
-                        <p:column style="text-align: center; width: 5%; padding: .25em .25em; margin: 0;">
+                        <p:column style="text-align: center; width: 4%;">
                             <f:facet name="header">
                                 <h:outputText value="#{msgs.invoice}"/>
                             </f:facet>
                             <h:outputText value="#{item.invoice}"/>
                         </p:column>
-                        <p:column style="text-align: center; width: 5%; padding: .25em .25em; margin: 0;">
+                        <p:column style="text-align: left; width: auto;">
                             <f:facet name="header">
                                 <h:outputText value="#{msgs.client}"/>
                             </f:facet>
-                            <h:outputText value="#{item.client}"/>
+                            <h:outputText value="#{billingController.getClientName(sessionBean.clientId)}"/>
                         </p:column>
-                        <p:column style="text-align: center; width: 5%; padding: .25em .25em; margin: 0;">
+                        <p:column style="text-align: center; width: 5%;">
                             <f:facet name="header">
                                 <h:outputText value="#{msgs.posted}"/>
                             </f:facet>
                             <p:selectBooleanCheckbox value="#{item.posted}" disabled="true"/>
                         </p:column>
-                        <p:column style="text-align: center; width: 5%; padding: .25em .25em; margin: 0;">
+                        <p:column style="text-align: center; width: 5%;">
                             <f:facet name="header">
                                 <h:outputText value="#{msgs.paid}"/>
                             </f:facet>
                             <p:selectBooleanCheckbox value="#{item.paid}"  disabled="true"/>
                         </p:column>
-                        <p:column style="text-align: left; width: 4%; padding: .25em .25em; margin: 0;">
+                        <p:column style="text-align: left; width: 4%;">
                             <f:facet name="header">
                                 <h:outputText value="#{msgs.checkNum}"/>
                             </f:facet>
                             <h:outputText value="#{item.checkNum}"/>
                         </p:column>
-                        <p:column style="text-align: left; width: 5%; padding: .25em .25em; margin: 0;">
+                        <p:column style="text-align: left; width: 5%;">
                             <f:facet name="header">
                                 <h:outputText value="Period"/>
                             </f:facet>
                             <h:outputText value="#{item.periodNum}"/>
                         </p:column>
-                        <p:column style="text-align: right; width: 10%; padding: .25em .25em; margin: 0;">
+                        <p:column style="text-align: right; width: 10%;">
                             <f:facet name="header">
                                 <h:outputText value="#{msgs.amount}"/>
                             </f:facet>
@@ -96,7 +90,7 @@
                                 <f:convertNumber  pattern="#0.00" />
                             </h:outputText>
                         </p:column>                        
-                        <p:column>
+                        <p:column style="width: 10%;">
                             <f:facet name="header">
                                 <h:outputText value="&nbsp;"/>
                             </f:facet>

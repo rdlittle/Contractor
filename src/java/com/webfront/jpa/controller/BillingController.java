@@ -141,9 +141,13 @@ public class BillingController {
     }
 
     /**
-     * @param invoiceController the invoiceController to set
+     * @param facade the InvoiceFacade to set
      */
     public void setInvoiceFacade(InvoiceFacade facade) {
         this.invoiceFacade = facade;
+    }
+    
+    public String getClientName(Integer cid) {
+        return getTimesheetFacade().getClientName(cid);
     }
 }

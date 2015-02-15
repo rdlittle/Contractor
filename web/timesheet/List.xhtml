@@ -43,13 +43,8 @@
                                  rowKey="#{item.id}">
                         <p:ajax event="rowSelect" listener="#{timesheetController.onRowSelect}" update=":timesheetForm" />
                         <p:ajax event="rowUnselect" listener="#{timesheetController.onRowUnselect}" update=":timesheetForm" />
-                        <p:column style="text-align: left; width: 3%; padding: .25em; margin: 0;">
-                            <f:facet name="header">
-                                <h:outputText value="#{msgs.id}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.id}"/>
-                        </p:column>
-                        <p:column style="text-align: left; width: 5%; padding: .25em; margin: 0;">
+                        
+                        <p:column style="text-align: left; width: 8%; padding: .25em; margin: 0;">
                             <f:facet name="header">
                                 <h:outputText value="#{msgs.date}"/>
                             </f:facet>

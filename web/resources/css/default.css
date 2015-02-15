@@ -7,7 +7,7 @@ body {
 h1 {
     font-family: Arial, "Arial CE", "Lucida Grande CE", lucida, "Helvetica CE", sans-serif;
     border-bottom: 1px solid #AFAFAF; 
-    font-size:  16px;
+/*    font-size:  1.25em;*/
     font-weight: bold;
     margin: 0px;
     padding: 0px;
@@ -24,4 +24,17 @@ a:link:hover, a:visited:hover  {
   color: #045491;
   font-weight : bold;
   text-decoration : underline;
+}
+
+/*
+.ui-menu {
+    width: 10em;
+    font-size: 1.1em;
+    margin: 0;
+    padding: 0;
+}
+*/
+
+.ui-datatable {
+    font-size: .75em;
 }
