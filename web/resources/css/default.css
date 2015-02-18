@@ -26,8 +26,8 @@ a:link:hover, a:visited:hover  {
   text-decoration : underline;
 }
 
-.ui-menu {
-    width: 10em;
+#left .menu {
+    width: 100% !important;
     font-size: 1.1em;
     margin: 0;
     padding: 0;

@@ -11,6 +11,7 @@
     float: left;
     width: 13%;
     background: #c2dfef;
+    background-repeat: no-repeat !important;
 }
 
 #content {

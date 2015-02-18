@@ -95,13 +95,17 @@
                                              process="timesheetTable" 
                                              icon="ui-icon-search" value="Preview Invoice" 
                                              action="#{timesheetController.prepareInvoice()}"
-                                             disabled="#{timesheetController.selectedItems.size()==0 || timesheetController.selectedItems==null}"/>
+                                             disabled="#{timesheetController.selectedItems.size()==0 || timesheetController.selectedItems==null}">
+                                <f:param id="selectedClientId" value="#{sessionBean.clientId}"/>
+                            </p:commandButton>
+                            
                         </f:facet>
                     </p:dataTable>
                 </h:panelGroup>
                 <br />
                 <p:commandButton action="#{timesheetController.prepareCreate}" 
-                                 value="#{msgs.New}" rendered="#{timesheetController.items.rowCount > 0}"/>
+                                 value="#{msgs.New}" rendered="#{timesheetController.items.rowCount > 0}">
+                </p:commandButton>
                 
             </h:form>
         </ui:define>

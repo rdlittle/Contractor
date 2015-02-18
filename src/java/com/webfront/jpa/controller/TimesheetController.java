@@ -1,5 +1,6 @@
 package com.webfront.jpa.controller;
 
+import com.webfront.beans.ContractorSession;
 import com.webfront.beans.TimesheetFacade;
 import com.webfront.entity.Periods;
 import com.webfront.entity.Timesheet;
@@ -20,6 +21,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
@@ -119,7 +121,13 @@ public class TimesheetController implements Serializable {
 
     public String prepareInvoice() {
         if (!selectedItems.isEmpty()) {
-            Integer cid = getFacade().clientId;
+            FacesContext fc = FacesContext.getCurrentInstance();
+            ExternalContext ec = fc.getExternalContext();
+            ContractorSession sb = (ContractorSession) ec.getSessionMap().get("sessionBean");
+            Integer cid=null;
+            if (sb!=null) {
+                cid=sb.getClientId();
+            }
             if (cid != null) {
                 setClientName(getFacade().getClientName(cid));
             }

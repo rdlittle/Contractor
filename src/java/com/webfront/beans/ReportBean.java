@@ -22,7 +22,7 @@ import javax.sql.DataSource;
 @SessionScoped
 public class ReportBean extends AbstractReportBean {
 
-    private final String COMPILE_FILE_NAME = "my_first_report";
+    private final String COMPILE_FILE_NAME = "Invoice";
     private String invNum;
     private String invDate;
     private Integer clientId;
