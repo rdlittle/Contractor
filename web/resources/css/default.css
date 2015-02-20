@@ -36,3 +36,7 @@ a:link:hover, a:visited:hover  {
 .ui-datatable {
     font-size: .75em;
 }
+
+.radio_button td label {
+    padding-right: 1em !important;
+}

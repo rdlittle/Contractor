@@ -51,6 +51,7 @@ public class Timesheet implements Serializable {
     public Timesheet() {
         this.id=null;
         this.invNum="";
+        this.posted=false;
     }
 
     public Timesheet(Integer id) {
