@@ -19,17 +19,23 @@
             <h:form>
                 <p:panelGrid columns="2" columnClasses="leftCol,rightCol">
                     <h:outputLabel value="#{msgs.id}" for="id" rendered="false"/>
-                    <h:inputText id="id" value="#{timesheetController.selected.id}" title="#{msgs.id}" required="false" requiredMessage="#{msgs.CreateTimesheetRequiredMessage_id}" rendered="false"/>
+                    <h:inputText id="id" value="#{timesheetController.selected.id}" title="#{msgs.id}" required="false" rendered="false"/>
+                    
+                    <h:outputLabel value="#{msgs.clientName}" for="client" />
+                    <h:inputText id="clientID" value="#{sessionBean.clientId}" title="#{msgs.clientID}" rendered="false"/>
+                    <h:outputText id="client" value="#{sessionBean.clientName}"/>
+                    
                     <h:outputLabel value="#{msgs.date}" for="date" />
                     <p:calendar id="date" pattern="MM/dd/yyyy" value="#{timesheetController.selected.date}" mode="popup" showOn="button" title="#{msgs.date}" >
                         <f:convertDateTime pattern="MM/dd/yyyy" />
                     </p:calendar>
+                    
                     <h:outputLabel value="#{msgs.description}" for="description" />
                     <h:inputText id="description" value="#{timesheetController.selected.description}" title="#{msgs.description}" size="100"/>
+                    
                     <h:outputLabel value="#{msgs.hours}" for="hours" />
                     <h:inputText id="hours" value="#{timesheetController.selected.hours}" title="#{msgs.hours}" />
-                    <h:outputLabel value="#{msgs.clientID}" for="clientID" />
-                    <h:inputText id="clientID" value="#{sessionBean.clientId}" title="#{msgs.clientID}" />
+                    
                     <h:outputLabel value="#{msgs.posted}" for="posted" />
                     <p:selectOneRadio id="posted" value="#{timesheetController.selected.posted}" styleClass="radio_button">
                         <f:selectItem itemLabel="Yes" itemValue="true"/>

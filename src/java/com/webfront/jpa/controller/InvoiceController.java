@@ -1,5 +1,6 @@
 package com.webfront.jpa.controller;
 
+import com.webfront.beans.ContractorSession;
 import com.webfront.beans.InvoiceFacade;
 import com.webfront.entity.Invoice;
 import com.webfront.jpa.controller.util.JsfUtil;
@@ -11,6 +12,7 @@ import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.convert.Converter;
 import javax.faces.convert.FacesConverter;
@@ -87,6 +89,15 @@ public class InvoiceController implements Serializable {
     public void init() {
         if (!FacesContext.getCurrentInstance().isPostback()) {
             items = getPagination().createPageDataModel();
+            FacesContext fc = FacesContext.getCurrentInstance();
+            ExternalContext ec = fc.getExternalContext();
+            ContractorSession sb = (ContractorSession) ec.getSessionMap().get("sessionBean");
+            if (sb != null) {
+                Integer cid = sb.getClientId();
+                if (cid != null) {
+                    sb.setClientName(getFacade().getClientName(cid));
+                }
+            }
         }
     }
 

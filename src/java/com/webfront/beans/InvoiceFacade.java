@@ -4,6 +4,7 @@
  */
 package com.webfront.beans;
 
+import com.webfront.entity.Client;
 import com.webfront.entity.Invoice;
 import java.util.List;
 import java.util.Map;
@@ -79,6 +80,14 @@ public class InvoiceFacade extends AbstractFacade<Invoice> {
         }
         return null;
     }
+    
+    @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
+    public String getClientName(Integer id) {
+        Query query = getEntityManager().createNamedQuery("Client.findById", Client.class);
+        query.setParameter("id", id);
+        Client c = (Client) query.getSingleResult();
+        return c.getName();
+    }    
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public String getNextInv() {

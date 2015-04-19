@@ -20,22 +20,30 @@
                 <p:panelGrid columns="2" columnClasses="leftCol,rightCol">
                     <h:outputLabel value="#{msgs.id}" for="id" rendered="false"/>
                     <h:inputText id="id" value="#{InvoiceController.selected.id}" title="#{msgs.id}" rendered="false"/>
+                    
                     <h:outputLabel value="#{msgs.invDate}" for="invDate" />
                     <p:calendar id="invDate" value="#{InvoiceController.selected.invDate}" title="#{msgs.invDate}" >
                         <f:convertDateTime pattern="MM/dd/yyyy" />
                     </p:calendar>
+                    
                     <h:outputLabel value="#{msgs.invoice}" for="invoice" rendered="true" />
                     <h:inputText id="invoice" value="#{InvoiceController.selected.invoice}" title="#{msgs.invoice}" rendered="true" disabled="true"/>
+                    
                     <h:outputLabel value="#{msgs.amount}" for="amount" />
                     <h:inputText id="amount" value="#{InvoiceController.selected.amount}" title="#{msgs.amount}" />
+                    
                     <h:outputLabel value="#{msgs.client}" for="client" />
-                    <h:inputText id="client" value="#{InvoiceController.selected.client}" title="#{msgs.client}" />
+                    <h:inputText id="client" value="#{sessionBean.clientName}" title="#{msgs.client}" />
+                    
                     <h:outputLabel value="#{msgs.posted}" for="posted" />
                     <p:selectBooleanCheckbox id="posted" value="#{InvoiceController.selected.posted}"/>
+                    
                     <h:outputLabel value="#{msgs.paid}" for="paid" />
                     <p:selectBooleanCheckbox id="paid" value="#{InvoiceController.selected.paid}"/>
+                    
                     <h:outputLabel value="#{msgs.checkNum}" for="checkNum"/>
                     <h:inputText id="checkNum" value="#{InvoiceController.selected.checkNum}" title="#{msgs.checkNum}" />
+                    
                     <h:outputLabel value="#{msgs.period}" for="period"/>
                     <h:inputText id="period" value="#{InvoiceController.selected.periodNum}" title="#{msgs.period}" />                    
                 </p:panelGrid>

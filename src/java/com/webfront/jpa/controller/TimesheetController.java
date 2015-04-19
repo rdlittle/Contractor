@@ -96,12 +96,11 @@ public class TimesheetController implements Serializable {
         return pagination;
     }
 
-   
     public void init() {
         recreateModel();
         getPagination().createPageDataModel();
     }
-    
+
     public String prepareList() {
         recreateModel();
         return "List?faces-redirect=true";
@@ -116,6 +115,20 @@ public class TimesheetController implements Serializable {
     public String prepareCreate() {
         current = new Timesheet();
         selectedItemIndex = -1;
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext ec = fc.getExternalContext();
+        ContractorSession sb = (ContractorSession) ec.getSessionMap().get("sessionBean");
+        Integer cid = null;
+        if (sb != null) {
+            cid = sb.getClientId();
+        }
+        if (cid != null && sb != null) {
+            current.setClientID(cid);
+            setClientName(getFacade().getClientName(cid));
+            if (this.clientName != null) {
+                sb.setClientName(this.clientName);
+            }
+        }
         return "Create?faces-redirect=true";
     }
 
@@ -124,9 +137,9 @@ public class TimesheetController implements Serializable {
             FacesContext fc = FacesContext.getCurrentInstance();
             ExternalContext ec = fc.getExternalContext();
             ContractorSession sb = (ContractorSession) ec.getSessionMap().get("sessionBean");
-            Integer cid=null;
-            if (sb!=null) {
-                cid=sb.getClientId();
+            Integer cid = null;
+            if (sb != null) {
+                cid = sb.getClientId();
             }
             if (cid != null) {
                 setClientName(getFacade().getClientName(cid));
@@ -174,6 +187,7 @@ public class TimesheetController implements Serializable {
 
     public String create() {
         try {
+            
             getFacade().create(current);
             recreateModel();
             return "List?faces-redirect=true&clientId=" + Integer.toString(current.getClientID());
@@ -369,11 +383,11 @@ public class TimesheetController implements Serializable {
     }
 
     public void onRowSelect(SelectEvent event) {
- 
+
     }
 
     public void onRowUnselect(UnselectEvent event) {
- 
+
     }
 
     @FacesConverter(forClass = Timesheet.class)

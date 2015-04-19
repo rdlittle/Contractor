@@ -16,7 +16,8 @@ import javax.faces.bean.SessionScoped;
 @SessionScoped
 public class ContractorSession {
     protected Integer clientId;
-
+    private String clientName;
+    
     /**
      * @return the clientId
      */
@@ -30,5 +31,20 @@ public class ContractorSession {
     public void setClientId(Integer cid) {
         clientId = cid;
     }
+
+    /**
+     * @return the clientName
+     */
+    public String getClientName() {
+        return clientName;
+    }
+
+    /**
+     * @param clientName the clientName to set
+     */
+    public void setClientName(String clientName) {
+        this.clientName = clientName;
+    }
+    
     
 }

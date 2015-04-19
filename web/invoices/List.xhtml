@@ -104,7 +104,8 @@
                 </h:panelGroup>
                 <br />
                 <p:commandButton action="#{InvoiceController.prepareCreate}" 
-                                 value="#{msgs.New}" rendered="#{InvoiceController.items.rowCount > 0}"/>
+                                 value="#{msgs.New}" rendered="#{InvoiceController.items.rowCount > 0}">
+                </p:commandButton>
             </h:form>
         </ui:define>
     </ui:composition>

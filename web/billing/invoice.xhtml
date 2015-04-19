@@ -80,8 +80,8 @@
                             <p:column style="vertical-align: middle;">
                                 <h:outputLabel value="Billing Period" for="periodSelector" rendered="true"/>
                             </p:column>
-                            <p:column>
-                                <p:panelGrid>
+                            <p:column style="float: right;">
+                                <h:panelGrid style="border: 0;">
                                     <p:row>
                                         <p:column>
                                             <p:selectOneMenu id="periodSelector" value="#{timesheetController.junk}">
@@ -103,7 +103,7 @@
                                             </p:commandButton>
                                         </p:column>
                                     </p:row>
-                                </p:panelGrid>
+                                </h:panelGrid>
                             </p:column>
                         </p:row>
 

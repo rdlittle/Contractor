@@ -105,6 +105,7 @@
                 <br />
                 <p:commandButton action="#{timesheetController.prepareCreate}" 
                                  value="#{msgs.New}" rendered="#{timesheetController.items.rowCount > 0}">
+                    <f:param id="selectedClientId" value="#{client.name}"/>
                 </p:commandButton>
                 
             </h:form>
