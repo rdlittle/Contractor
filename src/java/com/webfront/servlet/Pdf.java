@@ -11,7 +11,9 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.Logger;
 import javax.annotation.Resource;
+import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -20,8 +22,11 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
-import net.sf.jasperreports.engine.*;
-import net.sf.jasperreports.engine.util.JRLoader;
+import net.sf.jasperreports.engine.JRException;
+import net.sf.jasperreports.engine.JRRuntimeException;
+import net.sf.jasperreports.engine.JasperExportManager;
+import net.sf.jasperreports.engine.JasperPrint;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
 import net.sf.jasperreports.j2ee.servlets.BaseHttpServlet;
 
 /**
@@ -32,51 +37,63 @@ import net.sf.jasperreports.j2ee.servlets.BaseHttpServlet;
 public class Pdf extends HttpServlet {
 
     /**
-     * Processes requests for both HTTP
-     * <code>GET</code> and
-     * <code>POST</code> methods.
+     * Processes requests for both HTTP <code>GET</code> and <code>POST</code> methods.
      *
      * @param request servlet request
      * @param response servlet response
      * @throws ServletException if a servlet-specific error occurs
      * @throws IOException if an I/O error occurs
      */
-    @Resource(name = "contractor")
+    @Resource(name = "jdbc/contractor")
     private DataSource dataSource;
-    
-    public void setDataSource(DataSource ds) {
-        this.dataSource = ds;
-    }
 
+//    public void setDataSource(DataSource ds) {
+//        this.dataSource = ds;
+//    }
     public DataSource getDataSource() {
         return this.dataSource;
     }
-    
+
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
+
         ServletContext context = this.getServletConfig().getServletContext();
-        File reportFile = new File(context.getRealPath("/reports/Invoice.jasper"));
+        File reportFile = new File(getServletConfig().getServletContext().getRealPath("/reports/Invoice.jasper"));
         if (!reportFile.exists()) {
             throw new JRRuntimeException("File Invoice.jasper not found. The report design must be compiled first.");
         }
 
-        JasperPrint jasperPrint = null;
         Map parameters = new HashMap();
-        byte[] bytes=null;
+        String reportName = (String) request.getAttribute("REPORT_NAME");
+        parameters = (HashMap) request.getAttribute("REPORT_PARAMS");
+        JasperPrint jasperPrint = (JasperPrint) request.getAttribute("JASPER_PRINT");
+        
+        byte[] bytes = null;
         try {
             Connection conn = getDataSource().getConnection();
-            JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile(reportFile.getPath());
-            bytes = JasperRunManager.runReportToPdf(jasperReport,parameters,conn);
+//            JasperReport jasperReport = (JasperReport) JRLoader.loadObjectFromFile(reportFile.getPath());
+            bytes = JasperExportManager.exportReportToPdf(jasperPrint);
+            
             //jasperPrint =
             //        JasperFillManager.fillReport(jasperReport, parameters, conn);
             //            //response.setContentType("application/pdf");  
-            
+//        if (jasperPrint != null) {
+
+            response.setContentType("application/octect-stream");
+            response.setContentType("application/pdf");
+            response.setHeader("Content-Disposition", "inline, filename=myReport.pdf");
+            response.setContentLength(bytes.length);
+            ServletOutputStream outputStream = response.getOutputStream();
+            outputStream.write(bytes, 0, bytes.length);
+            outputStream.flush();
+            outputStream.close();
+
+//        }
         } catch (SQLException e) {
         } catch (JRException e) {
             PrintWriter out = response.getWriter();
             response.setContentType("text/html");
-            
+
             out.println("<html>");
             out.println("<head>");
             out.println("<title>JasperReports - Web Application Sample</title>");
@@ -89,48 +106,23 @@ public class Pdf extends HttpServlet {
             out.println("<pre>");
 
             e.printStackTrace(out);
+            Logger.getLogger("out").fine(e.getMessage());
 
             out.println("</pre>");
 
             out.println("</body>");
             out.println("</html>");
-
+            out.flush();
+            out.close();
+            FacesContext.getCurrentInstance().responseComplete();
             return;
         }
-        if (jasperPrint != null) {
-            //JRPdfExporter exporter = new JRPdfExporter();
 
-            response.setContentType("application/pdf");
-            response.setHeader("Content-Disposition","inline, filename=myReport.pdf");
-            response.setContentLength(bytes.length);
-            ServletOutputStream outputStream = response.getOutputStream();
-            outputStream.write(bytes, 0, bytes.length);
-            outputStream.flush();
-            outputStream.close();
- 
-//            ObjectOutputStream oos = new ObjectOutputStream(outputStream);
-//            exporter.setParameter(JRExporterParameter.OUTPUT_STREAM, oos);
-//            exporter.setParameter(JRExporterParameter.JASPER_PRINT, jasperPrint);
-//            
-//            try {
-//                exporter.exportReport();
-//                JasperExportManager.exportReportToPdfStream(jasperPrint,outputStream);
-//            } catch (Exception e) {
-//                
-//            }
-//            
-//            oos.flush();
-//            oos.close();
-//
-//            outputStream.flush();
-//            outputStream.close();
-        }
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
     /**
-     * Handles the HTTP
-     * <code>GET</code> method.
+     * Handles the HTTP <code>GET</code> method.
      *
      * @param request servlet request
      * @param response servlet response
@@ -144,8 +136,7 @@ public class Pdf extends HttpServlet {
     }
 
     /**
-     * Handles the HTTP
-     * <code>POST</code> method.
+     * Handles the HTTP <code>POST</code> method.
      *
      * @param request servlet request
      * @param response servlet response

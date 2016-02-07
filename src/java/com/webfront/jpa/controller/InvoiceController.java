@@ -6,16 +6,14 @@ import com.webfront.entity.Invoice;
 import com.webfront.jpa.controller.util.JsfUtil;
 import com.webfront.jpa.controller.util.PaginationHelper;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
-import javax.faces.convert.Converter;
-import javax.faces.convert.FacesConverter;
 import javax.faces.model.DataModel;
 import javax.faces.model.ListDataModel;
 import javax.faces.model.SelectItem;
@@ -33,7 +31,7 @@ public class InvoiceController implements Serializable {
     private List<Invoice> invoiceList;
 
     public InvoiceController() {
-
+        invoiceList = new ArrayList<>();
     }
 
     public String Html() {
@@ -52,15 +50,29 @@ public class InvoiceController implements Serializable {
         return current;
     }
 
-    private InvoiceFacade getFacade() {
+    public InvoiceFacade getFacade() {
         return ejbFacade;
     }
 
     public List<Invoice> getInvoiceList() {
         List<Invoice> list;
-        list = null;
         list = getFacade().findClientInvoices();
-        return list;
+        if (list == null) {
+            return new ArrayList<>();
+        }
+        invoiceList.clear();
+        invoiceList.addAll(list);
+        return invoiceList;
+    }
+
+    public void onChangeclient() {
+        List<Invoice> list;
+        list = getFacade().findClientInvoices();
+        if (list == null) {
+            return;
+        }
+        invoiceList.clear();
+        invoiceList.addAll(list);
     }
 
     public PaginationHelper getPagination() {
@@ -237,42 +249,43 @@ public class InvoiceController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-    @FacesConverter(forClass = Invoice.class)
-    public static class InvoicesControllerConverter implements Converter {
-
-        @Override
-        public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
-            if (value == null || value.length() == 0) {
-                return null;
-            }
-            InvoiceController controller = (InvoiceController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "InvoicesController");
-            return controller.ejbFacade.find(getKey(value));
-        }
-
-        java.lang.Integer getKey(String value) {
-            java.lang.Integer key;
-            key = Integer.valueOf(value);
-            return key;
-        }
-
-        String getStringKey(java.lang.Integer value) {
-            StringBuilder sb = new StringBuilder();
-            sb.append(value);
-            return sb.toString();
-        }
-
-        @Override
-        public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
-            if (object == null) {
-                return null;
-            }
-            if (object instanceof Invoice) {
-                Invoice o = (Invoice) object;
-                return getStringKey(o.getId());
-            } else {
-                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + InvoiceController.class.getName());
-            }
-        }
-    }
+//    @FacesConverter(forClass = Invoice.class)
+//    public static class InvoiceConverter implements Converter {
+//
+//        @Override
+//        public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
+//            if (value == null || value.length() == 0) {
+//                return null;
+//            }
+//            InvoiceController controller = (InvoiceController) facesContext.getApplication().getELResolver().
+//                    getValue(facesContext.getELContext(), null, "InvoiceController");
+//            Invoice i = controller.ejbFacade.find(getKey(value));
+//            return i;
+//        }
+//
+//        java.lang.Integer getKey(String value) {
+//            java.lang.Integer key;
+//            key = Integer.valueOf(value);
+//            return key;
+//        }
+//
+//        String getStringKey(java.lang.Integer value) {
+//            StringBuilder sb = new StringBuilder();
+//            sb.append(value);
+//            return sb.toString();
+//        }
+//
+//        @Override
+//        public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
+//            if (object == null) {
+//                return null;
+//            }
+//            if (object instanceof Invoice) {
+//                Invoice o = (Invoice) object;
+//                return getStringKey(o.getId());
+//            } else {
+//                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + InvoiceController.class.getName());
+//            }
+//        }
+//    }
 }

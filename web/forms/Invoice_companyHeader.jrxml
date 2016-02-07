@@ -18,17 +18,18 @@
 	<title>
 		<band height="44" splitType="Stretch">
 			<rectangle>
-				<reportElement x="0" y="0" width="535" height="43" forecolor="#99FF99" backcolor="#99FF99" uuid="6d08b49b-1f48-4769-9ba2-3f3710e6d0f1"/>
+				<reportElement uuid="6d08b49b-1f48-4769-9ba2-3f3710e6d0f1" x="0" y="0" width="535" height="43" forecolor="#99FF99" backcolor="#99FF99"/>
 			</rectangle>
 			<staticText>
-				<reportElement x="0" y="0" width="141" height="43" uuid="70e9ec0f-0641-4ccc-9f95-7e5080a11e10"/>
+				<reportElement uuid="70e9ec0f-0641-4ccc-9f95-7e5080a11e10" x="0" y="0" width="141" height="43"/>
 				<textElement>
 					<font fontName="SansSerif" size="36" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Invoice]]></text>
 			</staticText>
 			<textField pattern="MM/dd/yyyy">
-				<reportElement x="435" y="24" width="100" height="20" uuid="b7012170-da88-4e57-8adb-2ee109ae5bfe"/>
+				<reportElement uuid="b7012170-da88-4e57-8adb-2ee109ae5bfe" x="435" y="24" width="100" height="20"/>
+				<textElement/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 		</band>
@@ -36,24 +37,28 @@
 	<detail>
 		<band height="87" splitType="Stretch">
 			<textField>
-				<reportElement x="0" y="26" width="300" height="20" uuid="2d7dc977-fcc8-4108-b10a-d75083c4ea30"/>
+				<reportElement uuid="2d7dc977-fcc8-4108-b10a-d75083c4ea30" x="0" y="26" width="300" height="20"/>
+				<textElement/>
 				<textFieldExpression><![CDATA[$F{address}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="66" width="100" height="20" uuid="7bf7879d-b6ea-4ba0-97a3-cf7cd5a1ab36"/>
+				<reportElement uuid="7bf7879d-b6ea-4ba0-97a3-cf7cd5a1ab36" x="0" y="66" width="100" height="20"/>
+				<textElement/>
 				<textFieldExpression><![CDATA[$F{phone1}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="46" width="300" height="20" uuid="5be746a7-c739-4840-979b-247f64de2434"/>
+				<reportElement uuid="5be746a7-c739-4840-979b-247f64de2434" x="0" y="46" width="300" height="20"/>
+				<textElement/>
 				<textFieldExpression><![CDATA[$F{cityStateZip}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="0" y="6" width="300" height="20" uuid="b7795446-f274-47d7-8a44-db70237eccd0"/>
+				<reportElement uuid="b7795446-f274-47d7-8a44-db70237eccd0" x="0" y="6" width="300" height="20"/>
+				<textElement/>
 				<textFieldExpression><![CDATA[$F{name}]]></textFieldExpression>
 			</textField>
 			<image>
-				<reportElement x="384" y="6" width="76" height="80" uuid="f3309a80-58b9-4a56-b4f0-da23995e1a2f"/>
-				<imageExpression><![CDATA["/reports/computer.gif"]]></imageExpression>
+				<reportElement uuid="f3309a80-58b9-4a56-b4f0-da23995e1a2f" x="384" y="6" width="76" height="80"/>
+				<imageExpression><![CDATA["/resources/images/computer.gif"]]></imageExpression>
 			</image>
 		</band>
 	</detail>

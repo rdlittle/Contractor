@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package com.webfront.beans;
 
 import com.webfront.entity.Client;
@@ -18,34 +14,31 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-/**
- *
- * @author rlittle
- */
 @Stateless
-public class TimesheetFacade extends AbstractFacade<Timesheet> {
+public class TimesheetFacade  extends AbstractFacade<Timesheet> {
 
     @PersistenceContext(unitName = "ContractorPU")
     private EntityManager em;
 
-    @Override
     protected EntityManager getEntityManager() {
-        return em;
+        return this.em;
     }
 
-    @Override
     public List<Timesheet> findRange(int[] range) {
         FacesContext fc = FacesContext.getCurrentInstance();
         ExternalContext et = fc.getExternalContext();
         Map<String, Object> map = et.getSessionMap();
         ContractorSession sb = (ContractorSession) map.get("sessionBean");
+        if (sb == null) {
+            return null;
+        }
         if (sb.clientId != null) {
-            clientId = sb.clientId;
+            this.clientId = sb.clientId;
         }
         String stmt = "SELECT t FROM Timesheet t WHERE t.clientID = ?1 ORDER BY t.id DESC";
         Query query = getEntityManager().createQuery(stmt, Timesheet.class);
-        if (clientId != null) {
-            query.setParameter(1, clientId);
+        if (this.clientId != null) {
+            query.setParameter(1, this.clientId);
             query.setMaxResults(range[1] - range[0]);
             query.setFirstResult(range[0]);
             return query.getResultList();
@@ -65,7 +58,7 @@ public class TimesheetFacade extends AbstractFacade<Timesheet> {
     public String getNextInv() {
         Query query = getEntityManager().createNamedQuery("SeqControl.findById", Integer.class);
         query.setParameter("id", "NEXT_INV");
-        Integer i = (Integer) query.getSingleResult() + 1;
+        Integer i = Integer.valueOf(((Integer) query.getSingleResult()).intValue() + 1);
         return i.toString();
     }
 
@@ -84,9 +77,9 @@ public class TimesheetFacade extends AbstractFacade<Timesheet> {
         Map<String, Object> map = et.getSessionMap();
         ContractorSession sb = (ContractorSession) map.get("sessionBean");
         if (sb.clientId != null) {
-            clientId = sb.clientId;
+            this.clientId = sb.clientId;
         }
-        String sql = "select r.rate from rates r inner join client c on r.id = c.rate where c.id = " + clientId;
+        String sql = "select r.rate from rates r inner join client c on r.id = c.rate where c.id = " + this.clientId;
         Query query = getEntityManager().createNativeQuery(sql);
         Float rate = (Float) query.getSingleResult();
         return rate;
@@ -95,5 +88,4 @@ public class TimesheetFacade extends AbstractFacade<Timesheet> {
     public TimesheetFacade() {
         super(Timesheet.class);
     }
-
 }

@@ -28,7 +28,7 @@
     <!-- JasperReports Servlet -->
     <servlet>
         <servlet-name>PdfServlet</servlet-name>
-        <servlet-class>net.sf.jasperreports.j2ee.servlets.PdfServlet</servlet-class>
+        <servlet-class>com.webfront.servlet.Pdf</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>JExcelApiServlet</servlet-name>

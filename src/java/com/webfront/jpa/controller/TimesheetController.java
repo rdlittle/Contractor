@@ -41,59 +41,54 @@ public class TimesheetController implements Serializable {
     private Timesheet current;
     private DataModel items = null;
     @EJB
-    private com.webfront.beans.TimesheetFacade ejbFacade;
+    private TimesheetFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private List<Timesheet> selectedItems;
-
     private Float totalHours;
     private Float invoiceTotal;
     private Float rate;
     private Date invoiceDate;
     private String clientName;
-
     @Transient
     private Periods selectedPeriod;
     private String junk;
 
     public TimesheetController() {
-        selectedItems = new ArrayList<>();
+        this.selectedItems = new ArrayList();
     }
 
     public Timesheet getSelected() {
-        if (current == null) {
-            current = new Timesheet();
-            selectedItemIndex = -1;
+        if (this.current == null) {
+            this.current = new Timesheet();
+            this.selectedItemIndex = -1;
         }
-        return current;
+        return this.current;
     }
 
     private TimesheetFacade getFacade() {
-        return ejbFacade;
+        return this.ejbFacade;
     }
 
     public PaginationHelper getPagination() {
-        if (pagination == null) {
-            pagination = new PaginationHelper(10) {
-
-                @Override
+        if (this.pagination == null) {
+            this.pagination = new PaginationHelper(10) {
                 public int getItemsCount() {
-                    return getFacade().count();
+                    return TimesheetController.this.getFacade().count();
                 }
 
-                @Override
                 public DataModel createPageDataModel() {
                     String dir = getOrder();
-                    ListDataModel list;
+
                     int[] range = new int[2];
                     range[0] = getPageFirstItem();
-                    range[1] = getPageFirstItem() + getPageSize();
-                    list = new ListDataModel(getFacade().findRange(range));
+                    range[1] = (getPageFirstItem() + getPageSize());
+                    ListDataModel list = new ListDataModel(TimesheetController.this.getFacade().findRange(range));
                     return list;
                 }
             };
         }
-        return pagination;
+        return this.pagination;
     }
 
     public void init() {
@@ -107,14 +102,14 @@ public class TimesheetController implements Serializable {
     }
 
     public String prepareView() {
-        current = (Timesheet) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        this.current = ((Timesheet) getItems().getRowData());
+        this.selectedItemIndex = (this.pagination.getPageFirstItem() + getItems().getRowIndex());
         return "View?faces-redirect=true";
     }
 
     public String prepareCreate() {
-        current = new Timesheet();
-        selectedItemIndex = -1;
+        this.current = new Timesheet();
+        this.selectedItemIndex = -1;
         FacesContext fc = FacesContext.getCurrentInstance();
         ExternalContext ec = fc.getExternalContext();
         ContractorSession sb = (ContractorSession) ec.getSessionMap().get("sessionBean");
@@ -122,8 +117,8 @@ public class TimesheetController implements Serializable {
         if (sb != null) {
             cid = sb.getClientId();
         }
-        if (cid != null && sb != null) {
-            current.setClientID(cid);
+        if ((cid != null) && (sb != null)) {
+            this.current.setClientID(cid);
             setClientName(getFacade().getClientName(cid));
             if (this.clientName != null) {
                 sb.setClientName(this.clientName);
@@ -133,7 +128,7 @@ public class TimesheetController implements Serializable {
     }
 
     public String prepareInvoice() {
-        if (!selectedItems.isEmpty()) {
+        if (!this.selectedItems.isEmpty()) {
             FacesContext fc = FacesContext.getCurrentInstance();
             ExternalContext ec = fc.getExternalContext();
             ContractorSession sb = (ContractorSession) ec.getSessionMap().get("sessionBean");
@@ -147,39 +142,38 @@ public class TimesheetController implements Serializable {
             Date d = getFacade().getPeriod();
             Calendar cal = Calendar.getInstance(Locale.getDefault());
             cal.setTime(d);
-            cal.add(Calendar.DAY_OF_YEAR, 1);
+            cal.add(6, 1);
             setInvoiceDate(cal.getTime());
             setRate(getFacade().getRate());
-            setTotalHours(new Float(0.0));
-            setInvoiceTotal(new Float(0.0));
-            for (Timesheet ts : selectedItems) {
-                totalHours += ts.getHours();
+            setTotalHours(new Float(0.0D));
+            setInvoiceTotal(new Float(0.0D));
+            for (Timesheet ts : this.selectedItems) {
+                this.totalHours = Float.valueOf(this.totalHours.floatValue() + ts.getHours().floatValue());
             }
-            setInvoiceTotal(totalHours * getRate());
+            setInvoiceTotal(Float.valueOf(this.totalHours.floatValue() * getRate().floatValue()));
             return "/billing/invoice?faces-redirect=true";
         }
         return null;
     }
 
     public Periods getSelectedPeriod() {
-        return selectedPeriod;
+        return this.selectedPeriod;
     }
 
     public void setSelectedPeriods(Periods p) {
-        selectedPeriod = p;
+        this.selectedPeriod = p;
     }
 
     public void changePeriod(AjaxBehaviorEvent evt) {
         try {
-            SelectOneMenu menu;
-            menu = (SelectOneMenu) evt.getSource();
+            SelectOneMenu menu = (SelectOneMenu) evt.getSource();
             String value = menu.getValue().toString();
-            DateFormat df = DateFormat.getDateInstance(DateFormat.SHORT, Locale.getDefault());
+            DateFormat df = DateFormat.getDateInstance(3, Locale.getDefault());
             Date d = df.parse(value);
             Calendar cal = Calendar.getInstance(Locale.getDefault());
             cal.setTime(d);
-            cal.add(Calendar.DAY_OF_YEAR, 1);
-            invoiceDate = cal.getTime();
+            cal.add(6, 1);
+            this.invoiceDate = cal.getTime();
         } catch (ParseException ex) {
             Logger.getLogger(TimesheetController.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -187,36 +181,35 @@ public class TimesheetController implements Serializable {
 
     public String create() {
         try {
-            
-            getFacade().create(current);
+            getFacade().create(this.current);
             recreateModel();
-            return "List?faces-redirect=true&clientId=" + Integer.toString(current.getClientID());
+            return "List?faces-redirect=true&clientId=" + Integer.toString(this.current.getClientID().intValue());
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Messages").getString("PersistenceError"));
-            return null;
         }
+        return null;
     }
 
     public String prepareEdit() {
-        current = (Timesheet) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        this.current = ((Timesheet) getItems().getRowData());
+        this.selectedItemIndex = (this.pagination.getPageFirstItem() + getItems().getRowIndex());
         return "Edit?faces-redirect=true";
     }
 
     public String update() {
         try {
-            getFacade().edit(current);
+            getFacade().edit(this.current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Messages").getString("Updated"));
             return "List?faces-redirect=true";
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Messages").getString("PersistenceError"));
-            return null;
         }
+        return null;
     }
 
     public String destroy() {
-        current = (Timesheet) getItems().getRowData();
-        selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
+        this.current = ((Timesheet) getItems().getRowData());
+        this.selectedItemIndex = (this.pagination.getPageFirstItem() + getItems().getRowIndex());
         performDestroy();
         recreatePagination();
         recreateModel();
@@ -227,18 +220,16 @@ public class TimesheetController implements Serializable {
         performDestroy();
         recreateModel();
         updateCurrentItem();
-        if (selectedItemIndex >= 0) {
+        if (this.selectedItemIndex >= 0) {
             return "View?faces-redirect=true";
-        } else {
-            // all items were removed - go back to list
-            recreateModel();
-            return "List?faces-redirect=true";
         }
+        recreateModel();
+        return "List?faces-redirect=true";
     }
 
     private void performDestroy() {
         try {
-            getFacade().remove(current);
+            getFacade().remove(this.current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Messages").getString("Deleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Messages").getString("PersistenceError"));
@@ -247,33 +238,31 @@ public class TimesheetController implements Serializable {
 
     private void updateCurrentItem() {
         int count = getFacade().count();
-        if (selectedItemIndex >= count) {
-            // selected index cannot be bigger than number of items:
-            selectedItemIndex = count - 1;
-            // go to previous page if last page disappeared:
-            if (pagination.getPageFirstItem() >= count) {
-                pagination.previousPage();
+        if (this.selectedItemIndex >= count) {
+            this.selectedItemIndex = (count - 1);
+            if (this.pagination.getPageFirstItem() >= count) {
+                this.pagination.previousPage();
             }
         }
-        if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
+        if (this.selectedItemIndex >= 0) {
+            this.current = ((Timesheet) getFacade().findRange(new int[]{this.selectedItemIndex, this.selectedItemIndex + 1}).get(0));
         }
     }
 
     public DataModel getItems() {
-        if (items == null) {
+        if (this.items == null) {
             getPagination().setOrder("desc");
-            items = getPagination().createPageDataModel();
+            this.items = getPagination().createPageDataModel();
         }
-        return items;
+        return this.items;
     }
 
     private void recreateModel() {
-        items = null;
+        this.items = null;
     }
 
     private void recreatePagination() {
-        pagination = null;
+        this.pagination = null;
     }
 
     public String next() {
@@ -289,126 +278,93 @@ public class TimesheetController implements Serializable {
     }
 
     public SelectItem[] getItemsAvailableSelectMany() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), false);
+        return JsfUtil.getSelectItems(this.ejbFacade.findAll(), false);
     }
 
     public SelectItem[] getItemsAvailableSelectOne() {
-        return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
+        return JsfUtil.getSelectItems(this.ejbFacade.findAll(), true);
     }
 
-    /**
-     * @return the selectedItems
-     */
     public List<Timesheet> getSelectedItems() {
-        return selectedItems;
+        return this.selectedItems;
     }
 
-    /**
-     * @param selectedItems the selectedItems to set
-     */
     public void setSelectedItems(List<Timesheet> selectedItems) {
         this.selectedItems = selectedItems;
     }
 
     public Float getTotalHours() {
-        return totalHours;
+        return this.totalHours;
     }
 
     public void setTotalHours(Float hours) {
-        totalHours = hours;
+        this.totalHours = hours;
     }
 
     public Float getInvoiceTotal() {
-        return invoiceTotal;
+        return this.invoiceTotal;
     }
 
     public void setInvoiceTotal(Float total) {
-        invoiceTotal = total;
+        this.invoiceTotal = total;
     }
 
-    /**
-     * @return the invoiceDate
-     */
     public Date getInvoiceDate() {
-        return invoiceDate;
+        return this.invoiceDate;
     }
 
-    /**
-     * @param invoiceDate the invoiceDate to set
-     */
     public void setInvoiceDate(Date invoiceDate) {
         this.invoiceDate = invoiceDate;
     }
 
-    /**
-     * @return the junk
-     */
     public String getJunk() {
-        return junk;
+        return this.junk;
     }
 
-    /**
-     * @param junk the junk to set
-     */
     public void setJunk(String junk) {
         this.junk = junk;
     }
 
-    /**
-     * @return the rate
-     */
     public Float getRate() {
-        return rate;
+        return this.rate;
     }
 
-    /**
-     * @param rate the rate to set
-     */
     public void setRate(Float rate) {
         this.rate = rate;
     }
 
-    /**
-     * @return the clientName
-     */
     public String getClientName() {
-        return clientName;
+        return this.clientName;
     }
 
-    /**
-     * @param clientName the clientName to set
-     */
     public void setClientName(String clientName) {
         this.clientName = clientName;
     }
 
     public void onRowSelect(SelectEvent event) {
-
     }
 
     public void onRowUnselect(UnselectEvent event) {
-
     }
 
     @FacesConverter(forClass = Timesheet.class)
-    public static class TimesheetControllerConverter implements Converter {
+    public static class TimesheetControllerConverter
+            implements Converter {
 
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
-            if (value == null || value.length() == 0) {
+            if ((value == null) || (value.length() == 0)) {
                 return null;
             }
-            TimesheetController controller = (TimesheetController) facesContext.getApplication().getELResolver().
-                    getValue(facesContext.getELContext(), null, "timesheetController");
+            TimesheetController controller = (TimesheetController) facesContext.getApplication().getELResolver().getValue(facesContext.getELContext(), null, "timesheetController");
             return controller.ejbFacade.find(getKey(value));
         }
 
-        java.lang.Integer getKey(String value) {
-            java.lang.Integer key;
-            key = Integer.valueOf(value);
+        Integer getKey(String value) {
+            Integer key = Integer.valueOf(value);
             return key;
         }
 
-        String getStringKey(java.lang.Integer value) {
+        String getStringKey(Integer value) {
             StringBuffer sb = new StringBuffer();
             sb.append(value);
             return sb.toString();
@@ -418,12 +374,11 @@ public class TimesheetController implements Serializable {
             if (object == null) {
                 return null;
             }
-            if (object instanceof Timesheet) {
+            if ((object instanceof Timesheet)) {
                 Timesheet o = (Timesheet) object;
                 return getStringKey(o.getId());
-            } else {
-                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + TimesheetController.class.getName());
             }
+            throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + TimesheetController.class.getName());
         }
     }
 }

@@ -14,7 +14,9 @@
                 <f:param id="selectedClientId" name="clientId" value="#{sessionBean.clientId}"/>
             </h:commandLink>
             <h:commandLink action="/receipts/List?faces-redirect=true" value="#{msgs.leftNavReceipts}"/>
-            <h:commandLink action="/reports/InvoiceForm?faces-redirect=true" value="#{msgs.leftNavReports}"/>
+            <h:commandLink action="/reports/InvoiceForm?faces-redirect=true" value="#{msgs.leftNavReports}">
+                <f:param id="selectedClientId" name="clientId" value="#{sessionBean.clientId}"/>
+            </h:commandLink>
             <h:commandLink action="/sequence/List?faces-redirect=true" value="#{msgs.leftNavSequence}" />
             <h:commandLink action="/timesheet/List?faces-redirect=true" value="#{msgs.leftNavTimeSheet}"/>
         </h:panelGrid>

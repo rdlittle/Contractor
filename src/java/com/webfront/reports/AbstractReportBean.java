@@ -27,7 +27,7 @@ import net.sf.jasperreports.engine.JasperPrint;
  */
 public abstract class AbstractReportBean {
 
-    public enum ExportOption {
+    public static enum ExportOption {
 
         PDF, HTML, EXCEL, RTF
     }
@@ -36,11 +36,10 @@ public abstract class AbstractReportBean {
     private final String COMPILE_DIR = "/reports/";
 
     public AbstractReportBean() {
-        super();
         setExportOption(ExportOption.PDF);
     }
 
-    protected void prepareReport() throws JRException, IOException {
+    public void prepareReport() throws JRException, IOException {
         ExternalContext externalContext = FacesContext.getCurrentInstance().getExternalContext();
         ServletContext context = (ServletContext) externalContext.getContext();
 
@@ -51,29 +50,19 @@ public abstract class AbstractReportBean {
         if (!reportFile.exists()) {
             throw new JRRuntimeException("File Invoice.jasper not found. The report design must be compiled first.");
         }
-
         DataSource ds = getDataSource();
         JasperPrint jasperPrint = ReportConfigUtil.fillReport(reportFile, getReportParameters(), ds);
-
         if (getExportOption().equals(ExportOption.HTML)) {
             ReportConfigUtil.exportReportAsHtml(jasperPrint, response.getWriter());
         } else {
             String reportName = "invoice_";
-            reportName += getReportParameters().get("invNum");
-            reportName += "." + getExportOption();
-            
-            response.addHeader("Content-disposition", "attachment; filename="+reportName);
+            reportName = reportName + getReportParameters().get("invNum");
+            reportName = reportName + "." + getExportOption();
+
+            response.addHeader("Content-disposition", "attachment; filename=" + reportName);
             ServletOutputStream servletOutputStream = response.getOutputStream();
             JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
-            
-//            response.setContentType("application/pdf");  
-//            response.addHeader("Content-Disposition","attachment, filename=myReport.pdf");
-//            request.getSession().setAttribute(BaseHttpServlet.DEFAULT_JASPER_PRINT_SESSION_ATTRIBUTE, jasperPrint);
-//            response.sendRedirect(request.getContextPath() + "/servlets/reports/" + getExportOption());
-            
-//            FacesContext.getCurrentInstance().responseComplete();            
         }
-
         FacesContext.getCurrentInstance().responseComplete();
     }
 

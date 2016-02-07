@@ -150,10 +150,10 @@ public class Invoice implements Serializable {
         return true;
     }
 
-    @Override
-    public String toString() {
-        return "com.webfront.entity.Invoice[ id=" + id + " ]";
-    }
+//    @Override
+//    public String toString() {
+//        return "com.webfront.entity.Invoice[ id=" + id + " ]";
+//    }
 
     /**
      * @return the periodNum

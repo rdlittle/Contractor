@@ -9,7 +9,8 @@
 
 #left {
     float: left;
-    width: 13%;
+    clear: none;
+    width: 10%;
     background: #c2dfef;
     background-repeat: no-repeat !important;
 }
@@ -18,8 +19,8 @@
     position: relative;
     background: #c2dfef;
     width: 85%;
-    margin-left: 10px;
-    float: right;
+    
+    float:right;
     clear: none;
 }
 

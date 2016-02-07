@@ -6,6 +6,7 @@ package com.webfront.beans;
 
 import com.webfront.entity.Client;
 import com.webfront.entity.Invoice;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
@@ -39,8 +40,11 @@ public class InvoiceFacade extends AbstractFacade<Invoice> {
     public List<Invoice> findRange(int[] range) {
         FacesContext fc = FacesContext.getCurrentInstance();
         ExternalContext et = fc.getExternalContext();
-        Map<String, Object> map = et.getSessionMap();
+        Map<String, Object> map = et.getRequestMap();
         ContractorSession sb = (ContractorSession) map.get("sessionBean");
+        if(sb == null) {
+            return null;
+        }
         if (sb.clientId != null) {
             clientId = sb.clientId;
         }
@@ -69,25 +73,25 @@ public class InvoiceFacade extends AbstractFacade<Invoice> {
         ExternalContext et = fc.getExternalContext();
         Map<String, Object> map = et.getSessionMap();
         ContractorSession sb = (ContractorSession) map.get("sessionBean");
-        if (sb.clientId != null) {
+        if (sb != null && sb.clientId != null) {
             clientId = sb.clientId;
-        }
-        String stmt = "SELECT i FROM Invoice i WHERE i.client = ?1 ORDER BY i.id DESC";
-        Query query = getEntityManager().createQuery(stmt, Invoice.class);
-        if (clientId != null) {
-            query.setParameter(1, clientId);
-            return query.getResultList();
+            String stmt = "SELECT i FROM Invoice i WHERE i.client = ?1 ORDER BY i.id DESC";
+            Query query = getEntityManager().createQuery(stmt, Invoice.class);
+            if (clientId != null) {
+                query.setParameter(1, clientId);
+                return query.getResultList();
+            }
         }
         return null;
     }
-    
+
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public String getClientName(Integer id) {
         Query query = getEntityManager().createNamedQuery("Client.findById", Client.class);
         query.setParameter("id", id);
         Client c = (Client) query.getSingleResult();
         return c.getName();
-    }    
+    }
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public String getNextInv() {

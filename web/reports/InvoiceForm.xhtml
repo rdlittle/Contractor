@@ -3,7 +3,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:f="http://java.sun.com/jsf/core">
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
     <ui:composition template="/layout.xhtml">
         <ui:define name="windowTitle">
             <title>
@@ -15,30 +16,54 @@
                 <f:viewAction action="#{ReportBean.init()}" phase="UPDATE_MODEL_VALUES"/>
             </f:metadata>
             <h:form id="invoiceForm">
-                <h:outputLabel value="Client"/>
+                <p:panelGrid style="align-items: center; width: 50%;" styleClass="custom2">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="Client" style="font-size: x-large; margin-right: 1.5em; text-align: left;"/>
+                        </p:column>
 
-                <h:selectOneMenu id="clientSelector" value="#{sessionBean.clientId}" onchange="submit()">
-                    <f:selectItems id="clientList" var="client"
-                                   value="#{clientController.clientList}"
-                                   itemValue="#{client.id}"
-                                   itemLabel="#{client.name}"/>
-                </h:selectOneMenu>
-                &nbsp;
-                <h:outputLabel value="Invoice Date"/>
-                <h:selectOneMenu id="invoiceSelector" value="#{ReportBean.invNum}">
-                    <f:selectItems id="invoiceList" var="inv" 
-                                   value="#{InvoiceController.invoiceList}" 
-                                   itemValue="#{inv.invoice}" 
-                                   itemLabel="#{inv.shortDate}"/>
-                </h:selectOneMenu>
+                        <p:column>
+                            <p:outputLabel value="Invoice Date" style="font-size: x-large; margin-right: 1.5em; text-align: left;"/>
+                        </p:column>
 
-                <h:selectOneMenu id="exportOption" value="#{ReportBean.exportOption}">
-                    <f:selectItems value="#{ReportBean.exportOptions}"/>
-                </h:selectOneMenu>
+                        <p:column>
+                            <p:outputLabel value="Format" style="font-size: x-large; margin-right: 1.5em; text-align: left;"/>
+                        </p:column>
+                    </p:row>
 
-                <h:commandButton  action="#{ReportBean.execute}" value="Get Invoice" />
-                <h:commandLink value="Preview" onclick='doPopup(this);
-                            return false;'/>
+                    <p:row>
+                        <p:column>
+                            <p:selectOneMenu id="clientSelector" value="#{sessionBean.clientId}" onchange="submit()">
+                                <f:selectItems id="clientList" var="client"
+                                               value="#{clientController.clientList}"
+                                               itemValue="#{client.id}"
+                                               itemLabel="#{client.name}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+
+                        <p:column>
+                            <p:selectOneMenu id="invoiceSelector" value="#{ReportBean.selectedInvoice}" style="alignment-baseline: baseline;">
+                                <f:selectItems id="invoiceList" var="inv" 
+                                               value="#{InvoiceController.invoiceList}" 
+                                               itemValue="#{inv}" 
+                                               itemLabel="#{inv.shortDate}"/>
+                            </p:selectOneMenu>
+                        </p:column>
+
+                        <p:column>
+                            <p:selectOneMenu id="exportOption" value="#{ReportBean.exportOption}">
+                                <f:selectItems value="#{ReportBean.exportOptions}"/>
+                            </p:selectOneMenu>
+                        </p:column>                    
+                    </p:row>
+
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton  actionListener="#{ReportBean.execute}" value="Get Invoice" ajax="false"/>
+                        </p:column>
+                    </p:row>
+
+                </p:panelGrid>
             </h:form>
             <h:form id="hidden">
                 <h:inputHidden id="invNumber"/>
