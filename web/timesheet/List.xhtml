@@ -20,17 +20,18 @@
                 <h:panelGroup id="messagePanel" layout="block">
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
-                <h:outputLabel for="clientSelector" value="Select Client: "/>
-                <h:selectOneMenu id="clientSelector" value="#{sessionBean.clientId}"
+                <p:outputLabel for="clientSelector" value="Client: "/>
+                <p:selectOneMenu id="clientSelector" value="#{clientBean.client}"
                                  onchange="submit()" 
-                                 valueChangeListener="#{timesheetController.prepareList()}">
+                                 valueChangeListener="#{timesheetController.prepareList()}" style="margin-right: 2em; margin-bottom: .5em;">
+                    <f:selectItem itemValue="" itemLabel="Select client"/>
                     <f:selectItems id="clientList" var="client"
                                    value="#{clientController.clientList}"
-                                   itemValue="#{client.id}"
-                                   itemLabel="#{client.name}" noSelectionValue="--"/>
-                </h:selectOneMenu>
-                <h:outputText escape="false" value="#{msgs.Empty}" rendered="#{timesheetController.items.rowCount == 0}"/>
-                <h:panelGroup rendered="#{timesheetController.items.rowCount > 0}">
+                                   itemValue="#{client}"
+                                   itemLabel="#{client.name}"/>
+                </p:selectOneMenu>
+                <p:outputLabel escape="false" value="#{msgs.Empty}" rendered="#{timesheetController.items.rowCount == 0}"/>
+                <h:panelGroup rendered="#{timesheetController.items.rowCount > 0}" style="width: 99%;">
                     <h:outputText value="#{timesheetController.pagination.pageFirstItem + 1}..#{timesheetController.pagination.pageLastItem + 1}/#{timesheetController.pagination.itemsCount}"/>&nbsp;
                     <h:commandLink action="#{timesheetController.previous}" value="#{msgs.Previous} #{timesheetController.pagination.pageSize}" rendered="#{timesheetController.pagination.hasPreviousPage}"/>&nbsp;
                     <h:commandLink action="#{timesheetController.next}" value="#{msgs.Next} #{timesheetController.pagination.pageSize}" rendered="#{timesheetController.pagination.hasNextPage}"/>&nbsp;
@@ -40,7 +41,7 @@
                                  var="item" 
                                  selectionMode="multiple"
                                  rowSelectMode ="add"
-                                 rowKey="#{item.id}">
+                                 rowKey="#{item.id}" style="width: 100%; margin: auto;">
                         <p:ajax event="rowSelect" listener="#{timesheetController.onRowSelect}" update=":timesheetForm" />
                         <p:ajax event="rowUnselect" listener="#{timesheetController.onRowUnselect}" update=":timesheetForm" />
                         
@@ -76,18 +77,17 @@
                             </f:facet>
                             <h:outputText value="#{item.invNum}"/>
                         </p:column>
-                        <p:column style="text-align: center; width: 3%; padding: .25em; margin: 0;">
+                        <p:column style="text-align: center; width: 4%; padding: .25em; margin: 0;">
                             <f:facet name="header">
                                 <h:outputText value="#{msgs.posted}"/>
                             </f:facet>
                             <p:selectBooleanCheckbox id="posted" value="#{item.posted}" disabled="true"/>
                         </p:column>                        
-                        <p:column style="width: 10em; padding: .25em; ">
+                        <p:column style="width: 8%;">
                             <f:facet name="header">
                                 <h:outputText value="&nbsp;"/>
                             </f:facet>
-                            <h:commandLink action="#{timesheetController.prepareEdit}" value="#{msgs.Edit}"/>
-                            <h:outputText value=" "/>
+                            <h:commandLink action="#{timesheetController.prepareEdit}" value="#{msgs.Edit}" style="margin-right: 1em;"/>
                             <h:commandLink action="#{timesheetController.destroy}" value="#{msgs.Delete}"/>
                         </p:column>
                         <f:facet name="footer">
@@ -96,7 +96,7 @@
                                              icon="ui-icon-search" value="Preview Invoice" 
                                              action="#{timesheetController.prepareInvoice()}"
                                              disabled="#{timesheetController.selectedItems.size()==0 || timesheetController.selectedItems==null}">
-                                <f:param id="selectedClientId" value="#{sessionBean.clientId}"/>
+                                <f:param id="selectedClientId" value="#{clientBean.clientId}"/>
                             </p:commandButton>
                             
                         </f:facet>

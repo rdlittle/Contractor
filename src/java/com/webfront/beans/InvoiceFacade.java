@@ -6,7 +6,6 @@ package com.webfront.beans;
 
 import com.webfront.entity.Client;
 import com.webfront.entity.Invoice;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.ejb.Stateless;
@@ -40,18 +39,18 @@ public class InvoiceFacade extends AbstractFacade<Invoice> {
     public List<Invoice> findRange(int[] range) {
         FacesContext fc = FacesContext.getCurrentInstance();
         ExternalContext et = fc.getExternalContext();
-        Map<String, Object> map = et.getRequestMap();
-        ContractorSession sb = (ContractorSession) map.get("sessionBean");
+        Map<String, Object> map = et.getSessionMap();
+        ClientBean sb = (ClientBean) map.get("clientBean");
         if(sb == null) {
             return null;
         }
-        if (sb.clientId != null) {
-            clientId = sb.clientId;
+        if (sb.getClientId() != null) {
+            setClientId(sb.getClientId());
         }
         String stmt = "SELECT i FROM Invoice i WHERE i.client = ?1 ORDER BY i.id DESC";
         Query query = getEntityManager().createQuery(stmt, Invoice.class);
-        if (clientId != null) {
-            query.setParameter(1, clientId);
+        if (getClientId() != null) {
+            query.setParameter(1, getClientId());
             query.setMaxResults(range[1] - range[0]);
             query.setFirstResult(range[0]);
             return query.getResultList();
@@ -72,13 +71,13 @@ public class InvoiceFacade extends AbstractFacade<Invoice> {
         FacesContext fc = FacesContext.getCurrentInstance();
         ExternalContext et = fc.getExternalContext();
         Map<String, Object> map = et.getSessionMap();
-        ContractorSession sb = (ContractorSession) map.get("sessionBean");
-        if (sb != null && sb.clientId != null) {
-            clientId = sb.clientId;
+        ClientBean sb = (ClientBean) map.get("clientBean");
+        if (sb != null && sb.getClientId() != null) {
+            setClientId(sb.getClientId());
             String stmt = "SELECT i FROM Invoice i WHERE i.client = ?1 ORDER BY i.id DESC";
             Query query = getEntityManager().createQuery(stmt, Invoice.class);
-            if (clientId != null) {
-                query.setParameter(1, clientId);
+            if (getClientId() != null) {
+                query.setParameter(1, getClientId());
                 return query.getResultList();
             }
         }

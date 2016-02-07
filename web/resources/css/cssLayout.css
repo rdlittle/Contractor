@@ -11,13 +11,11 @@
     float: left;
     clear: none;
     width: 10%;
-    background: #c2dfef;
     background-repeat: no-repeat !important;
 }
 
 #content {
     position: relative;
-    background: #c2dfef;
     width: 85%;
     
     float:right;

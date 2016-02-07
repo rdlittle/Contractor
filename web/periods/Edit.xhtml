@@ -17,7 +17,7 @@
                 <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
             </h:panelGroup>
             <h:form>
-                <p:panelGrid columns="2" columnClasses="leftCol,rightCol">
+                <p:panelGrid columns="2" columnClasses="leftCol,rightCol" style="margin-bottom: 1.5em;">
                     <h:outputLabel value="#{msgs.id}" for="id" />
                     <h:inputText id="id" value="#{periodsController.selected.id}" title="#{msgs.id}" required="true" requiredMessage="#{msgs.RequiredEntry}"/>
                     <h:outputLabel value="#{msgs.startDate}" for="startDate" />
@@ -29,11 +29,9 @@
                         <f:convertDateTime pattern="MM/dd/yyyy" />
                     </h:inputText>
                 </p:panelGrid>
-                <h:commandButton action="#{periodsController.update}" value="#{msgs.Update}"/>
-                &nbsp;&nbsp;
-                <h:commandButton action="View?faces-redirect=true" value="#{msgs.View}" immediate="true"/>
-                &nbsp;&nbsp;
-                <h:commandButton action="#{periodsController.prepareList}" value="#{msgs.Cancel}" immediate="true"/>
+                <p:commandButton action="#{periodsController.update}" value="#{msgs.Update}" style="margin-right: 1em;"/>
+                <p:commandButton action="View?faces-redirect=true" value="#{msgs.View}" style="margin-right: 1em;" immediate="true"/>
+                <p:commandButton action="#{periodsController.prepareList}" value="#{msgs.Cancel}" immediate="true"/>
             </h:form>
         </ui:define>
     </ui:composition>

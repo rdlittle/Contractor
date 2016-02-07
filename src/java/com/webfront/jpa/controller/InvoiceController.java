@@ -1,6 +1,6 @@
 package com.webfront.jpa.controller;
 
-import com.webfront.beans.ContractorSession;
+import com.webfront.beans.ClientBean;
 import com.webfront.beans.InvoiceFacade;
 import com.webfront.entity.Invoice;
 import com.webfront.jpa.controller.util.JsfUtil;
@@ -25,7 +25,7 @@ public class InvoiceController implements Serializable {
     private Invoice current;
     private DataModel items = null;
     @EJB
-    private com.webfront.beans.InvoiceFacade ejbFacade;
+    private InvoiceFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private List<Invoice> invoiceList;
@@ -103,7 +103,7 @@ public class InvoiceController implements Serializable {
             items = getPagination().createPageDataModel();
             FacesContext fc = FacesContext.getCurrentInstance();
             ExternalContext ec = fc.getExternalContext();
-            ContractorSession sb = (ContractorSession) ec.getSessionMap().get("sessionBean");
+            ClientBean sb = (ClientBean) ec.getSessionMap().get("clientBean");
             if (sb != null) {
                 Integer cid = sb.getClientId();
                 if (cid != null) {

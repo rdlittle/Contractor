@@ -11,11 +11,11 @@
             <h:commandLink action="/company/List?faces-redirect=true" value="#{msgs.leftNavCompany}"/>
             <h:commandLink action="/client/List?faces-redirect=true" value="#{msgs.leftNavClient}"/>
             <h:commandLink action="/invoices/List?faces-redirect=true" value="#{msgs.leftNavInvoices}">
-                <f:param id="selectedClientId" name="clientId" value="#{sessionBean.clientId}"/>
+                <f:param id="selectedClientId" name="clientId" value="#{clientBean.clientId}"/>
             </h:commandLink>
             <h:commandLink action="/receipts/List?faces-redirect=true" value="#{msgs.leftNavReceipts}"/>
             <h:commandLink action="/reports/InvoiceForm?faces-redirect=true" value="#{msgs.leftNavReports}">
-                <f:param id="selectedClientId" name="clientId" value="#{sessionBean.clientId}"/>
+                <f:param id="selectedClientId" name="clientId" value="#{clientBean.clientId}"/>
             </h:commandLink>
             <h:commandLink action="/sequence/List?faces-redirect=true" value="#{msgs.leftNavSequence}" />
             <h:commandLink action="/timesheet/List?faces-redirect=true" value="#{msgs.leftNavTimeSheet}"/>

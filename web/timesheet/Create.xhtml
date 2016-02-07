@@ -22,8 +22,8 @@
                     <h:inputText id="id" value="#{timesheetController.selected.id}" title="#{msgs.id}" required="false" rendered="false"/>
                     
                     <h:outputLabel value="#{msgs.clientName}" for="client" />
-                    <h:inputText id="clientID" value="#{sessionBean.clientId}" title="#{msgs.clientID}" rendered="false"/>
-                    <h:outputText id="client" value="#{sessionBean.clientName}"/>
+                    <h:inputText id="clientID" value="#{clientBean.clientId}" title="#{msgs.clientID}" rendered="false"/>
+                    <h:outputText id="client" value="#{clientBean.clientName}"/>
                     
                     <h:outputLabel value="#{msgs.date}" for="date" />
                     <p:calendar id="date" pattern="MM/dd/yyyy" value="#{timesheetController.selected.date}" mode="popup" showOn="button" title="#{msgs.date}" >

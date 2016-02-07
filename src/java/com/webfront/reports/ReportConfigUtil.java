@@ -49,7 +49,6 @@ public class ReportConfigUtil {
             String sourceFile = context.getRealPath("/forms/" + filename + ".jrxml");
             String destFile = context.getRealPath("/forms/" + filename + ".jasper");
             JasperCompileManager.compileReportToFile(sourceFile, destFile);
-//            JasperReport jasperReport = JasperCompileManager.compileReport(sourceFile);
 
             return true;
         } catch (Exception e) {
@@ -59,7 +58,6 @@ public class ReportConfigUtil {
     }
 
     public static JasperPrint fillReport(File reportFile, Map<String, Object> parameters, DataSource dataSource) throws JRException {
-//        parameters.put("BaseDir", reportFile.getParentFile());
         JasperPrint jasperPrint = null;
         try {
             String filePath = reportFile.getPath();

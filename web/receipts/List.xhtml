@@ -17,21 +17,24 @@
                 <h:panelGroup id="messagePanel" layout="block">
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
-                <h:outputLabel for="clientSelector" value="Select Client: "/>
-                <h:selectOneMenu id="clientSelector" value="#{sessionBean.clientId}" 
+                
+                <p:outputLabel for="clientSelector" value="Client: "/>
+                <p:selectOneMenu id="clientSelector" value="#{clientBean.client}" 
                                  onchange="submit()" 
-                                 valueChangeListener="#{receiptsController.prepareList()}">
+                                 valueChangeListener="#{receiptsController.prepareList()}" style="margin-right: 2em;">
+                    <f:selectItem itemValue="" itemLabel="Select client"/>
                     <f:selectItems id="clientList" var="client"
                                    value="#{clientController.clientList}"
-                                   itemValue="#{client.id}"
+                                   itemValue="#{client}"
                                    itemLabel="#{client.name}"/>
-                </h:selectOneMenu>
+                </p:selectOneMenu>
                 <h:outputText escape="false" value="#{msgs.Empty}" rendered="#{receiptsController.items.rowCount == 0}"/>
-                <h:panelGroup rendered="#{receiptsController.items.rowCount > 0}">
+                
+                <p:panel rendered="#{receiptsController.items.rowCount > 0}" style="border-width: 0px; border-collapse: collapse;">
                     <h:outputText value="#{receiptsController.pagination.pageFirstItem + 1}..#{receiptsController.pagination.pageLastItem + 1}/#{receiptsController.pagination.itemsCount}"/>&nbsp;
                     <h:commandLink action="#{receiptsController.previous}" value="#{msgs.Previous} #{receiptsController.pagination.pageSize}" rendered="#{receiptsController.pagination.hasPreviousPage}"/>&nbsp;
                     <h:commandLink action="#{receiptsController.next}" value="#{msgs.Next} #{receiptsController.pagination.pageSize}" rendered="#{receiptsController.pagination.hasNextPage}"/>&nbsp;
-                    <p:dataTable value="#{receiptsController.items}" var="item" style="border:solid 1px">
+                    <p:dataTable value="#{receiptsController.items}" var="item" >
                         <p:column style="width: 5%; text-align: left;">
                             <f:facet name="header">
                                 <h:outputText value="#{msgs.id}" style="text-align: left;"/>
@@ -71,16 +74,15 @@
                             <f:facet name="header">
                                 <h:outputText value="&nbsp;"/>
                             </f:facet>
-                            <h:commandLink action="#{receiptsController.prepareView}" value="#{msgs.View}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{receiptsController.prepareEdit}" value="#{msgs.Edit}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{receiptsController.destroy}" value="#{msgs.Delete}"/>
+                            <p:commandLink action="#{receiptsController.prepareView}" value="#{msgs.View}" style="margin-right: 1em;"/>
+                            <p:commandLink action="#{receiptsController.prepareEdit}" value="#{msgs.Edit}" style="margin-right: 1em;"/>
+                            <p:commandLink action="#{receiptsController.destroy}" value="#{msgs.Delete}"/>
                         </p:column>
                     </p:dataTable>
-                </h:panelGroup>
-                <br />
-                <p:commandButton action="#{receiptsController.prepareCreate}" value="#{msgs.New}" rendered="#{receiptsController.items.rowCount > 0}"/>
+                </p:panel>
+                
+                <p:commandButton action="#{receiptsController.prepareCreate}" 
+                                 value="#{msgs.New}" rendered="#{receiptsController.items.rowCount > 0}"/>
             </h:form>
         </ui:define>
     </ui:composition>

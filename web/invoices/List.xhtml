@@ -16,29 +16,32 @@
             <f:metadata>
                 <f:viewAction action="#{InvoiceController.init()}" phase="UPDATE_MODEL_VALUES"/>
             </f:metadata>
+            
             <h:form id="invoiceList">
                 <h:panelGroup id="messagePanel" layout="block">
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
 
-                <h:outputLabel for="clientSelector" value="Select Client: "/>
-                <h:selectOneMenu id="clientSelector" value="#{sessionBean.clientId}" 
+                <p:outputLabel for="clientSelector" value="Client: "/>
+                <p:selectOneMenu id="clientSelector" value="#{clientBean.client}"
                                  onchange="submit()" 
                                  valueChangeListener="#{InvoiceController.prepareList()}">
+                    <f:selectItem itemValue="" itemLabel="Select client"/>
                     <f:selectItems id="clientList" var="client"
                                    value="#{clientController.clientList}"
-                                   itemValue="#{client.id}"
+                                   itemValue="#{client}"
                                    itemLabel="#{client.name}"/>
-                </h:selectOneMenu>
+                </p:selectOneMenu>
 
                 &nbsp;
-                <h:panelGroup rendered="#{InvoiceController.items.rowCount > 0}">
+                <h:panelGroup rendered="#{InvoiceController.items.rowCount > 0}" style="width: 99%;">
                     <h:outputText value="#{InvoiceController.pagination.pageFirstItem + 1}..#{InvoiceController.pagination.pageLastItem + 1}/#{InvoiceController.pagination.itemsCount}" 
                                   rendered="#{InvoiceController.pagination.itemsCount > 0}"/>&nbsp;
                     <h:commandLink action="#{InvoiceController.previous}" value="#{msgs.Previous} #{InvoiceController.pagination.pageSize}" rendered="#{InvoiceController.pagination.hasPreviousPage}"/>&nbsp;
                     <h:commandLink action="#{InvoiceController.next}" value="#{msgs.Next} #{InvoiceController.pagination.pageSize}" rendered="#{InvoiceController.pagination.hasNextPage}"/>&nbsp;
-                    <p:dataTable value="#{InvoiceController.items}" var="item">
-                        <p:column style="text-align: center; width: 5%;">
+                    
+                    <p:dataTable value="#{InvoiceController.items}" var="item" style="width: 100%;">
+                        <p:column style="text-align: center; width: 6%;">
                             <f:facet name="header">
                                 <h:outputText value="#{msgs.date}"/>
                             </f:facet>
@@ -46,7 +49,7 @@
                                 <f:convertDateTime pattern="MM/dd/yyyy" />
                             </h:outputText>
                         </p:column>
-                        <p:column style="text-align: center; width: 4%;">
+                        <p:column style="text-align: center; width: 5%;">
                             <f:facet name="header">
                                 <h:outputText value="#{msgs.invoice}"/>
                             </f:facet>
@@ -56,7 +59,7 @@
                             <f:facet name="header">
                                 <h:outputText value="#{msgs.client}"/>
                             </f:facet>
-                            <h:outputText value="#{billingController.getClientName(sessionBean.clientId)}"/>
+                            <h:outputText value="#{billingController.getClientName(clientBean.clientId)}"/>
                         </p:column>
                         <p:column style="text-align: center; width: 5%;">
                             <f:facet name="header">
@@ -82,7 +85,7 @@
                             </f:facet>
                             <h:outputText value="#{item.periodNum}"/>
                         </p:column>
-                        <p:column style="text-align: right; width: 10%;">
+                        <p:column style="text-align: right; width: 12%;">
                             <f:facet name="header">
                                 <h:outputText value="#{msgs.amount}"/>
                             </f:facet>
@@ -90,17 +93,16 @@
                                 <f:convertNumber  pattern="#0.00" />
                             </h:outputText>
                         </p:column>                        
-                        <p:column style="width: 10%;">
+                        <p:column style="width: 12%;">
                             <f:facet name="header">
                                 <h:outputText value="&nbsp;"/>
                             </f:facet>
-                            <h:commandLink action="#{InvoiceController.prepareView}" value="#{msgs.View}"/>
-                            <h:outputText value=" "/>
-                            <h:commandLink action="#{InvoiceController.prepareEdit}" value="#{msgs.Edit}"/>
-                            <h:outputText value=" "/>
+                            <h:commandLink action="#{InvoiceController.prepareView}" value="#{msgs.View}" style="margin-right: 1em;"/>
+                            <h:commandLink action="#{InvoiceController.prepareEdit}" value="#{msgs.Edit}" style="margin-right: 1em;"/>
                             <h:commandLink action="#{InvoiceController.destroy}" value="#{msgs.Delete}"/>
                         </p:column>
                     </p:dataTable>
+                    
                 </h:panelGroup>
                 <br />
                 <p:commandButton action="#{InvoiceController.prepareCreate}" 

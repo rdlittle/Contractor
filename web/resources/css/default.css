@@ -34,8 +34,15 @@ a:link:hover, a:visited:hover  {
     overflow: hidden;
 }
 
-.ui-datatable {
-    font-size: .75em;
+.custom tr {
+    margin: 2em auto;
+}
+.custom td {
+    top: 0px;
+    left: auto;
+    margin: 0px;
+    vertical-align: top !important;
+    border-style: hidden !important;
 }
 
 .radio_button td label {

@@ -4,6 +4,7 @@
  */
 package com.webfront.beans;
 
+import com.webfront.entity.Client;
 import com.webfront.entity.Receipts;
 import java.util.List;
 import java.util.Map;
@@ -31,19 +32,23 @@ public class ReceiptsFacade extends AbstractFacade<Receipts> {
 
     @Override
     public List<Receipts> findRange(int[] range) {
-        Integer clientId=null;
         FacesContext fc = FacesContext.getCurrentInstance();
         ExternalContext et = fc.getExternalContext();
         Map<String, Object> map = et.getSessionMap();
-        ContractorSession sb = (ContractorSession) map.get("sessionBean");
-        if (sb.clientId != null) {
-            clientId = sb.clientId;
+        ClientBean sb = (ClientBean) map.get("clientBean");
+        if (sb==null) {
+            return null;
         }
+        if (sb.getClient()== null) {
+            return null;
+        }
+        Client client = sb.getClient();
+        
         String stmt = "SELECT r FROM Receipts r WHERE r.payeeId = ?1 ORDER BY r.id DESC";
 
         Query query = getEntityManager().createQuery(stmt, Receipts.class);
-        if (clientId != null) {
-            query.setParameter(1, clientId);
+        if (client.getId() != null) {
+            query.setParameter(1, client.getId());
             query.setMaxResults(range[1] - range[0]);
             query.setFirstResult(range[0]);
             return query.getResultList();

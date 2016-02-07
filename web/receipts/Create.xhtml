@@ -30,7 +30,7 @@
                     <h:inputText id="payeeId" value="#{receiptsController.selected.payeeId}" title="#{msgs.payeeId}" required="true" requiredMessage="#{msgs.RequiredEntry}"/>
                 </p:panelGrid>
                 <br />
-                <p:commandButton action="#{receiptsController.create}" value="#{msgs.Save}" />
+                <p:commandButton action="#{receiptsController.create}" value="#{msgs.Save}"  />
                 &nbsp;&nbsp;
                 <p:commandButton action="#{receiptsController.prepareList}" value="#{msgs.Cancel}" immediate="true"/>
             </h:form>

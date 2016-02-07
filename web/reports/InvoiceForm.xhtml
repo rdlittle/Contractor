@@ -16,7 +16,7 @@
                 <f:viewAction action="#{ReportBean.init()}" phase="UPDATE_MODEL_VALUES"/>
             </f:metadata>
             <h:form id="invoiceForm">
-                <p:panelGrid style="align-items: center; width: 50%;" styleClass="custom2">
+                <p:panelGrid style="align-items: center; width: 55%;" styleClass="custom">
                     <p:row>
                         <p:column>
                             <p:outputLabel value="Client" style="font-size: x-large; margin-right: 1.5em; text-align: left;"/>
@@ -26,23 +26,23 @@
                             <p:outputLabel value="Invoice Date" style="font-size: x-large; margin-right: 1.5em; text-align: left;"/>
                         </p:column>
 
-                        <p:column>
+                        <p:column colspan="2">
                             <p:outputLabel value="Format" style="font-size: x-large; margin-right: 1.5em; text-align: left;"/>
                         </p:column>
                     </p:row>
 
                     <p:row>
                         <p:column>
-                            <p:selectOneMenu id="clientSelector" value="#{sessionBean.clientId}" onchange="submit()">
+                            <p:selectOneMenu id="clientSelector" value="#{clientBean.client}" onchange="submit()">
                                 <f:selectItems id="clientList" var="client"
                                                value="#{clientController.clientList}"
-                                               itemValue="#{client.id}"
+                                               itemValue="#{client}"
                                                itemLabel="#{client.name}"/>
                             </p:selectOneMenu>
                         </p:column>
 
                         <p:column>
-                            <p:selectOneMenu id="invoiceSelector" value="#{ReportBean.selectedInvoice}" style="alignment-baseline: baseline;">
+                            <p:selectOneMenu id="invoiceSelector" value="#{ReportBean.selectedInvoice}" style="width: 100%;">
                                 <f:selectItems id="invoiceList" var="inv" 
                                                value="#{InvoiceController.invoiceList}" 
                                                itemValue="#{inv}" 
@@ -54,22 +54,16 @@
                             <p:selectOneMenu id="exportOption" value="#{ReportBean.exportOption}">
                                 <f:selectItems value="#{ReportBean.exportOptions}"/>
                             </p:selectOneMenu>
-                        </p:column>                    
-                    </p:row>
+                        </p:column> 
 
-                    <p:row>
-                        <p:column colspan="3">
+                        <p:column>
                             <p:commandButton  actionListener="#{ReportBean.execute}" value="Get Invoice" ajax="false"/>
                         </p:column>
                     </p:row>
 
                 </p:panelGrid>
             </h:form>
-            <h:form id="hidden">
-                <h:inputHidden id="invNumber"/>
-                <h:inputHidden id="expFormat"/>
-                <h:inputHidden id="clientId"/>
-            </h:form>
+
         </ui:define>
     </ui:composition>
 

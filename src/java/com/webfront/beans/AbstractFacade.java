@@ -4,8 +4,12 @@
  */
 package com.webfront.beans;
 
+import com.webfront.entity.Client;
 import java.util.List;
+import java.util.Map;
 import javax.faces.bean.ManagedProperty;
+import javax.faces.context.ExternalContext;
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -15,25 +19,28 @@ import javax.persistence.criteria.CriteriaQuery;
  * @author rlittle
  */
 public abstract class AbstractFacade<T> {
+
     private Class<T> entityClass;
     private String order;
-    
+
     public AbstractFacade(Class<T> entityClass) {
         this.entityClass = entityClass;
-        this.order="asc";
+        this.order = "asc";
     }
-    
-    @ManagedProperty(value="#{sessionBean.clientId}")
-    public Integer clientId;
-    
+
+    @ManagedProperty(value = "#{clientBean.clientId}")
+    private Integer clientId;
+
     protected abstract EntityManager getEntityManager();
 
     public void setOrder(String ord) {
-        this.order=ord;
+        this.order = ord;
     }
+
     public String getOrder() {
         return this.order;
     }
+
     public void create(T entity) {
         getEntityManager().persist(entity);
     }
@@ -61,7 +68,7 @@ public abstract class AbstractFacade<T> {
 
     public List<T> findRange(int[] range) {
         javax.persistence.criteria.CriteriaQuery cq = getEntityManager().getCriteriaBuilder().createQuery();
-        CriteriaBuilder cb=getEntityManager().getCriteriaBuilder();
+        CriteriaBuilder cb = getEntityManager().getCriteriaBuilder();
         cq.select(cq.from(entityClass));
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         q.setMaxResults(range[1] - range[0]);
@@ -75,7 +82,32 @@ public abstract class AbstractFacade<T> {
         cq.select(getEntityManager().getCriteriaBuilder().count(rt));
         javax.persistence.Query q = getEntityManager().createQuery(cq);
         return ((Long) q.getSingleResult()).intValue();
-        
+
     }
-    
+
+    /**
+     * @return the clientId
+     */
+    public Integer getClientId() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext et = fc.getExternalContext();
+        Map<String, Object> map = et.getSessionMap();
+        ClientBean sb = (ClientBean) map.get("clientBean");
+        if (sb == null) {
+            return null;
+        }
+        if (sb.getClient() == null) {
+            return null;
+        }
+        Client client = sb.getClient();
+        return client.getId();
+    }
+
+    /**
+     * @param clientId the clientId to set
+     */
+    public void setClientId(Integer clientId) {
+        this.clientId = clientId;
+    }
+
 }

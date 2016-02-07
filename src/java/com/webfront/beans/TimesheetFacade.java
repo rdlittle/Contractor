@@ -28,17 +28,17 @@ public class TimesheetFacade  extends AbstractFacade<Timesheet> {
         FacesContext fc = FacesContext.getCurrentInstance();
         ExternalContext et = fc.getExternalContext();
         Map<String, Object> map = et.getSessionMap();
-        ContractorSession sb = (ContractorSession) map.get("sessionBean");
+        ClientBean sb = (ClientBean) map.get("clientBean");
         if (sb == null) {
             return null;
         }
-        if (sb.clientId != null) {
-            this.clientId = sb.clientId;
+        if (sb.getClientId() != null) {
+            setClientId(sb.getClientId());
         }
         String stmt = "SELECT t FROM Timesheet t WHERE t.clientID = ?1 ORDER BY t.id DESC";
         Query query = getEntityManager().createQuery(stmt, Timesheet.class);
-        if (this.clientId != null) {
-            query.setParameter(1, this.clientId);
+        if (getClientId() != null) {
+            query.setParameter(1, getClientId());
             query.setMaxResults(range[1] - range[0]);
             query.setFirstResult(range[0]);
             return query.getResultList();
@@ -75,11 +75,11 @@ public class TimesheetFacade  extends AbstractFacade<Timesheet> {
         FacesContext fc = FacesContext.getCurrentInstance();
         ExternalContext et = fc.getExternalContext();
         Map<String, Object> map = et.getSessionMap();
-        ContractorSession sb = (ContractorSession) map.get("sessionBean");
-        if (sb.clientId != null) {
-            this.clientId = sb.clientId;
+        ClientBean sb = (ClientBean) map.get("clientBean");
+        if (sb.getClientId() != null) {
+            setClientId(sb.getClientId());
         }
-        String sql = "select r.rate from rates r inner join client c on r.id = c.rate where c.id = " + this.clientId;
+        String sql = "select r.rate from rates r inner join client c on r.id = c.rate where c.id = " + getClientId();
         Query query = getEntityManager().createNativeQuery(sql);
         Float rate = (Float) query.getSingleResult();
         return rate;

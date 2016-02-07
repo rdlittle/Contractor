@@ -24,7 +24,7 @@ public class ReceiptsController implements Serializable {
     private Receipts current;
     private DataModel items = null;
     @EJB
-    private com.webfront.beans.ReceiptsFacade ejbFacade;
+    private ReceiptsFacade ejbFacade;
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private Integer clientId;
@@ -75,6 +75,7 @@ public class ReceiptsController implements Serializable {
 
     public String prepareCreate() {
         current = new Receipts();
+        current.setPayeeId(getFacade().getClientId());
         selectedItemIndex = -1;
         return "Create?faces-redirect=true";
     }

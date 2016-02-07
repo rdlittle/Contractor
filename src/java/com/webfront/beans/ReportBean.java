@@ -16,7 +16,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.faces.bean.ManagedBean;
-import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
@@ -46,9 +45,6 @@ public class ReportBean extends AbstractReportBean implements Serializable {
 
     private static DataSource dataSource;
 
-//    @ManagedProperty(value = "#{sessionBean}")
-//    private ContractorSession session = null;
-
     public ReportBean() {
         selectedInvoice = null;
     }
@@ -71,26 +67,23 @@ public class ReportBean extends AbstractReportBean implements Serializable {
     @Override
     protected Map<String, Object> getReportParameters() {
         Map<String, Object> reportParameters = new HashMap<>();
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext et = fc.getExternalContext();
+        Map<String, Object> map = et.getSessionMap();
+        ClientBean sb = (ClientBean) map.get("clientBean");
         reportParameters.put("invNum", invNum);
         reportParameters.put("invDate", invDate);
-        reportParameters.put("clientId", clientId);
+        reportParameters.put("clientId",sb.getClientId());
         return reportParameters;
     }
 
     public void init() {
-        FacesContext fc = FacesContext.getCurrentInstance();
-        ExternalContext et = fc.getExternalContext();
-        Map<String, Object> map = et.getSessionMap();
-        ContractorSession sb = (ContractorSession) map.get("sessionBean");
-        if (sb != null && sb.clientId != null) {
-            clientId = sb.clientId;
-        }
     }
 
     public String execute() {
         try {
             super.prepareReport();
-        } catch (Exception e) {
+        } catch (JRException | IOException e) {
             System.out.println(e.toString());
         }
 
@@ -117,23 +110,6 @@ public class ReportBean extends AbstractReportBean implements Serializable {
                 ReportConfigUtil.exportReportAsHtml(jasperPrint, response.getWriter());
             } else {
                 String reportName = "invoice_";
-//                reportName += getReportParameters().get("invNum");
-//                reportName += "." + getExportOption();
-
-
-                // Send pdf to browser
-//          response.setContentType("application/pdf");
-//          response.addHeader("Content-disposition", "attachment; filename=" + reportName);
-//          ServletOutputStream servletOutputStream = response.getOutputStream();
-//          JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
-
-// Redirect to the servlet
-//          getReportParameters().put("reportName", reportName);
-//          request.setAttribute("REPORT_NAME", reportName);
-//          request.setAttribute("REPORT_PARAMS", getReportParameters());
-//          request.setAttribute("JASPER_PRINT", jasperPrint);
-//          response.sendRedirect(request.getContextPath() + "/servlets/reports/" + getExportOption());
-//          FacesContext.getCurrentInstance().responseComplete();
                 reportName = reportName + getReportParameters().get("invNum");
                 reportName = reportName + "." + getExportOption();
                 response.setContentType("application/pdf");
@@ -142,9 +118,6 @@ public class ReportBean extends AbstractReportBean implements Serializable {
                 JasperExportManager.exportReportToPdfStream(jasperPrint, servletOutputStream);
             }
             FacesContext.getCurrentInstance().responseComplete();
-            /**
-             * @return the invNum
-             */
         } catch (JRException ex) {
             Logger.getLogger(ReportBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -217,19 +190,5 @@ public class ReportBean extends AbstractReportBean implements Serializable {
     public void onChangeInvoice() {
         this.invDate = selectedInvoice.getShortDate();
     }
-//
-//    /**
-//     * @return the session
-//     */
-//    public ContractorSession getSession() {
-//        return session;
-//    }
-//
-//    /**
-//     * @param session the session to set
-//     */
-//    public void setSession(ContractorSession session) {
-//        this.session = session;
-//    }
 
 }

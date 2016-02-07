@@ -33,7 +33,7 @@
                     <h:inputText id="amount" value="#{InvoiceController.selected.amount}" title="#{msgs.amount}" />
                     
                     <h:outputLabel value="#{msgs.client}" for="client" />
-                    <h:inputText id="client" value="#{sessionBean.clientName}" title="#{msgs.client}" />
+                    <h:inputText id="client" value="#{clientBean.clientName}" title="#{msgs.client}" />
                     
                     <h:outputLabel value="#{msgs.posted}" for="posted" />
                     <p:selectBooleanCheckbox id="posted" value="#{InvoiceController.selected.posted}"/>

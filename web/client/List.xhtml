@@ -22,8 +22,8 @@
                     <h:outputText value="#{clientController.pagination.pageFirstItem + 1}..#{clientController.pagination.pageLastItem + 1}/#{clientController.pagination.itemsCount}"/>&nbsp;
                     <p:commandButton action="#{clientController.previous}" value="#{msgs.Previous} #{clientController.pagination.pageSize}" rendered="#{clientController.pagination.hasPreviousPage}"/>&nbsp;
                     <p:commandButton action="#{clientController.next}" value="#{msgs.Next} #{clientController.pagination.pageSize}" rendered="#{clientController.pagination.hasNextPage}"/>&nbsp;
-                    <p:dataTable value="#{clientController.items}" var="item" style="border:solid 1px">
-                        <p:column>
+                    <p:dataTable value="#{clientController.items}" var="item" style="width: 99%;">
+                        <p:column style="width:1%;">
                             <f:facet name="header">
                                 <h:outputText value="#{msgs.ID}"/>
                             </f:facet>
@@ -43,23 +43,11 @@
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{msgs.address2}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.address2}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{msgs.address3}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.address3}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
                                 <h:outputText value="#{msgs.city}"/>
                             </f:facet>
                             <h:outputText value="#{item.city}"/>
                         </p:column>
-                        <p:column>
+                        <p:column style="width:3%;">
                             <f:facet name="header">
                                 <h:outputText value="#{msgs.state}"/>
                             </f:facet>
@@ -67,21 +55,9 @@
                         </p:column>
                         <p:column>
                             <f:facet name="header">
-                                <h:outputText value="#{msgs.zip}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.zip}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
                                 <h:outputText value="#{msgs.attn}"/>
                             </f:facet>
                             <h:outputText value="#{item.attn}"/>
-                        </p:column>
-                        <p:column>
-                            <f:facet name="header">
-                                <h:outputText value="#{msgs.rate}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.rate}"/>
                         </p:column>
                         <p:column>
                             <f:facet name="header">

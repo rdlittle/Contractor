@@ -1,6 +1,6 @@
 package com.webfront.jpa.controller;
 
-import com.webfront.beans.ContractorSession;
+import com.webfront.beans.ClientBean;
 import com.webfront.beans.TimesheetFacade;
 import com.webfront.entity.Periods;
 import com.webfront.entity.Timesheet;
@@ -112,7 +112,7 @@ public class TimesheetController implements Serializable {
         this.selectedItemIndex = -1;
         FacesContext fc = FacesContext.getCurrentInstance();
         ExternalContext ec = fc.getExternalContext();
-        ContractorSession sb = (ContractorSession) ec.getSessionMap().get("sessionBean");
+        ClientBean sb = (ClientBean) ec.getSessionMap().get("clientBean");
         Integer cid = null;
         if (sb != null) {
             cid = sb.getClientId();
@@ -131,7 +131,7 @@ public class TimesheetController implements Serializable {
         if (!this.selectedItems.isEmpty()) {
             FacesContext fc = FacesContext.getCurrentInstance();
             ExternalContext ec = fc.getExternalContext();
-            ContractorSession sb = (ContractorSession) ec.getSessionMap().get("sessionBean");
+            ClientBean sb = (ClientBean) ec.getSessionMap().get("clientBean");
             Integer cid = null;
             if (sb != null) {
                 cid = sb.getClientId();
