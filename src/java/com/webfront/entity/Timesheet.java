@@ -23,6 +23,7 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Timesheet.findByHours", query = "SELECT t FROM Timesheet t WHERE t.hours = :hours"),
     @NamedQuery(name = "Timesheet.findByClientID", query = "SELECT t FROM Timesheet t WHERE t.clientID = :clientID"),
     @NamedQuery(name = "Timesheet.findByInvNum", query = "SELECT t FROM Timesheet t WHERE t.invNum = :invNum"),
+    @NamedQuery(name = "Timesheet.findTotalUnpostedHours", query = "SELECT SUM(t.hours) FROM Timesheet t WHERE t.clientID = :clientID AND t.posted = :posted"),
     @NamedQuery(name = "Timesheet.findByPosted", query = "SELECT t FROM Timesheet t WHERE t.posted = :posted")})
 public class Timesheet implements Serializable {
     private static final long serialVersionUID = 1L;

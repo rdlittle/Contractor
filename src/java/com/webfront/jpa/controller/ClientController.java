@@ -194,40 +194,4 @@ public class ClientController implements Serializable {
         return JsfUtil.getSelectItems(ejbFacade.findAll(), true);
     }
 
-//    @FacesConverter(forClass = Client.class)
-//    public static class ClientControllerConverter implements Converter {
-//
-//        public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
-//            if (value == null || value.length() == 0) {
-//                return null;
-//            }
-//            ClientController controller = (ClientController) facesContext.getApplication().getELResolver().
-//                    getValue(facesContext.getELContext(), null, "clientController");
-//            return controller.ejbFacade.find(getKey(value));
-//        }
-//
-//        java.lang.Integer getKey(String value) {
-//            java.lang.Integer key;
-//            key = Integer.valueOf(value);
-//            return key;
-//        }
-//
-//        String getStringKey(java.lang.Integer value) {
-//            StringBuffer sb = new StringBuffer();
-//            sb.append(value);
-//            return sb.toString();
-//        }
-//
-//        public String getAsString(FacesContext facesContext, UIComponent component, Object object) {
-//            if (object == null) {
-//                return null;
-//            }
-//            if (object instanceof Client) {
-//                Client o = (Client) object;
-//                return getStringKey(o.getId());
-//            } else {
-//                throw new IllegalArgumentException("object " + object + " is of type " + object.getClass().getName() + "; expected type: " + ClientController.class.getName());
-//            }
-//        }
-//    }
 }

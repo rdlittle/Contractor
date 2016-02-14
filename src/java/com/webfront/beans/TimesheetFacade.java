@@ -15,7 +15,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Stateless
-public class TimesheetFacade  extends AbstractFacade<Timesheet> {
+public class TimesheetFacade extends AbstractFacade<Timesheet> {
+
+    private Integer clientId;
 
     @PersistenceContext(unitName = "ContractorPU")
     private EntityManager em;
@@ -25,25 +27,26 @@ public class TimesheetFacade  extends AbstractFacade<Timesheet> {
     }
 
     public List<Timesheet> findRange(int[] range) {
-        FacesContext fc = FacesContext.getCurrentInstance();
-        ExternalContext et = fc.getExternalContext();
-        Map<String, Object> map = et.getSessionMap();
-        ClientBean sb = (ClientBean) map.get("clientBean");
-        if (sb == null) {
-            return null;
-        }
-        if (sb.getClientId() != null) {
-            setClientId(sb.getClientId());
-        }
-        String stmt = "SELECT t FROM Timesheet t WHERE t.clientID = ?1 ORDER BY t.id DESC";
-        Query query = getEntityManager().createQuery(stmt, Timesheet.class);
-        if (getClientId() != null) {
+        if (clientId != null) {
+            String stmt = "SELECT t FROM Timesheet t WHERE t.clientID = ?1 ORDER BY t.id DESC";
+            Query query = getEntityManager().createQuery(stmt, Timesheet.class);
             query.setParameter(1, getClientId());
             query.setMaxResults(range[1] - range[0]);
             query.setFirstResult(range[0]);
             return query.getResultList();
         }
         return null;
+    }
+
+    public Float getOpenHours() {
+        Double hours = new Double(0);
+        if (clientId != null) {
+            Query query = getEntityManager().createNamedQuery("Timesheet.findTotalUnpostedHours");
+            query.setParameter("clientID", clientId);
+            query.setParameter("posted", false);
+            hours = (Double) query.getSingleResult();
+        }
+        return hours.floatValue();
     }
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
@@ -88,4 +91,19 @@ public class TimesheetFacade  extends AbstractFacade<Timesheet> {
     public TimesheetFacade() {
         super(Timesheet.class);
     }
+
+    /**
+     * @return the clientId
+     */
+    public Integer getClientId() {
+        return clientId;
+    }
+
+    /**
+     * @param clientId the clientId to set
+     */
+    public void setClientId(Integer clientId) {
+        this.clientId = clientId;
+    }
+
 }

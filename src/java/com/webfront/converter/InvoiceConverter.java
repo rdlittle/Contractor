@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package com.webfront.jpa.controller.util;
+package com.webfront.converter;
 
 import com.webfront.entity.Invoice;
 import com.webfront.jpa.controller.InvoiceController;

@@ -17,7 +17,8 @@
                 <h:panelGroup id="messagePanel" layout="block">
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
-                
+
+
                 <p:outputLabel for="clientSelector" value="Client: "/>
                 <p:selectOneMenu id="clientSelector" value="#{clientBean.client}" 
                                  onchange="submit()" 
@@ -28,9 +29,9 @@
                                    itemValue="#{client}"
                                    itemLabel="#{client.name}"/>
                 </p:selectOneMenu>
-                <h:outputText escape="false" value="#{msgs.Empty}" rendered="#{receiptsController.items.rowCount == 0}"/>
                 
                 <p:panel rendered="#{receiptsController.items.rowCount > 0}" style="border-width: 0px; border-collapse: collapse;">
+                    <h:outputText escape="false" value="#{msgs.Empty}" rendered="#{receiptsController.items.rowCount == 0}"/>
                     <h:outputText value="#{receiptsController.pagination.pageFirstItem + 1}..#{receiptsController.pagination.pageLastItem + 1}/#{receiptsController.pagination.itemsCount}"/>&nbsp;
                     <h:commandLink action="#{receiptsController.previous}" value="#{msgs.Previous} #{receiptsController.pagination.pageSize}" rendered="#{receiptsController.pagination.hasPreviousPage}"/>&nbsp;
                     <h:commandLink action="#{receiptsController.next}" value="#{msgs.Next} #{receiptsController.pagination.pageSize}" rendered="#{receiptsController.pagination.hasNextPage}"/>&nbsp;
@@ -80,7 +81,7 @@
                         </p:column>
                     </p:dataTable>
                 </p:panel>
-                
+
                 <p:commandButton action="#{receiptsController.prepareCreate}" 
                                  value="#{msgs.New}" rendered="#{receiptsController.items.rowCount > 0}"/>
             </h:form>

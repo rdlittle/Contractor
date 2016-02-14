@@ -49,9 +49,10 @@ public class Company implements Serializable {
     @Size(max = 100)
     @Column(name = "city")
     private String city;
-    @Size(max = 100)
-    @Column(name = "state")
-    private String state;
+    
+    @OneToOne
+    @JoinColumn(name = "state")
+    private States state;
     @Size(max = 100)
     @Column(name = "zip")
     private String zip;
@@ -70,6 +71,7 @@ public class Company implements Serializable {
     private String email;
 
     public Company() {
+        state = new States();
     }
 
     public Company(Integer companyID) {
@@ -116,11 +118,14 @@ public class Company implements Serializable {
         this.city = city;
     }
 
-    public String getState() {
+    public States getState() {
+        if(state==null) {
+            state = new States();
+        }
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(States state) {
         this.state = state;
     }
 

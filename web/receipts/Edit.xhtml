@@ -33,9 +33,7 @@
                 </p:panelGrid>
                 <p:commandButton action="#{receiptsController.update}" value="#{msgs.Save}"/>
                 &nbsp;&nbsp;
-                <p:commandButton action="View?faces-redirect=true" value="#{msgs.Cancel}" immediate="true"/>
-                &nbsp;&nbsp;
-                <p:commandButton action="#{receiptsController.prepareList}" value="#{msgs.List}" immediate="true"/>
+                <p:commandButton action="List?faces-redirect=true" value="#{msgs.Cancel}" immediate="true"/>
             </h:form>
         </ui:define>
     </ui:composition>

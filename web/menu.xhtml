@@ -3,17 +3,31 @@
 <ui:composition 
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui"
-    xmlns:h="http://xmlns.jcp.org/jsf/html">
+    xmlns:h="http://xmlns.jcp.org/jsf/html"
+    xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:form>
-        <p:menu>
-            <p:menuitem outcome="/periods/List?faces-redirect=true" value="#{msgs.leftNavBillingPeriods}"/>
-            <p:menuitem outcome="/company/List?faces-redirect=true" value="#{msgs.leftNavCompany}"/>
-            <p:menuitem outcome="/client/List?faces-redirect=true" value="#{msgs.leftNavClient}"/>
-            <p:menuitem outcome="/invoices/List?faces-redirect=true" value="#{msgs.leftNavInvoices}"/>
-            <p:menuitem outcome="/receipts/List?faces-redirect=true" value="#{msgs.leftNavReceipts}"/>
-            <p:menuitem outcome="/reports/InvoiceForm?faces-redirect=true" value="#{msgs.leftNavReports}"/>
-            <p:menuitem outcome="/sequence/List?faces-redirect=true" value="#{msgs.leftNavSequence}" />
+        <p:tieredMenu>
+            <p:submenu label="#{msgs.leftNavCompany}">
+                <p:menuitem outcome="/company/View?faces-redirect=true" value="#{msgs.leftNavCompanyInfo}"/>
+                <p:menuitem outcome="/client/List?faces-redirect=true" value="#{msgs.leftNavClient}"/>
+            </p:submenu>
+            <p:submenu label="#{msgs.leftNavControl}">
+                <p:menuitem outcome="/periods/List?faces-redirect=true" value="#{msgs.leftNavBillingPeriods}"/>
+                <p:menuitem outcome="/sequence/List?faces-redirect=true" value="#{msgs.leftNavSequence}" />
+            </p:submenu>            
+            <p:submenu label="#{msgs.leftNavAccounting}">
+                <p:menuitem outcome="/invoices/List?faces-redirect=true" value="#{msgs.leftNavInvoices}"/>
+                <p:menuitem outcome="/receipts/List?faces-redirect=true" value="#{msgs.leftNavReceipts}"/>
+            </p:submenu>
+            <p:submenu label="#{msgs.leftNavReports}">
+                <p:menuitem outcome="/reports/InvoiceForm?faces-redirect=true" value="#{msgs.leftNavReportsInvoices}"/>
+            </p:submenu>
             <p:menuitem outcome="/timesheet/List?faces-redirect=true" value="#{msgs.leftNavTimeSheet}"/>
-        </p:menu>
+        </p:tieredMenu>
+        <p:themeSwitcher id="basic" value="#{guestPreferences.theme}" style="width: 100%;">
+            <f:selectItem itemLabel="Choose Theme" itemValue="" />
+            <f:selectItems value="#{contractorService.themes}" var="theme" itemLabel="#{theme.displayName}" itemValue="#{theme.name}"/>
+            <p:ajax listener="#{guestPreferences.changeTheme()}"/>
+        </p:themeSwitcher>
     </h:form>
 </ui:composition>  

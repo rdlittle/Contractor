@@ -20,94 +20,113 @@
                 <h:panelGroup id="messagePanel" layout="block">
                     <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
                 </h:panelGroup>
-                <p:outputLabel for="clientSelector" value="Client: "/>
+
+                <p:outputLabel value="Client: "/>
                 <p:selectOneMenu id="clientSelector" value="#{clientBean.client}"
                                  onchange="submit()" 
-                                 valueChangeListener="#{timesheetController.prepareList()}" style="margin-right: 2em; margin-bottom: .5em;">
+                                 valueChangeListener="#{timesheetController.prepareList()}" style="margin-right: 2em;">
                     <f:selectItem itemValue="" itemLabel="Select client"/>
                     <f:selectItems id="clientList" var="client"
                                    value="#{clientController.clientList}"
                                    itemValue="#{client}"
                                    itemLabel="#{client.name}"/>
                 </p:selectOneMenu>
+
                 <p:outputLabel escape="false" value="#{msgs.Empty}" rendered="#{timesheetController.items.rowCount == 0}"/>
-                <h:panelGroup rendered="#{timesheetController.items.rowCount > 0}" style="width: 99%;">
-                    <h:outputText value="#{timesheetController.pagination.pageFirstItem + 1}..#{timesheetController.pagination.pageLastItem + 1}/#{timesheetController.pagination.itemsCount}"/>&nbsp;
-                    <h:commandLink action="#{timesheetController.previous}" value="#{msgs.Previous} #{timesheetController.pagination.pageSize}" rendered="#{timesheetController.pagination.hasPreviousPage}"/>&nbsp;
-                    <h:commandLink action="#{timesheetController.next}" value="#{msgs.Next} #{timesheetController.pagination.pageSize}" rendered="#{timesheetController.pagination.hasNextPage}"/>&nbsp;
-                    <p:dataTable id="timesheetTable" 
-                                 value="#{timesheetController.items}"
-                                 selection="#{timesheetController.selectedItems}"
-                                 var="item" 
-                                 selectionMode="multiple"
-                                 rowSelectMode ="add"
-                                 rowKey="#{item.id}" style="width: 100%; margin: auto;">
-                        <p:ajax event="rowSelect" listener="#{timesheetController.onRowSelect}" update=":timesheetForm" />
-                        <p:ajax event="rowUnselect" listener="#{timesheetController.onRowUnselect}" update=":timesheetForm" />
-                        
-                        <p:column style="text-align: left; width: 8%; padding: .25em; margin: 0;">
-                            <f:facet name="header">
-                                <h:outputText value="#{msgs.date}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.date}">
-                                <f:convertDateTime pattern="MM/dd/yyyy" />
-                            </h:outputText>
+
+                <p:panelGrid rendered="#{timesheetController.items.rowCount > 0}">
+                    <p:row>
+                        <p:column>
+                            <h:outputText value="#{timesheetController.pagination.pageFirstItem + 1}..#{timesheetController.pagination.pageLastItem + 1}/#{timesheetController.pagination.itemsCount}"/>&nbsp;
+                            <h:commandLink action="#{timesheetController.previous}" value="#{msgs.Previous} #{timesheetController.pagination.pageSize}" rendered="#{timesheetController.pagination.hasPreviousPage}"/>&nbsp;
+                            <h:commandLink action="#{timesheetController.next}" value="#{msgs.Next} #{timesheetController.pagination.pageSize}" rendered="#{timesheetController.pagination.hasNextPage}"/>&nbsp;
                         </p:column>
-                        <p:column style="width: auto; padding: .25em;">
-                            <f:facet name="header">
-                                <h:outputText value="#{msgs.description}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.description}"/>
+                        <p:column>
+                            <p:panel style="float: right; border-width: 0px;">
+                                <p:outputLabel value="#{msgs.unposted}" style="font-weight: 700; margin-right: 1em;"/>
+                                <p:outputLabel value="#{timesheetController.unpostedHours}" 
+                                               styleClass="#{timesheetController.unpostedHours lt 40 ? 'negativeNumber' : 'positiveNumber'}">
+                                    <f:convertNumber maxFractionDigits="0" pattern="###"/>
+                                </p:outputLabel>                        
+                            </p:panel>
                         </p:column>
-                        <p:column style="text-align: right; width: 5%; padding: .25em; margin: 0;">
-                            <f:facet name="header">
-                                <h:outputText value="#{msgs.hours}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.hours}"/>
+                    </p:row>
+                    <p:row>
+                        <p:column colspan="2">
+                            <p:dataTable id="timesheetTable" 
+                                         value="#{timesheetController.items}"
+                                         selection="#{timesheetController.selectedItems}"
+                                         var="item" 
+                                         selectionMode="multiple"
+                                         rowSelectMode ="add"
+                                         rowKey="#{item.id}" style="width: 100%; margin: auto;">
+                                <p:ajax event="rowSelect" listener="#{timesheetController.onRowSelect}" update=":timesheetForm" />
+                                <p:ajax event="rowUnselect" listener="#{timesheetController.onRowUnselect}" update=":timesheetForm" />
+
+                                <p:column style="text-align: left; width: 8%;">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.date}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.date}">
+                                        <f:convertDateTime pattern="MM/dd/yyyy" />
+                                    </h:outputText>
+                                </p:column>
+                                <p:column style="width: auto; ">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.description}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.description}"/>
+                                </p:column>
+                                <p:column style="text-align: right; width: 5%;">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.hours}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.hours}"/>
+                                </p:column>
+                                <p:column style="text-align: right; width: 5%;" rendered="false">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.clientID}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.clientID}"/>
+                                </p:column>
+                                <p:column style="text-align: right; width: 5%;">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.invoice}"/>
+                                    </f:facet>
+                                    <h:outputText value="#{item.invNum}"/>
+                                </p:column>
+                                <p:column style="text-align: center; width: 4%;">
+                                    <f:facet name="header">
+                                        <h:outputText value="#{msgs.posted}"/>
+                                    </f:facet>
+                                    <p:selectBooleanCheckbox id="posted" value="#{item.posted}" disabled="true"/>
+                                </p:column>                        
+                                <p:column style="width: 8%;">
+                                    <f:facet name="header">
+                                        <h:outputText value="&nbsp;"/>
+                                    </f:facet>
+                                    <h:commandLink action="#{timesheetController.prepareEdit}" value="#{msgs.Edit}" style="margin-right: 1em;"/>
+                                    <h:commandLink action="#{timesheetController.destroy}" value="#{msgs.Delete}"/>
+                                </p:column>
+                                <f:facet name="footer">
+                                    <p:commandButton id="previewButton" 
+                                                     process="timesheetTable" 
+                                                     icon="ui-icon-search" value="Preview Invoice" 
+                                                     action="#{timesheetController.prepareInvoice()}"
+                                                     disabled="#{timesheetController.selectedItems.size()==0 || timesheetController.selectedItems==null}">
+                                        <f:param id="selectedClientId" value="#{clientBean.clientId}"/>
+                                    </p:commandButton>
+                                </f:facet>
+                            </p:dataTable>
                         </p:column>
-                        <p:column style="text-align: right; width: 5%; padding: .25em; margin: 0;" rendered="false">
-                            <f:facet name="header">
-                                <h:outputText value="#{msgs.clientID}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.clientID}"/>
-                        </p:column>
-                        <p:column style="text-align: right; width: 5%; padding: .25em; margin: 0;">
-                            <f:facet name="header">
-                                <h:outputText value="#{msgs.invoice}"/>
-                            </f:facet>
-                            <h:outputText value="#{item.invNum}"/>
-                        </p:column>
-                        <p:column style="text-align: center; width: 4%; padding: .25em; margin: 0;">
-                            <f:facet name="header">
-                                <h:outputText value="#{msgs.posted}"/>
-                            </f:facet>
-                            <p:selectBooleanCheckbox id="posted" value="#{item.posted}" disabled="true"/>
-                        </p:column>                        
-                        <p:column style="width: 8%;">
-                            <f:facet name="header">
-                                <h:outputText value="&nbsp;"/>
-                            </f:facet>
-                            <h:commandLink action="#{timesheetController.prepareEdit}" value="#{msgs.Edit}" style="margin-right: 1em;"/>
-                            <h:commandLink action="#{timesheetController.destroy}" value="#{msgs.Delete}"/>
-                        </p:column>
-                        <f:facet name="footer">
-                            <p:commandButton id="previewButton" 
-                                             process="timesheetTable" 
-                                             icon="ui-icon-search" value="Preview Invoice" 
-                                             action="#{timesheetController.prepareInvoice()}"
-                                             disabled="#{timesheetController.selectedItems.size()==0 || timesheetController.selectedItems==null}">
-                                <f:param id="selectedClientId" value="#{clientBean.clientId}"/>
-                            </p:commandButton>
-                            
-                        </f:facet>
-                    </p:dataTable>
-                </h:panelGroup>
+                    </p:row>
+                </p:panelGrid>
                 <br />
                 <p:commandButton action="#{timesheetController.prepareCreate}" 
                                  value="#{msgs.New}" rendered="#{timesheetController.items.rowCount > 0}">
                     <f:param id="selectedClientId" value="#{client.name}"/>
                 </p:commandButton>
-                
+
             </h:form>
         </ui:define>
     </ui:composition>

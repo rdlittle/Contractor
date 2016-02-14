@@ -16,7 +16,7 @@
                 <f:viewAction action="#{ReportBean.init()}" phase="UPDATE_MODEL_VALUES"/>
             </f:metadata>
             <h:form id="invoiceForm">
-                <p:panelGrid style="align-items: center; width: 55%;" styleClass="custom">
+                <p:panelGrid style="align-items: center; width: 65%;" styleClass="custom">
                     <p:row>
                         <p:column>
                             <p:outputLabel value="Client" style="font-size: x-large; margin-right: 1.5em; text-align: left;"/>
@@ -34,6 +34,7 @@
                     <p:row>
                         <p:column>
                             <p:selectOneMenu id="clientSelector" value="#{clientBean.client}" onchange="submit()">
+                                <f:selectItem itemValue="" itemLabel="Select client"/>
                                 <f:selectItems id="clientList" var="client"
                                                value="#{clientController.clientList}"
                                                itemValue="#{client}"
@@ -47,6 +48,7 @@
                                                value="#{InvoiceController.invoiceList}" 
                                                itemValue="#{inv}" 
                                                itemLabel="#{inv.shortDate}"/>
+                                <p:ajax update="summary"/>
                             </p:selectOneMenu>
                         </p:column>
 
@@ -62,6 +64,40 @@
                     </p:row>
 
                 </p:panelGrid>
+                
+                <p:panelGrid id="summary" 
+                             style="width: 50%; margin-left: 1em; 
+                             margin-top: 1em;" rendered="#{!empty ReportBean.selectedInvoice}">
+                    <p:row>
+                        <p:column>
+                            <p:outputLabel value="Invoice # " style="font-weight: 700;"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{ReportBean.selectedInvoice.invoice}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="Invoice Date " style="font-weight: 700;"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{ReportBean.selectedInvoice.shortDate}"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="Amount" style="font-weight: 700;"/>
+                        </p:column>                        
+                        <p:column>
+                            <p:outputLabel value="#{ReportBean.selectedInvoice.amount}">
+                                <f:convertNumber minFractionDigits="2"/>
+                            </p:outputLabel>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="Check#" style="font-weight: 700;"/>
+                        </p:column>
+                        <p:column>
+                            <p:outputLabel value="#{ReportBean.selectedInvoice.checkNum}"/>
+                        </p:column>                        
+                    </p:row>
+                </p:panelGrid>
+                
             </h:form>
 
         </ui:define>

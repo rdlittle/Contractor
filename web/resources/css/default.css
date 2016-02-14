@@ -48,3 +48,13 @@ a:link:hover, a:visited:hover  {
 .radio_button td label {
     padding-right: 1em !important;
 }
+
+.negativeNumber {
+    color: red;
+    font-weight: 700;
+}
+
+.positiveNumber {
+    color: black;
+    font-weight: 700;
+}

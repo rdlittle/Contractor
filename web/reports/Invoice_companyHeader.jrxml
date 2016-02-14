@@ -53,7 +53,7 @@
 			</textField>
 			<image>
 				<reportElement x="384" y="6" width="76" height="80" uuid="f3309a80-58b9-4a56-b4f0-da23995e1a2f"/>
-				<imageExpression><![CDATA["/reports/computer.gif"]]></imageExpression>
+				<imageExpression><![CDATA["computer.gif"]]></imageExpression>
 			</image>
 		</band>
 	</detail>

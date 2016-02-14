@@ -6,6 +6,8 @@ import com.webfront.entity.Periods;
 import com.webfront.entity.Timesheet;
 import com.webfront.jpa.controller.util.JsfUtil;
 import com.webfront.jpa.controller.util.PaginationHelper;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.Serializable;
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -17,8 +19,11 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javafx.beans.value.ObservableValue;
+import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
+import javax.faces.bean.ManagedProperty;
 import javax.faces.bean.SessionScoped;
 import javax.faces.component.UIComponent;
 import javax.faces.context.ExternalContext;
@@ -47,15 +52,20 @@ public class TimesheetController implements Serializable {
     private List<Timesheet> selectedItems;
     private Float totalHours;
     private Float invoiceTotal;
+    private Float unpostedHours;
     private Float rate;
     private Date invoiceDate;
     private String clientName;
     @Transient
     private Periods selectedPeriod;
     private String junk;
+    
+    @ManagedProperty(value="#{clientBean}")
+    private ClientBean client;
 
     public TimesheetController() {
         this.selectedItems = new ArrayList();
+        unpostedHours = new Float(0);
     }
 
     public Timesheet getSelected() {
@@ -347,10 +357,55 @@ public class TimesheetController implements Serializable {
     public void onRowUnselect(UnselectEvent event) {
     }
 
+    /**
+     * @return the unpostedHours
+     */
+    public Float getUnpostedHours() {
+        unpostedHours = getFacade().getOpenHours();
+        return unpostedHours;
+    }
+
+    /**
+     * @param unpostedHours the unpostedHours to set
+     */
+    public void setUnpostedHours(Float unpostedHours) {
+        this.unpostedHours = unpostedHours;
+    }
+
+    /**
+     * @return the clientBean
+     */
+    public ClientBean getClient() {
+        return client;
+    }
+
+    /**
+     * @param cl
+     */
+    public void setClient(ClientBean cl) {
+        this.client = cl;
+//        addListener();
+    }
+    
+    @PostConstruct
+    public void addListener() {
+        this.client.addPropertyChangeListener("CLIENT_PROPERTY", new ClientListener());
+    }
+
+    private class ClientListener implements PropertyChangeListener {
+
+        @Override
+        public void propertyChange(PropertyChangeEvent evt) {
+//            System.out.println(evt.getPropertyName());
+            getFacade().setClientId(client.getClient().getId());
+        }
+        
+    }
     @FacesConverter(forClass = Timesheet.class)
     public static class TimesheetControllerConverter
             implements Converter {
 
+        @Override
         public Object getAsObject(FacesContext facesContext, UIComponent component, String value) {
             if ((value == null) || (value.length() == 0)) {
                 return null;
