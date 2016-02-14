@@ -1,10 +1,12 @@
 
 #top {
     position: relative;
-    background-color: #036fab;
-    color: white;
+/*    background-color: #036fab;
+    color: white;*/
     padding: 5px;
     margin: 0px 0px 10px 0px;
+    border-width: 0px;
+    border-collapse: collapse;
 }
 
 #left {

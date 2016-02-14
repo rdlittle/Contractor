@@ -24,7 +24,8 @@
                 <p:outputLabel value="Client: "/>
                 <p:selectOneMenu id="clientSelector" value="#{clientBean.client}"
                                  onchange="submit()" 
-                                 valueChangeListener="#{timesheetController.prepareList()}" style="margin-right: 2em;">
+                                 valueChangeListener="#{timesheetController.prepareList()}" 
+                                 style="margin-bottom: 1em; margin-right: 2em;">
                     <f:selectItem itemValue="" itemLabel="Select client"/>
                     <f:selectItems id="clientList" var="client"
                                    value="#{clientController.clientList}"
@@ -34,7 +35,7 @@
 
                 <p:outputLabel escape="false" value="#{msgs.Empty}" rendered="#{timesheetController.items.rowCount == 0}"/>
 
-                <p:panelGrid rendered="#{timesheetController.items.rowCount > 0}">
+                <p:panelGrid rendered="#{timesheetController.items.rowCount > 0}" style="width: 100%;">
                     <p:row>
                         <p:column>
                             <h:outputText value="#{timesheetController.pagination.pageFirstItem + 1}..#{timesheetController.pagination.pageLastItem + 1}/#{timesheetController.pagination.itemsCount}"/>&nbsp;

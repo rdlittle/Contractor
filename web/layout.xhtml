@@ -3,8 +3,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
-      xmlns:p="http://primefaces.org/ui"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:p="http://primefaces.org/ui">
 
     <h:head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
@@ -19,7 +18,11 @@
 
     <h:body>
         <div id="top" class="top">
-            <ui:insert name="top"><h2>#{msgs.appWelcome}</h2></ui:insert>
+            <ui:insert name="top">
+                <p:panel>
+                    <h2>#{msgs.appWelcome}</h2>
+                </p:panel>
+            </ui:insert>
         </div>
         <div>
             <div id="left" class="menu">

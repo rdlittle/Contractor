@@ -14,6 +14,7 @@
             <p:submenu label="#{msgs.leftNavControl}">
                 <p:menuitem outcome="/periods/List?faces-redirect=true" value="#{msgs.leftNavBillingPeriods}"/>
                 <p:menuitem outcome="/sequence/List?faces-redirect=true" value="#{msgs.leftNavSequence}" />
+                <p:menuitem outcome="/styleSelector.xhtml?faces-redirect=true" value="#{msgs.AppStyleMenuTitle}" />
             </p:submenu>            
             <p:submenu label="#{msgs.leftNavAccounting}">
                 <p:menuitem outcome="/invoices/List?faces-redirect=true" value="#{msgs.leftNavInvoices}"/>
@@ -24,10 +25,5 @@
             </p:submenu>
             <p:menuitem outcome="/timesheet/List?faces-redirect=true" value="#{msgs.leftNavTimeSheet}"/>
         </p:tieredMenu>
-        <p:themeSwitcher id="basic" value="#{guestPreferences.theme}" style="width: 100%;">
-            <f:selectItem itemLabel="Choose Theme" itemValue="" />
-            <f:selectItems value="#{contractorService.themes}" var="theme" itemLabel="#{theme.displayName}" itemValue="#{theme.name}"/>
-            <p:ajax listener="#{guestPreferences.changeTheme()}"/>
-        </p:themeSwitcher>
     </h:form>
 </ui:composition>  
