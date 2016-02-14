@@ -18,19 +18,19 @@
             </h:panelGroup>
             <h:form>
                 <p:panelGrid columns="2" columnClasses="leftCol,rightCol">
-                    <h:outputLabel value="#{msgs.id}" for="id" rendered="false" />
-                    <h:inputText id="id" value="#{periodsController.selected.id}" title="#{msgs.id}" rendered="false"/>
-                    <h:outputLabel value="#{msgs.startDate}" for="startDate" />
+                    <p:outputLabel value="#{msgs.id}" for="id" rendered="false" />
+                    <p:inputText id="id" value="#{periodsController.selected.id}" title="#{msgs.id}" rendered="false"/>
+                    <p:outputLabel value="#{msgs.startDate}" for="startDate" />
                     <p:calendar id="startDate" pattern="MM/dd/yyyy" value="#{periodsController.selected.startDate}" title="#{msgs.startDate}">
                     </p:calendar>
-                    <h:outputLabel value="#{msgs.endDate}" for="endDate" />
+                    <p:outputLabel value="#{msgs.endDate}" for="endDate" />
                     <p:calendar id="endDate" pattern="MM/dd/yyyy" value="#{periodsController.selected.endDate}" title="#{msgs.endDate}">
                     </p:calendar>
                 </p:panelGrid>
                 <br />
-                <h:commandButton action="#{periodsController.create}" value="#{msgs.Save}" />
+                <p:commandButton action="#{periodsController.create}" value="#{msgs.Save}" />
                 &nbsp;&nbsp;
-                <h:commandButton  action="#{periodsController.prepareList}" value="#{msgs.List}" immediate="true"/>
+                <p:commandButton  action="#{periodsController.prepareList}" value="#{msgs.Cancel}" immediate="true"/>
             </h:form>
         </ui:define>
     </ui:composition>
