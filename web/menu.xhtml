@@ -3,13 +3,12 @@
 <ui:composition 
     xmlns:ui="http://java.sun.com/jsf/facelets"
     xmlns:p="http://primefaces.org/ui"
-    xmlns:h="http://xmlns.jcp.org/jsf/html"
-    xmlns:f="http://xmlns.jcp.org/jsf/core">
+    xmlns:h="http://xmlns.jcp.org/jsf/html">
     <h:form>
         <p:tieredMenu>
             <p:submenu label="#{msgs.leftNavCompany}">
                 <p:menuitem outcome="/company/View?faces-redirect=true" value="#{msgs.leftNavCompanyInfo}"/>
-                <p:menuitem outcome="/client/List?faces-redirect=true" value="#{msgs.leftNavClient}"/>
+                <p:menuitem outcome="/client/View?faces-redirect=true" value="#{msgs.leftNavClient}"/>
             </p:submenu>
             <p:submenu label="#{msgs.leftNavControl}">
                 <p:menuitem outcome="/periods/List?faces-redirect=true" value="#{msgs.leftNavBillingPeriods}"/>

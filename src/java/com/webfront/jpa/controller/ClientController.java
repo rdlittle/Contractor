@@ -20,7 +20,7 @@ import javax.faces.model.SelectItem;
 @SessionScoped
 public class ClientController implements Serializable {
 
-    private Client current;
+    private Client selectedClient;
     private DataModel items = null;
     @EJB
     private com.webfront.beans.ClientFacade ejbFacade;
@@ -38,12 +38,30 @@ public class ClientController implements Serializable {
         List<Client> list=getFacade().findAll();
         return list;
     }
-    public Client getSelected() {
-        if (current == null) {
-            current = new Client();
+    
+    public Client getSelectedClient() {
+        if (selectedClient == null) {
+            selectedClient = new Client();
             selectedItemIndex = -1;
         }
-        return current;
+        return selectedClient;
+    }
+    
+    public void onSelectClient() {
+        Client c;
+        if (this.selectedClient == null) {
+            c = new Client();
+        } else {
+            c = getFacade().find(this.selectedClient.getId());
+            if (c == null) {
+                c = new Client();
+            }
+        }
+        this.selectedClient = c;
+    }
+    
+    public void setSelectedClient(Client c) {
+        this.selectedClient=c;
     }
 
     public ClientFacade getFacade() {
@@ -74,20 +92,20 @@ public class ClientController implements Serializable {
     }
 
     public String prepareView() {
-        current = (Client) getItems().getRowData();
+        selectedClient = (Client) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "View?faces-redirect=true";
     }
 
     public String prepareCreate() {
-        current = new Client();
+        selectedClient = new Client();
         selectedItemIndex = -1;
         return "Create?faces-redirect=true";
     }
 
     public String create() {
         try {
-            getFacade().create(current);
+            getFacade().create(selectedClient);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Messages").getString("Created"));
             return prepareCreate();
         } catch (Exception e) {
@@ -97,14 +115,14 @@ public class ClientController implements Serializable {
     }
 
     public String prepareEdit() {
-        current = (Client) getItems().getRowData();
+        selectedClient = (Client) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         return "Edit?faces-redirect=true";
     }
 
     public String update() {
         try {
-            getFacade().edit(current);
+            getFacade().edit(selectedClient);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Messages").getString("Updated"));
             return "View?faces-redirect=true";
         } catch (Exception e) {
@@ -114,7 +132,7 @@ public class ClientController implements Serializable {
     }
 
     public String destroy() {
-        current = (Client) getItems().getRowData();
+        selectedClient = (Client) getItems().getRowData();
         selectedItemIndex = pagination.getPageFirstItem() + getItems().getRowIndex();
         performDestroy();
         recreatePagination();
@@ -137,7 +155,7 @@ public class ClientController implements Serializable {
 
     private void performDestroy() {
         try {
-            getFacade().remove(current);
+            getFacade().remove(selectedClient);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Messages").getString("Deleted"));
         } catch (Exception e) {
             JsfUtil.addErrorMessage(e, ResourceBundle.getBundle("/Messages").getString("PersistenceError"));
@@ -155,7 +173,7 @@ public class ClientController implements Serializable {
             }
         }
         if (selectedItemIndex >= 0) {
-            current = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
+            selectedClient = getFacade().findRange(new int[]{selectedItemIndex, selectedItemIndex + 1}).get(0);
         }
     }
 

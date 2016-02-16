@@ -6,7 +6,6 @@ package com.webfront.entity;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 /**
@@ -50,9 +49,9 @@ public class Client implements Serializable {
     @Size(max = 25)
     @Column(name = "city")
     private String city;
-    @Size(max = 2)
-    @Column(name = "state")
-    private String state;
+    @OneToOne
+    @JoinColumn(name = "state")
+    private States state;
     @Size(max = 10)
     @Column(name = "zip")
     private String zip;
@@ -61,6 +60,12 @@ public class Client implements Serializable {
     private String attn;
     @Column(name = "rate")
     private Integer rate;
+    @Column
+    private String phone1;
+    @Column
+    private String phone2;
+    @Column
+    private String email;
 
     public Client() {
     }
@@ -117,11 +122,11 @@ public class Client implements Serializable {
         this.city = city;
     }
 
-    public String getState() {
+    public States getState() {
         return state;
     }
 
-    public void setState(String state) {
+    public void setState(States state) {
         this.state = state;
     }
 
@@ -172,6 +177,48 @@ public class Client implements Serializable {
     @Override
     public String toString() {
         return "com.webfront.entity.Client[ id=" + id + " ]";
+    }
+
+    /**
+     * @return the phone1
+     */
+    public String getPhone1() {
+        return phone1;
+    }
+
+    /**
+     * @param phone1 the phone1 to set
+     */
+    public void setPhone1(String phone1) {
+        this.phone1 = phone1;
+    }
+
+    /**
+     * @return the phone2
+     */
+    public String getPhone2() {
+        return phone2;
+    }
+
+    /**
+     * @param phone2 the phone2 to set
+     */
+    public void setPhone2(String phone2) {
+        this.phone2 = phone2;
+    }
+
+    /**
+     * @return the email
+     */
+    public String getEmail() {
+        return email;
+    }
+
+    /**
+     * @param email the email to set
+     */
+    public void setEmail(String email) {
+        this.email = email;
     }
     
 }

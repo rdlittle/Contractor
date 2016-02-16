@@ -40,11 +40,9 @@
                     <h:inputText id="period" value="#{InvoiceController.selected.periodNum}" title="#{msgs.period}" />   
                 </h:panelGrid>
                 <br/>
-                <p:commandButton action="View?faces-redirect=true" value="#{msgs.OK}"/>
-                &nbsp;&nbsp;
                 <p:commandButton action="#{InvoiceController.update}" value="#{msgs.Save}"/>
                 &nbsp;&nbsp;
-                <p:commandButton action="#{InvoiceController.prepareList}" value="#{msgs.List}" immediate="true"/>
+                <p:commandButton action="#{InvoiceController.prepareList}" value="#{msgs.Cancel}" immediate="true"/>
             </h:form>
         </ui:define>
     </ui:composition>

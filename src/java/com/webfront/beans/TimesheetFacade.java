@@ -44,7 +44,9 @@ public class TimesheetFacade extends AbstractFacade<Timesheet> {
             Query query = getEntityManager().createNamedQuery("Timesheet.findTotalUnpostedHours");
             query.setParameter("clientID", clientId);
             query.setParameter("posted", false);
-            hours = (Double) query.getSingleResult();
+            if(query.getSingleResult()!=null) {
+                hours = (Double) query.getSingleResult();
+            }
         }
         return hours.floatValue();
     }
