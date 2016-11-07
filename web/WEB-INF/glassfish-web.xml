@@ -11,8 +11,8 @@
     <res-ref-name>jdbc/contractor</res-ref-name>
     <jndi-name>jdbc/contractor</jndi-name>
     <default-resource-principal>
-      <name>contractorUser</name>
-      <password>contractorPass</password>
+      <name>mvcontractor</name>
+      <password>my!Contractor56</password>
     </default-resource-principal>
   </resource-ref>
 </glassfish-web-app>
