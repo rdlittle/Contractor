@@ -16,7 +16,7 @@ public class CompanyController implements Serializable {
 
     @EJB
     private com.webfront.beans.CompanyFacade ejbFacade;
-    private ArrayList<Company> companyList = new ArrayList<>();
+    private final ArrayList<Company> companyList = new ArrayList<>();
     private Company selectedCompany;
 
     public CompanyController() {

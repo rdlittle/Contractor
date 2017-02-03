@@ -27,13 +27,13 @@
                     <p:outputLabel value="#{msgs.ID}" for="ID" />
                     <p:outputLabel id="ID" value="#{clientController.selectedClient.id}"/>
                     <p:outputLabel value="#{msgs.name}" for="Name" />
-                    <p:inputText id="Name" value="#{clientController.selectedClient.name}" title="#{msgs.name}" style="width: 100%;"/>
+                    <p:outputLabel id="Name" value="#{clientController.selectedClient.name}" title="#{msgs.name}" style="width: 100%;"/>
                     <p:outputLabel value="#{msgs.address1}" for="address1" />
-                    <p:inputText id="address1" value="#{clientController.selectedClient.address1}" title="#{msgs.address1}" style="width: 100%;"/>
+                    <p:outputLabel id="address1" value="#{clientController.selectedClient.address1}" title="#{msgs.address1}" style="width: 100%;"/>
                     <p:outputLabel value="#{msgs.address2}" for="address2" />
-                    <p:inputText id="address2" value="#{clientController.selectedClient.address2}" title="#{msgs.address2}" style="width: 100%;"/>
+                    <p:outputLabel id="address2" value="#{clientController.selectedClient.address2}" title="#{msgs.address2}" style="width: 100%;"/>
                     <p:outputLabel value="#{msgs.city}" for="city" />
-                    <p:inputText id="city" value="#{clientController.selectedClient.city}" title="#{msgs.city}" style="width: 100%;"/>
+                    <p:outputLabel id="city" value="#{clientController.selectedClient.city}" title="#{msgs.city}" style="width: 100%;"/>
                     <p:outputLabel value="#{msgs.state}" for="state" />
 
                     <p:selectOneMenu id="state" value="#{clientController.selectedClient.state}" title="#{msgs.state}">
@@ -42,23 +42,18 @@
                     </p:selectOneMenu>
 
                     <p:outputLabel value="#{msgs.zip}" for="zip" />
-                    <p:inputText id="zip" value="#{clientController.selectedClient.zip}" title="#{msgs.zip}" style="width: 100%;"/>
+                    <p:outputLabel id="zip" value="#{clientController.selectedClient.zip}" title="#{msgs.zip}" style="width: 100%;"/>
                     <p:outputLabel value="#{msgs.phone1}" for="phone1" />
-                    <p:inputText id="phone1" value="#{clientController.selectedClient.phone1}" title="#{msgs.phone1}" style="width: 100%;"/>
+                    <p:outputLabel id="phone1" value="#{clientController.selectedClient.phone1}" title="#{msgs.phone1}" style="width: 100%;"/>
                     <p:outputLabel value="#{msgs.phone2}" for="phone2" />
-                    <p:inputText id="phone2" value="#{clientController.selectedClient.phone2}" title="#{msgs.phone2}" style="width: 100%;"/>
+                    <p:outputLabel id="phone2" value="#{clientController.selectedClient.phone2}" title="#{msgs.phone2}" style="width: 100%;"/>
                     <p:outputLabel value="#{msgs.attn}" for="attn" />
-                    <p:inputText id="attn" value="#{clientController.selectedClient.attn}" title="#{msgs.attn}" style="width: 100%;"/>
+                    <p:outputLabel id="attn" value="#{clientController.selectedClient.attn}" title="#{msgs.attn}" style="width: 100%;"/>
                     <p:outputLabel value="#{msgs.email}" for="email" />
-                    <p:inputText id="email" value="#{clientController.selectedClient.email}" title="#{msgs.email}" style="width: 100%;"/>
+                    <p:outputLabel id="email" value="#{clientController.selectedClient.email}" title="#{msgs.email}" style="width: 100%;"/>
                 </p:panelGrid>
                 <h:panelGroup id="buttons">
-                    <p:commandButton action="#{clientController.prepareEdit}" value="#{msgs.Edit}" 
-                                     disabled="#{clientController.selectedClient.id == null}"
-                                     style="margin-right: 1em;"/>
-                    <p:commandButton action="#{clientController.destroy}" value="#{msgs.Delete}" 
-                                     disabled="#{clientController.selectedClient.id == null}"
-                                     style="margin-right: 1em;"/>
+                    <p:commandButton action="#{clientController.prepareEdit}" value="#{msgs.Edit}" style="margin-right: 1em;"/>
                     <p:commandButton action="#{clientController.prepareCreate}" value="#{msgs.New} Client"/>
                 </h:panelGroup>
             </h:form>

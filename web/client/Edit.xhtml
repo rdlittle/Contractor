@@ -3,48 +3,60 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:ui="http://java.sun.com/jsf/facelets"
       xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
       xmlns:p="http://primefaces.org/ui">
 
     <ui:composition template="/layout.xhtml">
-        <ui:define name="windowTitle">
-            <title>
-                <h:outputText value="#{msgs.ClientTitle}"></h:outputText>
-            </title>
-        </ui:define>
+        <title>
+            <h:outputText value="#{msgs.appName} #{msgs.ClientTitle}"></h:outputText>
+        </title>
         <ui:define name="content">
-            <h:panelGroup id="messagePanel" layout="block">
-                <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
-            </h:panelGroup>
             <h:form>
-                <p:panelGrid columns="2" columnClasses="leftCol,rightCol">
-                    <h:outputLabel value="#{msgs.id}" for="id" />
-                    <h:inputText id="id" value="#{clientController.selected.id}" title="#{msgs.id}" required="true" requiredMessage="#{msgs.RequiredEntry}"/>
-                    <h:outputLabel value="#{msgs.name}" for="name" />
-                    <h:inputText id="name" value="#{clientController.selected.name}" title="#{msgs.name}" />
-                    <h:outputLabel value="#{msgs.address1}" for="address1" />
-                    <h:inputText id="address1" value="#{clientController.selected.address1}" title="#{msgs.address1}" />
-                    <h:outputLabel value="#{msgs.address2}" for="address2" />
-                    <h:inputText id="address2" value="#{clientController.selected.address2}" title="#{msgs.address2}" />
-                    <h:outputLabel value="#{msgs.address3}" for="address3" />
-                    <h:inputText id="address3" value="#{clientController.selected.address3}" title="#{msgs.address3}" />
-                    <h:outputLabel value="#{msgs.city}" for="city" />
-                    <h:inputText id="city" value="#{clientController.selected.city}" title="#{msgs.city}" />
-                    <h:outputLabel value="#{msgs.state}" for="state" />
-                    <h:inputText id="state" value="#{clientController.selected.state}" title="#{msgs.state}" />
-                    <h:outputLabel value="#{msgs.zip}" for="zip" />
-                    <h:inputText id="zip" value="#{clientController.selected.zip}" title="#{msgs.zip}" />
-                    <h:outputLabel value="#{msgs.attn}" for="attn" />
-                    <h:inputText id="attn" value="#{clientController.selected.attn}" title="#{msgs.attn}" />
-                    <h:outputLabel value="#{msgs.rate}" for="rate" />
-                    <h:inputText id="rate" value="#{clientController.selected.rate}" title="#{msgs.rate}" />
+                <h:panelGroup id="messagePanel" layout="block">
+                    <h:messages errorStyle="color: red" infoStyle="color: green" layout="table"/>
+                </h:panelGroup>
+
+                <p:selectOneMenu id="clientSelector" value="#{clientController.selectedClient}">
+                    <f:selectItem itemValue="" itemLabel="Select client"/>
+                    <f:selectItems id="clientList"  var="client" 
+                                   value="#{clientController.clientList}"
+                                   itemValue="#{client}" itemLabel="#{client.name}"/>
+                    <p:ajax listener="#{clientController.onSelectClient()}" update="panel buttons"/>
+                </p:selectOneMenu>
+                <p:panelGrid id="panel" columns="2" columnClasses="leftCol,rightCol" style="width:50%;">
+                    <p:outputLabel value="#{msgs.ID}" for="ID" />
+                    <p:outputLabel id="ID" value="#{clientController.selectedClient.id}"/>
+                    <p:outputLabel value="#{msgs.name}" for="Name" />
+                    <p:inputText id="Name" value="#{clientController.selectedClient.name}" title="#{msgs.name}" style="width: 100%;"/>
+                    <p:outputLabel value="#{msgs.address1}" for="address1" />
+                    <p:inputText id="address1" value="#{clientController.selectedClient.address1}" title="#{msgs.address1}" style="width: 100%;"/>
+                    <p:outputLabel value="#{msgs.address2}" for="address2" />
+                    <p:inputText id="address2" value="#{clientController.selectedClient.address2}" title="#{msgs.address2}" style="width: 100%;"/>
+                    <p:outputLabel value="#{msgs.city}" for="city" />
+                    <p:inputText id="city" value="#{clientController.selectedClient.city}" title="#{msgs.city}" style="width: 100%;"/>
+                    <p:outputLabel value="#{msgs.state}" for="state" />
+
+                    <p:selectOneMenu id="state" value="#{clientController.selectedClient.state}" title="#{msgs.state}">
+                        <f:selectItem itemValue="" itemLabel="Select state"/>
+                        <f:selectItems value="#{statesService.statesList}" var="state" itemLabel="#{state.name}" itemValue="#{state}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="#{msgs.zip}" for="zip" />
+                    <p:inputText id="zip" value="#{clientController.selectedClient.zip}" title="#{msgs.zip}" style="width: 100%;"/>
+                    <p:outputLabel value="#{msgs.phone1}" for="phone1" />
+                    <p:inputText id="phone1" value="#{clientController.selectedClient.phone1}" title="#{msgs.phone1}" style="width: 100%;"/>
+                    <p:outputLabel value="#{msgs.phone2}" for="phone2" />
+                    <p:inputText id="phone2" value="#{clientController.selectedClient.phone2}" title="#{msgs.phone2}" style="width: 100%;"/>
+                    <p:outputLabel value="#{msgs.attn}" for="attn" />
+                    <p:inputText id="attn" value="#{clientController.selectedClient.attn}" title="#{msgs.attn}" style="width: 100%;"/>
+                    <p:outputLabel value="#{msgs.email}" for="email" />
+                    <p:inputText id="email" value="#{clientController.selectedClient.email}" title="#{msgs.email}" style="width: 100%;"/>
                 </p:panelGrid>
-                <p:commandButton action="#{clientController.prepareList}" value="#{msgs.OK}"/>
-                &nbsp;&nbsp;
-                <p:commandButton action="View" value="#{msgs.Cancel}" immediate="true"/>
-                &nbsp;&nbsp;                
-                <p:commandButton action="#{clientController.update}" value="#{msgs.Save}"/>
-                &nbsp;&nbsp;                
-                <p:commandButton action="#{clientController.prepareList}" value="#{msgs.List}" immediate="true"/>
+                <h:panelGroup id="buttons">
+                    <p:commandButton action="#{clientController.update}" value="#{msgs.Save}" style="margin-right: 1em;"/>
+                    <p:commandButton action="#{clientController.destroy}" value="#{msgs.Delete}" style="margin-right: 1em;"/>
+                    <p:commandButton action="#{clientController.prepareView}" value="#{msgs.Cancel}"/>
+                </h:panelGroup>
             </h:form>
         </ui:define>
     </ui:composition>

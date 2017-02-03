@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <body>
+
+        <ui:composition template="./../layout.xhtml">
+
+            <ui:define name="windowTitle">
+                <title>
+                    <h:outputText value="#{msgs.appName} #{msgs.RatesTitle}"></h:outputText>
+                </title>
+            </ui:define>
+
+            <ui:define name="content">
+                <p:selectOneMenu id="rateSelector" value="#{ratesController.selectedRate}">
+                    <f:selectItem itemValue="" itemLabel="Select"/>
+                    <f:selectItems id="ratesList"  var="rate" 
+                                   value="#{ratesController.ratesList}"
+                                   itemValue="#{rate}" itemLabel="#{rate.rateAsString}"/>
+                    <p:ajax listener="#{ratesController.onSelectRate()}" update="panel buttons"/>
+                </p:selectOneMenu>
+                <h:panelGroup id="buttons">
+                    <p:commandButton action="#{ratesController.prepareEdit}" value="#{msgs.Edit}" style="margin-right: 1em;"/>
+                    <p:commandButton action="#{ratesController.prepareCreate}" value="#{msgs.New} rate"/>
+                </h:panelGroup>
+            </ui:define>
+
+        </ui:composition>
+
+    </body>
+</html>

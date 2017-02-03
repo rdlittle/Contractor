@@ -23,6 +23,7 @@ public class RatesController implements Serializable {
     @EJB
     private com.webfront.beans.RatesFacade ejbFacade;
     private final ArrayList<Rates> ratesList;
+    private Rates selectedRate;
 
     public RatesController() {
         ratesList = new ArrayList<>();
@@ -45,6 +46,24 @@ public class RatesController implements Serializable {
      */
     public void setFacade(com.webfront.beans.RatesFacade ejbFacade) {
         this.ejbFacade = ejbFacade;
+    }
+
+    /**
+     * @return the selectedRate
+     */
+    public Rates getSelectedRate() {
+        return selectedRate;
+    }
+
+    /**
+     * @param selectedRate the selectedRate to set
+     */
+    public void setSelectedRate(Rates selectedRate) {
+        this.selectedRate = selectedRate;
+    }
+    
+    public void onSelectRate() {
+        
     }
     
 }

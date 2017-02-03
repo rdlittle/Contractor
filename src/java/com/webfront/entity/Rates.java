@@ -90,6 +90,13 @@ public class Rates implements Serializable {
     public Float getRate() {
         return rate;
     }
+    
+    public String getRateAsString() {
+        if(rate==null) {
+            return "";
+        }
+        return Float.toString(rate);
+    }
 
     /**
      * @param rate the rate to set
