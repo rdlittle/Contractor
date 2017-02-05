@@ -16,10 +16,10 @@
         <h:form>
             <p:panelGrid columns="2" columnClasses="leftCol,rightCol" style="margin-top: 2em;">
                 <h:outputLabel value="#{msgs.startDate}" for="startDate" />
-                <p:calendar id="startDate" pattern="MM/dd/yyyy" value="#{periodsController.newPeriod.startDate}" title="#{msgs.startDate}">
+                <p:calendar id="startDate" pattern="MM/dd/yyyy" value="#{periodsController.newPeriod}" title="#{msgs.startDate}">
                 </p:calendar>
                 <h:outputLabel value="#{msgs.endDate}" for="endDate" />
-                <p:calendar id="endDate" pattern="MM/dd/yyyy" value="#{periodsController.newPeriod.endDate}" title="#{msgs.endDate}">
+                <p:calendar id="endDate" pattern="MM/dd/yyyy" value="#{periodsController.newPeriod}" title="#{msgs.endDate}">
                 </p:calendar>
             </p:panelGrid>
             <br />
