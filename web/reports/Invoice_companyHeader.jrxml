@@ -23,7 +23,7 @@
 			<staticText>
 				<reportElement x="0" y="0" width="141" height="43" uuid="70e9ec0f-0641-4ccc-9f95-7e5080a11e10"/>
 				<textElement>
-					<font fontName="SansSerif" size="36" isItalic="true"/>
+					<font fontName="SansSerif" size="34" isItalic="true"/>
 				</textElement>
 				<text><![CDATA[Invoice]]></text>
 			</staticText>

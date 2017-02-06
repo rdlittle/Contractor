@@ -50,7 +50,7 @@ public class GuestPreferences implements Serializable {
         Map<String, Object> map = etx.getRequestCookieMap();
         Map<String, Object> properties = new HashMap<>();
         Cookie cookie = null;
-        if(map.containsKey("globaltheme")) {
+       if(map.containsKey("globaltheme")) {
             cookie = (Cookie) map.get("globaltheme");
         } else {
             cookie = new Cookie("globaltheme",theme);
