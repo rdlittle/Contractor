@@ -36,7 +36,7 @@ public class Timesheet implements Serializable {
     @Column(name = "entryDate")
     @Temporal(TemporalType.DATE)
     private Date date;
-    @Size(max = 200)
+    @Size(max = 1000)
     @Column(name = "description")
     private String description;
     // @Max(value=?)  @Min(value=?)//if you know range of your decimal fields consider using these annotations to enforce field validation
