@@ -5,6 +5,8 @@
 package com.webfront.entity;
 
 import java.io.Serializable;
+import java.text.NumberFormat;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -17,22 +19,28 @@ import javax.validation.constraints.Size;
 @Entity
 @Table(name = "receipts")
 @NamedQueries({
-    @NamedQuery(name = "Receipts.findAll", query = "SELECT r FROM Receipts r"),
-    @NamedQuery(name = "Receipts.findById", query = "SELECT r FROM Receipts r WHERE r.id = :id"),
-    @NamedQuery(name = "Receipts.findByRecdDate", query = "SELECT r FROM Receipts r WHERE r.recdDate = :recdDate"),
-    @NamedQuery(name = "Receipts.findByCheckNum", query = "SELECT r FROM Receipts r WHERE r.checkNum = :checkNum"),
-    @NamedQuery(name = "Receipts.findByAmount", query = "SELECT r FROM Receipts r WHERE r.amount = :amount"),
+    @NamedQuery(name = "Receipts.findAll", query = "SELECT r FROM Receipts r")
+    ,
+    @NamedQuery(name = "Receipts.findById", query = "SELECT r FROM Receipts r WHERE r.id = :id")
+    ,
+    @NamedQuery(name = "Receipts.findByRecdDate", query = "SELECT r FROM Receipts r WHERE r.recdDate = :recdDate")
+    ,
+    @NamedQuery(name = "Receipts.findByCheckNum", query = "SELECT r FROM Receipts r WHERE r.checkNum = :checkNum")
+    ,
+    @NamedQuery(name = "Receipts.findByAmount", query = "SELECT r FROM Receipts r WHERE r.amount = :amount")
+    ,
     @NamedQuery(name = "Receipts.findByPayeeId", query = "SELECT r FROM Receipts r WHERE r.payeeId = :payeeId")})
 public class Receipts implements Serializable {
+
     private static final long serialVersionUID = 1L;
     @Id
     @TableGenerator(name = "NEXT_RECEIPT",
-            allocationSize=1,
-            table="seqcontrol", 
-            pkColumnName="ID",
-            pkColumnValue="NEXT_RECEIPT",
-            valueColumnName="nextSeq")
-    @GeneratedValue(generator = "NEXT_RECEIPT", strategy=GenerationType.TABLE)
+            allocationSize = 1,
+            table = "seqcontrol",
+            pkColumnName = "ID",
+            pkColumnValue = "NEXT_RECEIPT",
+            valueColumnName = "nextSeq")
+    @GeneratedValue(generator = "NEXT_RECEIPT", strategy = GenerationType.TABLE)
     @Column(name = "id")
     private Integer id;
     @Column(name = "recd_date")
@@ -50,6 +58,7 @@ public class Receipts implements Serializable {
     private int payeeId;
 
     public Receipts() {
+        this.checkNum = "";
     }
 
     public Receipts(Integer id) {
@@ -123,7 +132,10 @@ public class Receipts implements Serializable {
 
     @Override
     public String toString() {
-        return "com.webfront.beans.Receipts[ id=" + id + " ]";
+        NumberFormat nf = NumberFormat.getInstance();
+        nf.setMinimumFractionDigits(2);
+        SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy");
+        return checkNum + " " + df.format(recdDate)+" "+ nf.format(amount);
     }
-    
+
 }

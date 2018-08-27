@@ -77,7 +77,7 @@
                             <f:facet name="header">
                                 <h:outputText value="#{msgs.checkNum}"/>
                             </f:facet>
-                            <h:outputText value="#{item.checkNum}"/>
+                            <h:outputText value="#{item.receipt.checkNum}"/>
                         </p:column>
                         <p:column style="text-align: left; width: 5%;">
                             <f:facet name="header">
@@ -97,7 +97,9 @@
                             <f:facet name="header">
                                 <h:outputText value="&nbsp;"/>
                             </f:facet>
-                            <h:commandLink action="#{InvoiceController.prepareEdit}" value="#{msgs.Edit}" style="margin-right: 1em;"/>
+                            <h:commandLink action="#{InvoiceController.prepareEdit}" value="#{msgs.Edit}" style="margin-right: 1em;">
+                                <f:param name="invoiceDate" value="#{item.invDate}"/>
+                            </h:commandLink>
                             <h:commandLink action="#{InvoiceController.destroy}" value="#{msgs.Delete}"/>
                         </p:column>
                     </p:dataTable>

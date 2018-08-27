@@ -5,6 +5,8 @@ import com.webfront.entity.Receipts;
 import com.webfront.jpa.controller.util.JsfUtil;
 import com.webfront.jpa.controller.util.PaginationHelper;
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
@@ -28,6 +30,8 @@ public class ReceiptsController implements Serializable {
     private PaginationHelper pagination;
     private int selectedItemIndex;
     private Integer clientId;
+    private String invoiceId;
+    private List<Receipts> list;
 
     public ReceiptsController() {
     }
@@ -78,6 +82,13 @@ public class ReceiptsController implements Serializable {
         current.setPayeeId(getFacade().getClientId());
         selectedItemIndex = -1;
         return "Create?faces-redirect=true";
+    }
+
+    public String prepareNew() {
+        current = new Receipts();
+        current.setPayeeId(getFacade().getClientId());
+        selectedItemIndex = -1;
+        return "/receipts/Create?faces-redirect=true";
     }
 
     public String create() {
@@ -161,6 +172,10 @@ public class ReceiptsController implements Serializable {
         return items;
     }
 
+    public List<Receipts> getList(Date date) {
+        return getFacade().getList(date);
+    }
+
     private void recreateModel() {
         items = null;
     }
@@ -203,6 +218,20 @@ public class ReceiptsController implements Serializable {
         this.clientId = clientId;
     }
 
+    /**
+     * @return the invoiceId
+     */
+    public String getInvoiceId() {
+        return invoiceId;
+    }
+
+    /**
+     * @param invoiceId the invoiceId to set
+     */
+    public void setInvoiceId(String invoiceId) {
+        this.invoiceId = invoiceId;
+    }
+
     @FacesConverter(forClass = Receipts.class)
     public static class ReceiptsControllerConverter implements Converter {
 
@@ -213,7 +242,8 @@ public class ReceiptsController implements Serializable {
             }
             ReceiptsController controller = (ReceiptsController) facesContext.getApplication().getELResolver().
                     getValue(facesContext.getELContext(), null, "receiptsController");
-            return controller.ejbFacade.find(getKey(value));
+            Receipts r = controller.ejbFacade.find(getKey(value));
+            return r;
         }
 
         java.lang.Integer getKey(String value) {

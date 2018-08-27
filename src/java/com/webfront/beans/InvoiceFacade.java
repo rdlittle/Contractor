@@ -83,6 +83,23 @@ public class InvoiceFacade extends AbstractFacade<Invoice> {
         }
         return null;
     }
+    
+    public List<Invoice> findUnpaidClientInvoices() {
+        FacesContext fc = FacesContext.getCurrentInstance();
+        ExternalContext et = fc.getExternalContext();
+        Map<String, Object> map = et.getSessionMap();
+        ClientBean sb = (ClientBean) map.get("clientBean");
+        if (sb != null && sb.getClientId() != null) {
+            setClientId(sb.getClientId());
+            String stmt = "SELECT i FROM Invoice i WHERE i.client = ?1 AND i.paid = NULL ORDER BY i.id DESC";
+            Query query = getEntityManager().createQuery(stmt, Invoice.class);
+            if (getClientId() != null) {
+                query.setParameter(1, getClientId());
+                return query.getResultList();
+            }
+        }
+        return null;
+    }    
 
     @TransactionAttribute(TransactionAttributeType.NOT_SUPPORTED)
     public String getClientName(Integer id) {

@@ -24,8 +24,9 @@ import javax.validation.constraints.Size;
     @NamedQuery(name = "Invoice.findByAmount", query = "SELECT i FROM Invoice i WHERE i.amount = :amount"),
     @NamedQuery(name = "Invoice.findByClient", query = "SELECT i FROM Invoice i WHERE i.client = :client"),
     @NamedQuery(name = "Invoice.findByPosted", query = "SELECT i FROM Invoice i WHERE i.posted = :posted"),
-    @NamedQuery(name = "Invoice.findByPaid", query = "SELECT i FROM Invoice i WHERE i.paid = :paid"),
-    @NamedQuery(name = "Invoice.findByCheckNum", query = "SELECT i FROM Invoice i WHERE i.checkNum = :checkNum")})
+    @NamedQuery(name = "Invoice.findByPaid", query = "SELECT i FROM Invoice i WHERE i.paid = :paid")
+    //@NamedQuery(name = "Invoice.findByCheckNum", query = "SELECT i FROM Invoice i WHERE i.checkNum = :checkNum")
+    })
 public class Invoice implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
@@ -48,11 +49,15 @@ public class Invoice implements Serializable {
     private Boolean posted;
     @Column(name = "paid")
     private Boolean paid;
-    @Size(max = 100)
-    @Column(name = "check_num")
-    private String checkNum;
+//    @Size(max = 100)
+//    @Column(name = "check_num")
+//    private String checkNum;
     @Column(name="period_num")
     private String periodNum;
+    
+    @OneToOne
+    @JoinColumn(name="receipt_id")
+    private Receipts receipt;
     
     public Invoice() {
     }
@@ -122,13 +127,13 @@ public class Invoice implements Serializable {
         this.paid = paid;
     }
 
-    public String getCheckNum() {
-        return checkNum;
-    }
-
-    public void setCheckNum(String checkNum) {
-        this.checkNum = checkNum;
-    }
+//    public String getCheckNum() {
+//        return checkNum;
+//    }
+//
+//    public void setCheckNum(String checkNum) {
+//        this.checkNum = checkNum;
+//    }
 
     @Override
     public int hashCode() {
@@ -168,5 +173,19 @@ public class Invoice implements Serializable {
     public void setPeriodNum(String periodNum) {
         this.periodNum = periodNum;
     }
-    
+
+    /**
+     * @return the receipt
+     */
+    public Receipts getReceipt() {
+        return receipt;
+    }
+
+    /**
+     * @param receipt the receipt to set
+     */
+    public void setReceipt(Receipts receipt) {
+        this.receipt = receipt;
+    }
+
 }

@@ -34,10 +34,16 @@
                     <p:selectBooleanCheckbox id="posted" value="#{InvoiceController.selected.posted}"/>
                     <h:outputLabel value="#{msgs.paid}" for="paid" />
                     <p:selectBooleanCheckbox id="paid" value="#{InvoiceController.selected.paid}"/>
-                    <h:outputLabel value="#{msgs.checkNum}" for="checkNum" />
-                    <h:inputText id="checkNum" value="#{InvoiceController.selected.checkNum}" title="#{msgs.checkNum}" />
-                    <h:outputLabel value="#{msgs.period}" for="period"/>
-                    <h:inputText id="period" value="#{InvoiceController.selected.periodNum}" title="#{msgs.period}" />   
+
+                    <h:outputLabel value="Check"/>
+                    <p:selectOneMenu value="#{InvoiceController.selected.receipt}">
+                        <f:selectItem itemLabel="Select" itemValue=""/>
+                        <f:selectItems var="r" value='#{receiptsController.getList(InvoiceController.selected.invDate)}'/>
+                    </p:selectOneMenu>
+
+                    <h:outputLabel value=""/>
+                    <p:commandButton action="#{receiptsController.prepareNew}" 
+                                 value="#{msgs.New}"/>
                 </h:panelGrid>
                 <br/>
                 <p:commandButton action="#{InvoiceController.update}" value="#{msgs.Save}"/>

@@ -64,6 +64,17 @@ public class InvoiceController implements Serializable {
         invoiceList.addAll(list);
         return invoiceList;
     }
+    
+    public List<Invoice> getUnpaidInvoiceList() {
+        List<Invoice> list;
+        list = getFacade().findUnpaidClientInvoices();
+        if (list == null) {
+            return new ArrayList<>();
+        }
+        invoiceList.clear();
+        invoiceList.addAll(list);
+        return invoiceList;
+    }    
 
     public void onChangeclient() {
         List<Invoice> list;
@@ -159,6 +170,7 @@ public class InvoiceController implements Serializable {
 
     public String update() {
         try {
+            current.setPaid(current.getReceipt() != null);
             getFacade().edit(current);
             JsfUtil.addSuccessMessage(ResourceBundle.getBundle("/Messages").getString("Updated"));
             return "List?faces-redirect=true";
